@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+
+{% block title %}Signup{% endblock %}
+
+{% block js %}
+<script src="{% static 'users/js/users.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+<div class="register-form start-signup">
+	<h4>Enter your email to start signing up.</h4>
+	<form class="form-horizontal">
+		<input type="text" class="start-email" placeholder="you@example.com">
+		<input type="button" class="btn btn-primary btn-danger start-submit" value="Get Started">
+	</form>
+	<p class="start-signup-error" style="color: red"></p>
+</div>
+{% endblock %}
+
+	

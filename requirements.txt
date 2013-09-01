@@ -1,0 +1,2 @@
+-r reqs/production.txt
+pylibmc==1.2.3

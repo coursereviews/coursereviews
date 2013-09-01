@@ -1,0 +1,48 @@
+{% if  request.user != url_user %}
+<div class="comment-form-container">
+
+	<form action="" class="form-horizontal comment-form" method="POST">
+		<fieldset><legend><h4>Add a Comment</h4></legend>
+		<div class="error-wrapper"></div>
+		<div class="form-group">
+			<div class="row">
+				<div class="col-lg-4">
+					<input class="form-control" placeholder="Title" type="text" name="title">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4">
+					<input class="form-control" placeholder="Email (hidden)" type="text" name="email">
+				</div>
+				<div class="col-lg-1">
+					<p class="text-muted">Rating:</p>
+				</div>
+				<div class="col-lg-7">
+					<div class="btn-group" data-toggle-name="comment_rating" data-toggle="buttons-radio">
+						<button type="button" value="0" class="btn btn-red" data-toggle="button">Scammer</button>
+		  				<button type="button" value="4" class="btn btn-orange" data-toggle="button">Frustrating</button>
+		  				<button type="button" value="6" class="btn btn-yellow" data-toggle="button">Fine</button>
+		  				<button type="button" value="10" class="btn btn-green" data-toggle="button">Reliable</button>
+					</div>
+				<input name="rating" type="hidden" value="">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-11">
+					<textarea class="form-control comment-textarea" placeholder="Give {{url_user.username}} some feedback here" name="comment" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="row">	
+				<div class="col-lg-2 col-submit">
+					<input class="btn btn-default" type="submit" value="Submit">
+				</div>
+			</div>
+		</div>
+		</fieldset>
+	</form>
+</div>
+
+<div class="comment-thanks">
+	<h4 class="muted"> Thanks for your feedback!</h4>
+</div>
+{% endif %}

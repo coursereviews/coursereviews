@@ -1,0 +1,94 @@
+{% load static from staticfiles %}
+{% load active from navigation %}
+
+
+<div class="navbar navbar-static-top" data-spy="affix">
+
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>  
+    {% if request.user.is_authenticated %}
+      <a class="navbar-logo" href="{% url 'listings.views.dashboard' %}">
+    {% else %}
+      <a class="navbar-logo" href="{% url 'home' %}">
+    {% endif %}
+        <div class="accent accent1"></div>
+        <div class="accent accent2"></div>
+        <div class="accent accent3"></div>
+        <div class="accent accent4"></div>
+        <span class="logo-text"><span class="serif">rocket</span> <span class="sans-serif">listings</span></span>
+      </a>
+      <div class="collapse navbar-collapse navbar-ex1-collapse" >      
+      {% if request.user.is_authenticated %}
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a class="{% active 'create' %} blue-menu-item visible-xs" href="{% url 'create' %}">
+            <span class="nav-item-text">Create a listing </span>
+          </a>
+          <a class="{% active 'create' %} blue-menu-item hidden-xs" href="{% url 'create' %}">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </li>
+        <li>
+          <a class="{% active 'dashboard' %}" href="{% url 'listings.views.dashboard' %}">
+            <span class="nav-item-text"> Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a class="username-item {% active 'user_profile' 'user_info' %}" href="{% url 'user_profile' user.username %}">
+            <span class="nav-item-text"> {{ request.user.username }}</span>
+          </a>
+        </li>
+        <li class="dropdown hidden-xs">
+          <a id="dLabel" class="settings-cog {% active 'user_profile' 'user_info' %}" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+            {# <span class="glyphicon glyphicon-cog"></span> #}
+            <span class="glyphicon glyphicon-chevron-down"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li>
+              <a href="{% url 'user_info' %}">
+                <span class="nav-item-text">Edit Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'auth_logout' %}">
+                <span class="nav-item-text">Logout</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="visible-xs">
+            <a href="{% url 'user_info' %}">
+              <span class="nav-item-text">Edit Profile</span>
+            </a>
+        </li>
+        <li class="visible-xs">
+            <a href="{% url 'auth_logout' %}">
+              <span class="nav-item-text">Logout</span>
+            </a>
+        </li>
+
+
+      </ul>
+      {% else %}
+      <ul class="nav navbar-nav pull-right " >
+        <li>
+          <a class="{% active 'registration_register' %}" href="{% url 'registration_register' %}" id="join">
+            <span class="nav-item-text">Sign Up</span>
+          </a>
+        </li>
+        <li>
+          <a class="{% active 'auth_login' %}" href="{% url 'auth_login' %}">
+            <span class="nav-item-text">Login</span>
+          </a>
+        </li>
+      </ul>
+      {% endif %} 
+      </div>
+    </div>  
+</div>
+
+
+

@@ -1,0 +1,25 @@
+{% extends "static_pages/base.html" %}
+{% load static from staticfiles %}
+{% load active from navigation %}
+
+{% block content %}
+  <h2>This is the new Middlebury course reviews website.</h2>
+  <a class="btn btn-default" id="login" href="#login-partial" data-toggle="tab">Login</a>
+  <a class="btn btn-primary" id="sign-up" href="#sign-up-partial" data-toggle="tab">Sign up as a Student</a>  
+  <div class="tab-content homepage-tab-content">
+    <div id="login-partial" class="tab-pane fade">
+      {% include 'cr_registration/login.html' %}
+    </div>
+    <div id="sign-up-partial" class="tab-pane fade">
+      {% include 'cr_registration/registration_form.html' %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  {{ block.super }}
+  <script type="text/javascript">
+    var tabLinkId = "{{ tab|escapejs }}";
+    $(tabLinkId).tab('show');
+  </script>
+{% endblock %}

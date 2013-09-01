@@ -1,0 +1,40 @@
+{% load compressed %}
+{% load static from staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block pagetitle %}Midd Course Reviews{% endblock %}</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'rocket/img/favicon.ico' %}">
+    {# production #}
+    {# <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"> #}
+    {# development #}
+    {% compressed_css 'local_bs' %}
+    {% block css %}{% compressed_css 'base' %}{% endblock %}
+    {# // <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.4.1/less.min.js"></script> #}
+  </head>
+  <body >
+    {% block body %}
+    {# <div class="wrap"> #}
+      {# {% include "partials/header.html" %} #}
+      <div class="container">
+        {% block content %}<h3>Error 404</h3>{% endblock %}
+      </div>
+      {# <div class="push"></div> sticky footer div #}
+    {# </div> #}
+    {% include "partials/footer.html" %}
+    {% endblock %}
+    {# CDN JS #}
+    <div class="scripts hide">
+      {# production #}
+      {# // <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> #}
+      {# <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> #}
+      
+      {# development #}
+      {% compressed_js 'local_libs' %}
+      {% block js %}{% endblock %}
+    </div>
+  </body>
+</html>

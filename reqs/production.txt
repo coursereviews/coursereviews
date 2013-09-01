@@ -1,0 +1,11 @@
+-r common.txt
+
+gunicorn
+django-postgrespool
+
+django-heroku-memcacheify
+dj_database_url
+
+gevent
+newrelic
+psycopg2

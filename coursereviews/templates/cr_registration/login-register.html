@@ -1,0 +1,30 @@
+{# Really should be called login-register.html #}
+{% extends 'users/base.html' %}
+
+{% block content %}
+<div class="login-register-box">
+	<div class="login-form">
+		<h3>Login</h3>
+		<form action="{% url 'auth_login' %}" method="POST">
+		{% csrf_token %} 
+			<ul class="form">
+				{{ form.as_ul }}
+				<li><input class="btn" type="submit" value="Login"/></li>
+			</ul>
+			<input type="hidden" name="next" value="{{ next }}" />
+			<a href="{% url 'auth_password_reset' %}">Forgot your password?</a>
+		</form>
+	</div>
+	<div class="register-form">
+		<h3>Register</h3>
+		<form action="{% url 'registration_register' %}" method="POST">
+			<ul>
+			{% csrf_token %} 
+				{{ form.as_ul }}
+				<li><input class="btn" type="submit" value="Create Account"/></li>
+			</ul>
+		</form>
+	</div>
+	<div class="clearfix"></div>
+</div>
+{% endblock %}
