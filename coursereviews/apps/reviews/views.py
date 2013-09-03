@@ -1,4 +1,4 @@
 from django.template.response import TemplateResponse
 
-def browse(request):
-    return TemplateResponse(request, 'reviews/browse.html')
+def browse(request, **kwargs):
+    return TemplateResponse(request, 'reviews/browse.html', **kwargs)

@@ -10,12 +10,13 @@ from static_pages.views import http403, http404, http500
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'static_pages.views.home', name='home'),
+    url(r'^$', 'static_pages.views.index', name='index_name'),
     url(r'^about/$', 'static_pages.views.about', name='about'),    
     url(r'^contact/$', 'static_pages.views.contact', name='contact'),
-    url(r'', include('registration.auth_urls')),
-    url(r'', include('registration.backends.default.urls')),
+    url(r'', include('registration.urls')),
     # url(r'^reviews/', include('reviews.urls')),
+    # url(r'^users/', include('users.urls')),    
+
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 

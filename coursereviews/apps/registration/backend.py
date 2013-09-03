@@ -11,7 +11,7 @@ from django.contrib.auth import login
 from django.contrib.auth import authenticate
 
 
-class DefaultBackend(object):
+class Backend(object):
     """
     A registration backend which follows a simple workflow:
 
@@ -99,9 +99,7 @@ class DefaultBackend(object):
         """
         activated = RegistrationProfile.objects.activate_user(activation_key)
         if activated:
-            signals.user_activated.send(sender=self.__class__,
-                                        user=activated,
-                                        request=request)
+            signals.user_activated.send(sender=self.__class__, user=activated, request=request)
         return activated
 
     def registration_allowed(self, request):

@@ -20,16 +20,16 @@ def http404(request):
 def http500(request):
     return render(request, 'static_pages/500.html')
 
-def home(request):
+def index(request, **kwargs):
     if request.user.is_authenticated():
-        return browse(request)
+        return browse(request, **kwargs)
     else:
-        return homepage(request)
+        return splash(request, **kwargs)
 
 # @cache_page(60 * 15)
 # @cache_control(must_revalidate=True, max_age=3600)
-def homepage(request):
-    return TemplateResponse(request, 'static_pages/homepage.html')
+def splash(request, **kwargs):
+    return TemplateResponse(request, 'static_pages/splash.html', kwargs)
 
 # @cache_control(must_revalidate=True, max_age=3600)
 # @cache_page(60 * 15)

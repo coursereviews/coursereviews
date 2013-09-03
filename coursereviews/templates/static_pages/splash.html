@@ -3,9 +3,15 @@
 {% load active from navigation %}
 
 {% block content %}
+  {% if message %}
+  <div class="splash-alert alert alert-info">
+    <h4>{{ message }}</h4>
+    <p>{{ sub_message }}</p>
+  </div>
+  {% endif %}
   <h2>This is the new Middlebury course reviews website.</h2>
   <a class="btn btn-default" id="login" href="#login-partial" data-toggle="tab">Login</a>
-  <a class="btn btn-primary" id="sign-up" href="#sign-up-partial" data-toggle="tab">Sign up as a Student</a>  
+  <a class="btn btn-primary" id="sign-up" href="#sign-up-partial" data-toggle="tab">Sign up as a Student</a>
   <div class="tab-content homepage-tab-content">
     <div id="login-partial" class="tab-pane fade">
       {% include 'cr_registration/login.html' %}
