@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     url(r'^about/$', 'static_pages.views.about', name='about'),    
     url(r'^contact/$', 'static_pages.views.contact', name='contact'),
     url(r'', include('registration.urls')),
-    # url(r'^reviews/', include('reviews.urls')),
+    url(r'^reviews/', include('reviews.urls')),
     # url(r'^users/', include('users.urls')),    
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

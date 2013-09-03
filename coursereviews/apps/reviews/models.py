@@ -26,6 +26,9 @@ class Professor(models.Model):
     dept = models.ForeignKey(Deptartment, related_name='professors')
     email = models.EmailField(blank=True, null=True)
 
+    def get_absolute_url(self):
+        return '/'
+
     def __unicode__(self):
         return self.first + ' ' + self.last
 
@@ -36,6 +39,9 @@ class Course(models.Model):
     description = models.TextField(blank=True, null=True)
     dept = models.ForeignKey(Deptartment, related_name='courses')
 
+    def get_absolute_url(self):
+        return '/'
+        
     def __unicode__(self):
         return self.code
 

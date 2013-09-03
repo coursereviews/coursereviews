@@ -1,5 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Hello {{ request.user.username }}!</h2>
+  <h2>Welcome to the new Midd course reviews site.</h2>
+  {% if profs %}
+  <h4>Professors</h4>
+  <ul>
+    {% for prof in profs %}
+    <li><a href="{{ prof.get_absolute_url }}">{{ prof }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% if courses %}
+  <h4>Courses</h4>
+  <ul>
+    {% for course in courses %}
+    <li><a href="{{ course.get_absolute_url }}">{{ course }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <a class="btn btn-primary" href="{% url 'new_review' %}">Write a review</a>
 {% endblock %}

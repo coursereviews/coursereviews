@@ -39,7 +39,6 @@ consult a specific backend's documentation for details.
 
 """
 
-
 from django.conf.urls.defaults import *
 from django.views.generic import TemplateView
 

@@ -20,11 +20,11 @@ def http404(request):
 def http500(request):
     return render(request, 'static_pages/500.html')
 
-def index(request, **kwargs):
+def index(request):
     if request.user.is_authenticated():
-        return browse(request, **kwargs)
+        return browse(request)
     else:
-        return splash(request, **kwargs)
+        return splash(request)
 
 # @cache_page(60 * 15)
 # @cache_control(must_revalidate=True, max_age=3600)
