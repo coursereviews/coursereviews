@@ -1,0 +1,42 @@
+- model: reviews.Deptartment
+  pk: null
+  fields:
+    name: 'Political Science'
+    description: 'This deptartment does politics and stuff'
+
+- model: reviews.Professor
+  pk: null
+  fields: 
+    first: 'Murray'
+    last: 'Dry'
+    dept: ['Political Science']
+    email: 'dry@middlebury.edu'
+
+- model: reviews.Course
+  pk: null
+  fields:
+    title: 'Introduction to Political Philosophy'
+    code: 'PSCI 101'
+    description: 'A good course about Plato and stuff.'
+    dept: ['Political Science']
+
+- model: reviews.ProfCourse
+  pk: null
+  fields:
+    prof: ['Dry']
+    course: ['PSCI 101']
+
+- model: reviews.Review
+  pk: null
+  fields:
+    prof_course: ['Dry', 'PSCI 101']
+    user: ['ejknox']
+    value: 'V'
+    find: 'F'
+    atmosphere: 'A'
+    hours: 12,
+    deserving: 'L'
+    help: 'Y'
+    another: 'N'
+    recommend: 'Y'
+    comment: "This was a crazy course. Prof. Dry bled on my final paper."
