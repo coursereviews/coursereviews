@@ -34,7 +34,7 @@
     value: 'V'
     find: 'F'
     atmosphere: 'A'
-    hours: 12,
+    hours: 12
     deserving: 'L'
     help: 'Y'
     another: 'N'

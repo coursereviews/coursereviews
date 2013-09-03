@@ -11,10 +11,6 @@ class GenericManager(models.Manager):
         kwargs = { self.field_name: name }
         return self.get(**kwargs)
 
-class ProfCourseManager(models.Manager):
-    def get_by_natural_key(self, prof, course):
-        return self.get(prof=prof, course=course)
-
 class Deptartment(models.Model):
     objects = GenericManager(field_name='name')
     name = models.CharField(max_length=100)
@@ -31,7 +27,7 @@ class Professor(models.Model):
     email = models.EmailField(blank=True, null=True)
 
     def __unicode__(self):
-        return self.last
+        return self.first + ' ' + self.last
 
 class Course(models.Model):
     objects = GenericManager(field_name='code')
@@ -43,7 +39,13 @@ class Course(models.Model):
     def __unicode__(self):
         return self.code
 
-# a profCourse is specific to the professor teaching the course
+class ProfCourseManager(models.Manager):
+    def get_by_natural_key(self, prof, course):
+        prof = Professor.objects.get_by_natural_key(prof)
+        course = Course.objects.get_by_natural_key(course)        
+        return self.get(prof=prof, course=course)
+
+# a ProfCourse is specific to the professor teaching the course
 class ProfCourse(models.Model):
     objects = ProfCourseManager()
     course = models.ForeignKey(Course, related_name='prof_courses')
@@ -54,6 +56,7 @@ class ProfCourse(models.Model):
 
     def __unicode__(self):
         return self.course.unicode() + ' ' + self.prof.unicode()
+
 class Review(models.Model):
 
     def __unicode__(self):
