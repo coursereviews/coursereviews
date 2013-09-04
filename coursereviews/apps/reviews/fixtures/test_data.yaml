@@ -1,8 +1,8 @@
-- model: reviews.Deptartment
+- model: reviews.Department
   pk: null
   fields:
     name: 'Political Science'
-    description: 'This deptartment does politics and stuff'
+    description: 'This Department does politics and stuff'
 
 - model: reviews.Professor
   pk: null

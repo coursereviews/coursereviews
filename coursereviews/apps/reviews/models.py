@@ -11,7 +11,7 @@ class GenericManager(models.Manager):
         kwargs = { self.field_name: name }
         return self.get(**kwargs)
 
-class Deptartment(models.Model):
+class Department(models.Model):
     objects = GenericManager(field_name='name')
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
@@ -23,7 +23,7 @@ class Professor(models.Model):
     objects = GenericManager(field_name='last')
     first = models.CharField(max_length=100, blank=True, null=True)
     last = models.CharField(max_length=100)
-    dept = models.ForeignKey(Deptartment, related_name='professors')
+    dept = models.ForeignKey(Department, related_name='professors')
     email = models.EmailField(blank=True, null=True)
 
     def get_absolute_url(self):
@@ -37,7 +37,7 @@ class Course(models.Model):
     code = models.CharField(max_length=20)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    dept = models.ForeignKey(Deptartment, related_name='courses')
+    dept = models.ForeignKey(Department, related_name='courses')
 
     def get_absolute_url(self):
         return '/'
@@ -61,12 +61,12 @@ class ProfCourse(models.Model):
         unique_together = (('course', 'prof'),)
 
     def __unicode__(self):
-        return self.course.unicode() + ' ' + self.prof.unicode()
+        return self.course.__unicode__() + ' ' + self.prof.__unicode__()
 
 class Review(models.Model):
 
     def __unicode__(self):
-        return user.unicode() + ' ' + prof_course.unicode()
+        return self.user.__unicode__() + ' ' + self.prof_course.__unicode__()
 
     class Meta:
         unique_together = (('prof_course', 'user'),)
