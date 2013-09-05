@@ -1,8 +1,82 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 
-{% block content %}
-  <h2>Write a new review!</h2>
+{% block js %}
+  <script src="{% static 'coursereviews/js/select2.min.js' %}"></script>
+{% endblock %}
 
-  {{ form.as_p }}
+{% block content %}
+  {% comment %}
+  <form class="" role="form">
+    <div class="row">
+      <div class="">
+        <div class="col-lg-3 col-md-3">
+          <select class="form-control" id="id_prof_course" name="prof_course">
+          {% for option in form.prof_course.field.choices.queryset %}
+            <option value="{{ forloop.counter }}" {% ifequal forloop.counter form.prof_course.value %}selected{% endifequal %}>{{ option }}</option>
+          {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <fieldset><legend>The Course</legend>
+      <div class="row">
+        <div class="col-lg-4 col-md-4">
+          <label for="id_value" class="control-label">How valuable was the course and its concepts to overall education?</label>
+          <select class="form-control" id="id_value" name="value">
+          {% for value, text in form.value.field.choices %}
+            <option value="{{ value }}" {% ifequal value form.value.value %}selected{% endifequal %}>{{ text }}</option>
+          {% endfor %}
+          </select>
+        </div>
+        <div class="col-lg-4 col-md-4">
+          <label for="id_find" class="control-label">How did you find the material presented?</label>
+          <div class="">
+            <select class="form-control" id="id_find" name="find">
+            {% for value, text in form.find.field.choices %}
+              <option value="{{ value }}" {% ifequal value form.find.value %}selected{% endifequal %}>{{ text }}</option>
+            {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4">
+          <label for="id_atmosphere" class="control-label">How was the overall class atmosphere?</label>
+          <div class="">
+            <select class="form-control" id="id_atmosphere" name="atmosphere">
+            {% for value, text in form.atmosphere.field.choices %}
+              <option value="{{ value }}" {% ifequal value form.atmosphere.value %}selected{% endifequal %}>{{ text }}</option>
+            {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <div class="row">
+      <div class="col-lg-4 col-md-4">
+        <label for="id_hours" class="control-label">Hours per week spent preparing for the class</label>
+        <div class="">
+          <input type="text" class="form-control" name="hours" value="{{ form.hours.value }}" id="id_hours">
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4">
+          <label for="id_deserving" class="control-label">Were your grades deserving of your efforts?</label>
+          <div class="">
+            <select class="form-control" id="id_deserving" name="deserving">
+            {% for value, text in form.deserving.field.choices %}
+              <option value="{{ value }}" {% ifequal value form.deserving.value %}selected{% endifequal %}>{{ text }}</option>
+            {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+  </form>
+  {% endcomment %}
+  <form method="POST">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <input type="submit" value="Save Review" class="btn btn-default">
+  </form>
+  {% if form.instance.id %}
+    <a class="btn btn-danger" href="{% url 'delete_review' form.instance.id %}">Delete this review</a>
+  {% endif %}
 {% endblock %}

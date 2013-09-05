@@ -1,6 +1,8 @@
 from django.template.response import TemplateResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_GET
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from reviews.models import Review, Professor, Course
 from reviews.forms import ReviewForm
 
@@ -9,15 +11,42 @@ def browse(request):
     courses = Course.objects.all()[:5]
     return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
 
-@require_GET
+@login_required
 def create(request):
-  form = ReviewForm()
-  return TemplateResponse(request, 'reviews/edit.html', {'form': form})
+  if request.method == "GET":
+    form = ReviewForm()
+    return TemplateResponse(request, 'reviews/edit.html', {'form': form})
+  elif request.method == "POST":
+    review = Review(user=request.user)
+    form = ReviewForm(request.POST, instance=review)
+    if form.is_valid():
+      form.save()
+      return redirect(review)
+    else:
+      return TemplateResponse(request, 'reviews/edit.html', {'form': form})
 
 def detail(request, review_id, edit=False):
-  review = Review.objects.select_related().get(id=review_id)
+  review = get_object_or_404(Review.objects.select_related(), id=review_id)
   if edit == True:
-    form = ReviewForm(instance=review)
-    return TemplateResponse(request, 'reviews/edit.html', {'form': form})
+    if request.user != review.user:
+      return HttpResponse(status=404)
+    if request.method == "GET":
+      form = ReviewForm(instance=review)
+      return TemplateResponse(request, 'reviews/edit.html', {'form': form})
+    elif request.method == "POST":
+      form = ReviewForm(request.POST, instance=review)
+      if form.is_valid():
+        form.save()
+        return redirect(review)
+      else:
+        return TemplateResponse(request, 'review/edit.html', {'form': form})
   else:
     return TemplateResponse(request, 'reviews/view.html', {'review': review})
+
+@require_GET
+def delete(request, review_id):
+  review = get_object_or_404(Review, id=review_id)
+  if request.user == review.user:
+    review.delete()
+    return redirect('/')
+  return HttpResponse(status=403)

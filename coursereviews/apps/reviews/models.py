@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 # Used for both ListingCategory and ListingType and Buyer
@@ -116,3 +117,5 @@ class Review(models.Model):
 
     comment = models.TextField()
 
+    def get_absolute_url(self):
+        return reverse('view_review', args=[self.id])

@@ -20,11 +20,25 @@
     description: 'A good course about Plato and stuff.'
     dept: ['Political Science']
 
+- model: reviews.Course
+  pk: null
+  fields:
+    title: 'American Political Regime'
+    code: 'PSCI 102'
+    description: 'Madison was cool, I guess.'
+    dept: ['Political Science']
+
 - model: reviews.ProfCourse
   pk: null
   fields:
     prof: ['Dry']
     course: ['PSCI 101']
+
+- model: reviews.ProfCourse
+  pk: null
+  fields:
+    prof: ['Dry']
+    course: ['PSCI 102']
 
 - model: reviews.Review
   pk: null
