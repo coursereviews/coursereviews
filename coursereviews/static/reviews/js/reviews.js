@@ -5,7 +5,10 @@ $(document).ready(function () {
     containerCss: "height: 34px;"
   });
 
-  $("input#id_hours").slider()
+  $("input#id_hours").slider({
+    value: sliderInitVal,
+    tooltip: false
+  })
     .on('slide', function(ev) {
       $("div.hours-display").text(ev.value);
     });
