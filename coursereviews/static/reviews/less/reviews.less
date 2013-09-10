@@ -1,6 +1,8 @@
 @import "../../coursereviews/less/base.less";
 // edit.html
 
+@error-color: #b94a48;
+
 .hide {
   display: none;
 }
@@ -11,6 +13,7 @@
 
 form {
   padding-bottom: 20px;
+  label { font-weight: 500 !important; }
   .row {
     margin-bottom: 25px;
     select, input, textarea {
@@ -44,6 +47,28 @@ form {
     }
     @media (max-width: 480px) {
       .btn-group { width: 100%; }
+    }
+  }
+  .error {
+    h4 { color: @error-color !important; }
+    .btn-group {
+      label:not(:first-child):not(:last-child) {
+        border-top: 1px solid @error-color;
+        border-bottom: 1px solid @error-color;
+      }
+      label:first-child {
+        border-top: 1px solid @error-color;
+        border-bottom: 1px solid @error-color;
+        border-left: 1px solid @error-color;
+      }
+      label:last-child {
+        border-top: 1px solid @error-color;
+        border-bottom: 1px solid @error-color;
+        border-right: 1px solid @error-color;
+      }
+    }
+    .select2-choice {
+      border: 1px solid @error-color;
     }
   }
   .review-delete {
