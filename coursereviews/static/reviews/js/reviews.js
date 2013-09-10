@@ -4,4 +4,13 @@ $(document).ready(function () {
     data: JSON.parse($("script#prof_course_choices").html()),
     containerCss: "height: 34px;"
   });
+
+  $("input#id_hours").slider()
+    .on('slide', function(ev) {
+      $("div.hours-display").text(ev.value);
+    });
+  $("input#id_hours").removeClass("hide");
+
+  $("label.active input").attr('checked', 'checked');
+
 });

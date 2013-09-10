@@ -34,11 +34,12 @@ def prof_detail(request, prof_slug):
 @login_required
 def create(request):
   if request.method == "GET":
-    form = ReviewForm(initial={'hours': ""})
+    form = ReviewForm(initial={'hours': 0})
     return TemplateResponse(request, 'reviews/edit.html', {'form': form})
   elif request.method == "POST":
     review = Review(user=request.user)
     form = ReviewForm(request.POST, instance=review)
+    print request.POST
     if form.is_valid():
       form.save()
       profile = request.user.get_profile()
@@ -46,6 +47,7 @@ def create(request):
       profile.save()
       return redirect('index')
     else:
+      print form.errors
       return TemplateResponse(request, 'reviews/edit.html', {'form': form})
 
 def detail(request, review_id, edit=False):
@@ -58,11 +60,12 @@ def detail(request, review_id, edit=False):
       return TemplateResponse(request, 'reviews/edit.html', {'form': form})
     elif request.method == "POST":
       form = ReviewForm(request.POST, instance=review)
+      print request.POST
       if form.is_valid():
         form.save()
         return redirect(review)
       else:
-        return TemplateResponse(request, 'review/edit.html', {'form': form})
+        return TemplateResponse(request, 'reviews/edit.html', {'form': form})
   else:
     return TemplateResponse(request, 'reviews/view.html', {'review': review})
 

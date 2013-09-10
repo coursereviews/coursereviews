@@ -113,8 +113,9 @@ class Review(models.Model):
     NO = 'N'
     LOWER = 'L'
     HIGHER = 'H'
-    DESERVING_CHOICES = ((YES, 'Yes'), (LOWER, 'Grades were lower than I thought I deserved'), (COMPETITIVE, 'Grades were lower than I thought I deserved'))
-    deserving = models.CharField(max_length=1, choices=DESERVING_CHOICES, default=YES) #, label="Were your grades deserving of your efforts?")
+    ACCURATE = 'A'
+    DESERVING_CHOICES = ((LOWER, 'Lower'), (ACCURATE, 'Accurate'), (HIGHER, 'Higher'))
+    deserving = models.CharField(max_length=1, choices=DESERVING_CHOICES)
 
     # Professor or assistants were available to help, if needed
     YES_NO_CHOICES = ((YES, 'Yes'), (NO, 'No'))
