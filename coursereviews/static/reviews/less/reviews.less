@@ -1,6 +1,27 @@
 @import "../../coursereviews/less/base.less";
 // edit.html
 
-body {
-  background-color: #000 !important;
+.hide {
+  display: none;
+}
+
+.hide-preserve-space {
+  visibility: hidden;
+}
+
+form {
+  .row {
+    margin-bottom: 25px;
+    select, input, textarea {
+      margin-left: 10px;
+    }
+    .select2-container {
+      margin-left: 10px;
+      width: 100%;
+      .select2-choice {
+        height: 34px;
+        line-height: 34px;
+      }
+    }
+  }
 }

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load compressed %}
+{% load active from navigation %}
+
+{% block js %}
+  <script src="{% static 'coursereviews/js/select2.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'reviews/js/reviews.js' %}"></script> 
+{% endblock %}
+
+{% block css %}
+  {% compressed_css 'reviews' %}
+{% endblock %}
+
+{% block body %}
+  {# <div class="wrap"> #}
+    {# {% include "static_pages/partials/header_static.html" %} #}
+    <div class="container">
+      {% block content %}<h3>Error 404</h3>{% endblock %}
+    </div>  
+    {# <div class="push"></div>{# sticky footer div #}
+  {# </div> #}
+  {% include "static_pages/partials/footer_static.html" %}
+{% endblock %}

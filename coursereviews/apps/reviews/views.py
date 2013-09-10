@@ -34,7 +34,7 @@ def prof_detail(request, prof_slug):
 @login_required
 def create(request):
   if request.method == "GET":
-    form = ReviewForm()
+    form = ReviewForm(initial={'hours': ""})
     return TemplateResponse(request, 'reviews/edit.html', {'form': form})
   elif request.method == "POST":
     review = Review(user=request.user)

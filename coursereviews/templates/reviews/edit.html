@@ -1,30 +1,32 @@
-{% extends "base.html" %}
-{% load compressed %}
-{% load static from staticfiles %}
-
-{% compressed_css 'reviews' %}
-
-{% block js %}
-  <script src="{% static 'coursereviews/js/select2.min.js' %}"></script>
-  $("#id_prof_course").select2();
-{% endblock %}
+{% extends "reviews/base.html" %}
 
 {% block content %}
   <h2>Write a review</h2>
+  <a class="btn btn-link" href="/">Back to search</a>
   <form role="form" method="POST">
     <h4><label for="id_prof_course">Pick a course</label></h4>
     <div class="row">
-      <div class="col-lg-3 col-md-3">
+      <div class="col-lg-4 col-md-4">
+        <input type="hidden" name="prof_course" id="id_prof_course" data-placeholder="Pick one">
+      {% comment %}
         <select class="form-control" id="id_prof_course" name="prof_course">
         {% for option in form.prof_course.field.choices.queryset %}
           <option value="{{ forloop.counter }}" {% ifequal forloop.counter form.prof_course.value %}selected{% endifequal %}>{{ option }}</option>
         {% endfor %}
         </select>
+      {% endcomment %}
+        <script type="text/javascript" id="prof_course_choices">
+        [
+          {% for option in form.prof_course.field.choices.queryset %}
+            {% templatetag openbrace %}"id": {{ forloop.counter }}, "text": "{{ option }}"{% templatetag closebrace %}{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ]
+        </script>
       </div>
     </div>
     <h4><label for="id_value">How valuable was the course and its concepts to overall education?</label></h4>
     <div class="row">
-      <div class="col-lg-3 col-md-3">
+      <div class="col-lg-4 col-md-4">
         <select class="form-control" id="id_value" name="value">
         {% for value, text in form.value.field.choices %}
           <option value="{{ value }}" {% ifequal value form.value.value %}selected{% endifequal %}>{{ text }}</option>
@@ -34,7 +36,7 @@
     </div>
     <h4><label for="id_find">How did you find the material presented?</label></h4>
     <div class="row">
-      <div class="col-lg-3 col-md-3">
+      <div class="col-lg-4 col-md-4">
         <select class="form-control" id="id_find" name="find">
         {% for value, text in form.find.field.choices %}
           <option value="{{ value }}" {% ifequal value form.find.value %}selected{% endifequal %}>{{ text }}</option>
@@ -44,7 +46,7 @@
     </div>
     <h4><label for="id_atmosphere">How was the overall class atmposphere?</label></h4>
     <div class="row">
-      <div class="col-lg-3 col-md-3">
+      <div class="col-lg-4 col-md-4">
         <select class="form-control" id="id_atmosphere" name="atmosphere">
         {% for value, text in form.atmosphere.field.choices %}
           <option value="{{ value }}" {% ifequal value form.atmosphere.value %}selected{% endifequal %}>{{ text }}</option>
@@ -54,7 +56,7 @@
     </div>
       <h4><label for="id_hours">How many hours per week did you spend preparing for the class</label></h4>
     <div class="row">
-      <div class="col-lg-3 col-md-3">
+      <div class="col-lg-4 col-md-4">
         <input type="text" class="form-control" name="hours" value="{{ form.hours.value }}" id="id_hours">
       </div>
     </div>
