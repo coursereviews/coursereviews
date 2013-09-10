@@ -4,6 +4,12 @@
     name: 'Political Science'
     description: 'This Department does politics and stuff'
 
+- model: reviews.Department
+  pk: null
+  fields:
+    name: 'History of Art and Architecture'
+    description: "<p>The visual arts constitute a compelling vehicle for a liberal arts education in a global context. Our department offers emphases in art history, museum studies, architectural history, architectural studies, and architecture and the environment.</p><p>In art history we study works of art and architecture as bearers of meaning and as manifestations of culture, often considered in a historical context. In architectural studies we scrutinize the built environment in relationship to its natural and cultural contexts, firmly grounded in both theory and praxis.</p>"
+
 - model: reviews.Professor
   pk: null
   fields: 
@@ -11,6 +17,25 @@
     last: 'Dry'
     dept: ['Political Science']
     email: 'dry@middlebury.edu'
+    slug: 'Dry'
+
+- model: reviews.Professor
+  pk: null
+  fields: 
+    first: 'Pieter'
+    last: 'Broucke'
+    dept: ['History of Art and Architecture']
+    email: ' broucke@middlebury.edu'
+    slug: 'Broucke'
+
+- model: reviews.Course
+  pk: null
+  fields:
+    title: 'Monuments/Ideas in Western Art'
+    code: 'HARC 100'
+    description: 'This course is an introduction to the study of Western art history through an investigation of selected art works, considered individually and in broader contexts. The course chronicles the evolution in painting, sculpture, and architecture of the western world. It is designed for those who wish to build a broad acquaintance with the major works and ideas of Western art in their historical settings and to develop tools for understanding these works of art as aesthetic objects and bearers of meaning for the societies, groups, or individuals that produced them. Registration priority will be given to first and second year students. 2 hrs. lect./1 hr. disc..'
+    dept: ['History of Art and Architecture']
+    slug: 'HARC-100'
 
 - model: reviews.Course
   pk: null
@@ -19,6 +44,7 @@
     code: 'PSCI 101'
     description: 'A good course about Plato and stuff.'
     dept: ['Political Science']
+    slug: 'PSCI-101'
 
 - model: reviews.Course
   pk: null
@@ -27,6 +53,13 @@
     code: 'PSCI 102'
     description: 'Madison was cool, I guess.'
     dept: ['Political Science']
+    slug: 'PSCI-102
+
+- model: reviews.ProfCourse
+  pk: null
+  fields:
+    prof: ['Broucke']
+    course: ['HARC 100']
 
 - model: reviews.ProfCourse
   pk: null

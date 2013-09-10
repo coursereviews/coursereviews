@@ -10,8 +10,10 @@
   </div>
   {% endif %}
   <h2>This is the new Midd course reviews website.</h2>
-  <a class="btn btn-default" id="login" href="#login-partial" data-toggle="tab">Login</a>
-  <a class="btn btn-primary" id="sign-up" href="#sign-up-partial" data-toggle="tab">Sign up as a Student</a>
+  <div data-toggle="buttons">
+    <a class="btn btn-default" id="login" href="#login-partial" data-toggle="tab"><input type="radio" class="hide">Login</a>
+    <a class="btn btn-primary" id="sign-up" href="#sign-up-partial" data-toggle="tab"><input type="radio" class="hide">Sign up as a Student</a>
+  </div>
   <div class="tab-content homepage-tab-content">
     <div id="login-partial" class="tab-pane fade">
       {% include 'cr_registration/login.html' %}
@@ -27,5 +29,9 @@
   <script type="text/javascript">
     var tabLinkId = "{{ tab|escapejs }}";
     $(tabLinkId).tab('show');
+    var buttonLinkId = tabLinkId.split('-partial')[0];
+    if (buttonLinkId) {
+      $(tabLinkId).addClass('active');
+    }
   </script>
 {% endblock %}

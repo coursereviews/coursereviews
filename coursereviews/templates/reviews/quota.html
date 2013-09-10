@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% with quota=request.user.get_profile.quota %}
+  <h3>Complete {{ quota }} more review{{ quota|pluralize }} to gain access to other students' reviews.</h3>
+  {% endwith %}
+  <a class="btn btn-primary" href="{% url 'new_review' %}">Write a review</a>
+{% endblock %}

@@ -2,6 +2,16 @@
 
 {% block content %}
   <h2>Welcome to the new Midd course reviews site.</h2>
+  <div class="row">
+    <div class="col-sm-6">
+      <form method="GET" action="/reviews/test_search">
+        <input id="search-bar" class="form-control input-lg" type="text" placeholder="Search for Professors or Courses">
+      </form>
+    </div>
+  </div>
+  {# {% if profs or courses %} #}
+  {# <h3>Browse</h3> #}
+  {# {% endif %} #}
   {% if profs %}
   <h4>Professors</h4>
   <ul>

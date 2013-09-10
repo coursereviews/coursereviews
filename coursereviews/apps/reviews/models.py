@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 # Used for both ListingCategory and ListingType and Buyer
 class GenericManager(models.Manager):
@@ -26,9 +27,14 @@ class Professor(models.Model):
     last = models.CharField(max_length=100)
     dept = models.ForeignKey(Department, related_name='professors')
     email = models.EmailField(blank=True, null=True)
+    slug = models.SlugField(blank=True)
+
+    def save(self):
+        self.slug = slugify(self.last)
+        super(Professor, self).save()
 
     def get_absolute_url(self):
-        return '/'
+        return reverse('prof_detail', kwargs={ 'prof_slug': self.slug })
 
     def __unicode__(self):
         return self.first + ' ' + self.last
@@ -39,9 +45,14 @@ class Course(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     dept = models.ForeignKey(Department, related_name='courses')
+    slug = models.SlugField(blank=True)
+
+    def save(self):
+        self.slug = slugify(self.code)
+        super(Course, self).save()
 
     def get_absolute_url(self):
-        return '/'
+        return reverse('course_detail', kwargs={ 'course_slug': self.slug })
         
     def __unicode__(self):
         return self.code
@@ -80,22 +91,22 @@ class Review(models.Model):
     AVERAGE = 'A'
     VALUABLE = 'V'
     VALUE_CHOICES = ((NOT_MUCH, 'Not much'), (AVERAGE, 'Average'), (VALUABLE, 'Valuable'))
-    value = models.CharField(max_length=1, choices=VALUE_CHOICES)
+    value = models.CharField(max_length=1, choices=VALUE_CHOICES, default=AVERAGE) #label="Value of course and concepts to overall education",
 
     # Did you find the material presented
     BORING = 'B'
     FASCINATING = 'F'
     FIND_CHOICES = ((BORING, 'Boring'), (AVERAGE, 'Average'), (FASCINATING, 'Fascinating'))
-    find = models.CharField(max_length=1, choices=FIND_CHOICES)
+    find = models.CharField(max_length=1, choices=FIND_CHOICES, default=AVERAGE) # label="Did you find the material presented..",
 
     # Overall class atmosphere
     FRIENDLY = 'F'
     COMPETITIVE = 'C'
     ATM_CHOICES = ((FRIENDLY, 'Friendly'), (AVERAGE, 'Average'), (COMPETITIVE, 'Competitive'))
-    atmosphere = models.CharField(max_length=1, choices=ATM_CHOICES)
+    atmosphere = models.CharField(max_length=1, choices=ATM_CHOICES, default=AVERAGE) # label="Overall class atmosphere",
 
     # Hours per week spent preparing for class
-    hours = models.IntegerField(max_length=2)
+    hours = models.IntegerField(max_length=2) #, label="Hours per week spent preparing for class")
 
     # Were your grades deserving of your efforts?
     YES = 'Y'
@@ -103,19 +114,19 @@ class Review(models.Model):
     LOWER = 'L'
     HIGHER = 'H'
     DESERVING_CHOICES = ((YES, 'Yes'), (LOWER, 'Grades were lower than I thought I deserved'), (COMPETITIVE, 'Grades were lower than I thought I deserved'))
-    deserving = models.CharField(max_length=1, choices=DESERVING_CHOICES)
+    deserving = models.CharField(max_length=1, choices=DESERVING_CHOICES, default=YES) #, label="Were your grades deserving of your efforts?")
 
     # Professor or assistants were available to help, if needed
     YES_NO_CHOICES = ((YES, 'Yes'), (NO, 'No'))
-    help = models.CharField(max_length=1, choices=YES_NO_CHOICES)
+    help = models.CharField(max_length=1, choices=YES_NO_CHOICES, default=YES) # , label="Professor or assistants were available to help, if needed",
 
     # Would you take another class with this professor?
-    another = models.CharField(max_length=1, choices=YES_NO_CHOICES)
+    another = models.CharField(max_length=1, choices=YES_NO_CHOICES, default=YES) # label="Would you take another class with this professor?",
 
     # Would you recommend this class to a friend
-    recommend = models.CharField(max_length=1, choices=YES_NO_CHOICES)
+    recommend = models.CharField(max_length=1, choices=YES_NO_CHOICES, default=YES) # label="Would you recommend this class to a friend",
 
-    comment = models.TextField()
+    comment = models.TextField() # label="Additional comments"
 
     def get_absolute_url(self):
         return reverse('view_review', args=[self.id])

@@ -10,8 +10,8 @@ from static_pages.views import http403, http404, http500
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'static_pages.views.index', name='index_name'),
-    url(r'^about/$', 'static_pages.views.about', name='about'),    
+    url(r'^$', 'static_pages.views.index', name='index'),
+    url(r'^about/$', 'static_pages.views.about', name='about'),
     url(r'^contact/$', 'static_pages.views.contact', name='contact'),
     url(r'', include('registration.urls')),
     url(r'^reviews/', include('reviews.urls')),

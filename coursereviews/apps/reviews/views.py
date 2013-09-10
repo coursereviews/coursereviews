@@ -5,11 +5,31 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from reviews.models import Review, Professor, Course
 from reviews.forms import ReviewForm
+from reviews.decorators import quota_required
 
+@login_required
+def quota(request):
+  return TemplateResponse(request, 'reviews/quota.html')
+
+@quota_required
 def browse(request):
     profs = Professor.objects.all()[:5]
     courses = Course.objects.all()[:5]
     return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
+
+@quota_required
+def browseProfs(request):
+    pass 
+
+@quota_required
+def browseCourses(request):
+    pass
+
+def course_detail(request, course_slug):
+    return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
+
+def prof_detail(request, prof_slug):
+    pass
 
 @login_required
 def create(request):
@@ -21,7 +41,10 @@ def create(request):
     form = ReviewForm(request.POST, instance=review)
     if form.is_valid():
       form.save()
-      return redirect(review)
+      profile = request.user.get_profile()
+      profile.quota -= 1
+      profile.save()
+      return redirect('index')
     else:
       return TemplateResponse(request, 'reviews/edit.html', {'form': form})
 

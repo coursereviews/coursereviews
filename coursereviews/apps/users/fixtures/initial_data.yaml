@@ -27,4 +27,6 @@
 - model: users.UserProfile
   pk: 1 # DO NOT REMOVE
   fields:
-    user: [ejknox]
+    user: ['ejknox']
+    quota: 0
+
