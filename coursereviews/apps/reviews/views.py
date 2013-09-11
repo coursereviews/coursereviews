@@ -26,7 +26,8 @@ def browseCourses(request):
     pass
 
 def course_detail(request, course_slug):
-    return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
+    return TemplateResponse(request, 'reviews/browse.html')
+    # return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
 
 def prof_detail(request, prof_slug):
     pass
