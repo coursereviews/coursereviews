@@ -7,6 +7,9 @@ from reviews.models import Review, Professor, Course
 from reviews.forms import ReviewForm
 from reviews.decorators import quota_required
 
+from django.core import serializers
+from operator import __or__
+
 @login_required
 def quota(request):
   return TemplateResponse(request, 'reviews/quota.html')
@@ -26,11 +29,18 @@ def browseCourses(request):
     pass
 
 def course_detail(request, course_slug):
-    return TemplateResponse(request, 'reviews/prof_detail.html')
+    course = get_object_or_404(Course, slug=course_slug)
+    prof_courses = course.prof_courses.all()
+    # print prof_courses
+    reviews_queryset = reduce(__or__, map(lambda pc: pc.reviews.all(), prof_courses))
+    print reviews_queryset
+    reviews = serializers.serialize('json', reviews_queryset, use_natural_keys=True)
+    print reviews
+    return TemplateResponse(request, 'reviews/course_detail.html', {'course': course, 'reviews': reviews })
     # return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
 
 def prof_detail(request, prof_slug):
-    return TemplateResponse(request, 'reviews/professor_detail.html')    
+    return TemplateResponse(request, 'reviews/prof_detail.html')    
 
 @login_required
 def create(request):

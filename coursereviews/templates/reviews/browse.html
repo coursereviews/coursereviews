@@ -24,7 +24,7 @@
   <h4>Courses</h4>
   <ul>
     {% for course in courses %}
-    <li><a href="{{ course.get_absolute_url }}">{{ course }}</a></li>
+    <li><a href="{{ course.get_absolute_url }}"><strong>{{ course.code }}</strong> &nbsp; {{ course.title }}</a></li>
     {% endfor %}
   </ul>
   {% endif %}

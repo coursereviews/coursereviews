@@ -33,6 +33,9 @@ class Professor(models.Model):
         self.slug = slugify(self.last)
         super(Professor, self).save()
 
+    def natural_key(self):
+        return self.last
+        
     def get_absolute_url(self):
         return reverse('prof_detail', kwargs={ 'prof_slug': self.slug })
 
@@ -50,6 +53,9 @@ class Course(models.Model):
     def save(self):
         self.slug = slugify(self.code)
         super(Course, self).save()
+
+    def natural_key(self):
+        return self.code
 
     def get_absolute_url(self):
         return reverse('course_detail', kwargs={ 'course_slug': self.slug })
@@ -71,6 +77,9 @@ class ProfCourse(models.Model):
 
     class Meta:
         unique_together = (('course', 'prof'),)
+
+    def natural_key(self):
+        return (self.course.natural_key(), self.prof.natural_key())
 
     def __unicode__(self):
         return self.course.__unicode__() + ' ' + self.prof.__unicode__()

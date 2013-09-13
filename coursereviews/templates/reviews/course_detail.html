@@ -1,5 +1,16 @@
-{% extends 'base.html' %}
+{% extends 'reviews/base.html' %}
+{% load static from staticfiles %}
+
+{% block js %}
+  <script src="{% static 'coursereviews/js/select2.min.js' %}"></script>
+  <script src="{% static 'reviews/js/d3.v3.min.js' %}"></script>
+  <script>var reviews = $.parseJSON("{{ reviews|escapejs }}");</script>
+  <script type="text/javascript" src="{% static 'reviews/js/detail.js' %}"></script>
+{% endblock %}
 
 {% block content %}
-  <h2>Course Detail</h2>
+  <h2>{{ course.title }}&nbsp;<small>{{course.code}}</small></h2>
+  <p>{{ course.description }}</p>
+  <a href="{% url 'index' %}">Back to search</a>
+  <div id="review-body"></div>
 {% endblock %}
