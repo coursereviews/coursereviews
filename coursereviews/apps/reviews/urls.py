@@ -5,13 +5,13 @@ from django.views.generic import TemplateView
 urlpatterns = patterns('reviews.views',
     url(r'^quota$', 'quota', name='quota'),
 
-    url(r'^new$', 'create', name='new_review'),
-    url(r'^(?P<review_id>\d+)$', 'detail', {'edit': False}, name='view_review'),
-    url(r'^(?P<review_id>\d+)/edit$', 'detail', {'edit': True}, name='edit_review'),
-    url(r'^(?P<review_id>\d+)/delete$', 'delete', name='delete_review'),
+    url(r'^review/new$', 'create', name='new_review'),
+    url(r'^review/(?P<review_id>\d+)$', 'detail', {'edit': False}, name='view_review'),
+    url(r'^review/(?P<review_id>\d+)/edit$', 'detail', {'edit': True}, name='edit_review'),
+    url(r'^review/(?P<review_id>\d+)/delete$', 'delete', name='delete_review'),
 
-    url(r'^(?P<course_slug>\w+)$', 'course_detail', name='course_detail'),
-    url(r'^(?P<prof_slug>\w+)$', 'prof_detail', name='prof_detail'),
+    url(r'^course/(?P<course_slug>[-\w\d]+)$', 'course_detail', name='course_detail'),
+    url(r'^professor/(?P<prof_slug>[-\w\d]+)$', 'prof_detail', name='prof_detail'),
 
     url(r'^test_search$', TemplateView.as_view(template_name='reviews/test_search.html'))
 )
