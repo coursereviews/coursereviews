@@ -18,6 +18,7 @@
     dept: ['Political Science']
     email: 'dry@middlebury.edu'
     slug: 'Dry'
+    lookup: 'Murray Dry'
 
 - model: reviews.Professor
   pk: null
@@ -27,6 +28,7 @@
     dept: ['History of Art and Architecture']
     email: 'broucke@middlebury.edu'
     slug: 'Broucke'
+    lookup: 'Pieter Broucke'
 
 - model: reviews.Course
   pk: null

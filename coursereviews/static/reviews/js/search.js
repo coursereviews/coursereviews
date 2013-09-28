@@ -3,7 +3,7 @@ $(document).ready(function () {
   $("input#search-bar").typeahead([
   {
     name: 'search',
-    local: ['Murray Dry', 'Pieter Broucke']
+    local: ["Murray Dry", "Pieter Broucke"]
   }
   ]).on("keydown", function(e) {
     if (e.which == 13) {

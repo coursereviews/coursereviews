@@ -28,10 +28,7 @@ class Professor(models.Model):
     dept = models.ForeignKey(Department, related_name='professors')
     email = models.EmailField(blank=True, null=True)
     slug = models.SlugField(blank=True)
-
-    def save(self):
-        self.slug = slugify(self.last)
-        super(Professor, self).save()
+    lookup = models.CharField(max_length=201)
 
     def natural_key(self):
         return self.last
@@ -42,6 +39,11 @@ class Professor(models.Model):
     def __unicode__(self):
         return self.first + ' ' + self.last
 
+    def save(self):
+        self.slug = slugify(self.last)
+        self.lookup = self.__unicode__()
+        super(Professor, self).save()
+
 class Course(models.Model):
     objects = GenericManager(field_name='code')
     code = models.CharField(max_length=20)
@@ -49,10 +51,7 @@ class Course(models.Model):
     description = models.TextField(blank=True, null=True)
     dept = models.ForeignKey(Department, related_name='courses')
     slug = models.SlugField(blank=True)
-
-    def save(self):
-        self.slug = slugify(self.code)
-        super(Course, self).save()
+    lookup = models.CharField(max_length=276)
 
     def natural_key(self):
         return self.code
@@ -61,7 +60,12 @@ class Course(models.Model):
         return reverse('course_detail', kwargs={ 'course_slug': self.slug })
         
     def __unicode__(self):
-        return self.code
+        return self.code + " - " + self.title
+
+    def save(self):
+        self.lookup = self.__unicode__()
+        self.slug = slugify(self.code)
+        super(Course, self).save()
 
 class ProfCourseManager(models.Manager):
     def get_by_natural_key(self, prof, course):

@@ -88,3 +88,11 @@ def delete(request, review_id):
     review.delete()
     return redirect('/')
   return HttpResponse(status=403)
+
+def search(request):
+  query = request.GET.get("q", "")
+  try:
+    result = Professor.objects.get(lookup=query)
+    return prof_detail(request, result.slug)
+  except Professor.DoesNotExist:
+    return HttpResponse(404)

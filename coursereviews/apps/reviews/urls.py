@@ -13,5 +13,5 @@ urlpatterns = patterns('reviews.views',
     url(r'^course/(?P<course_slug>[-\w\d]+)$', 'course_detail', name='course_detail'),
     url(r'^professor/(?P<prof_slug>[-\w\d]+)$', 'prof_detail', name='prof_detail'),
 
-    url(r'^test_search$', TemplateView.as_view(template_name='reviews/test_search.html'))
+    url(r'^search$', 'search', name="search"),
 )

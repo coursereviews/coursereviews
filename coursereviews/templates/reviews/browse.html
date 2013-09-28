@@ -2,6 +2,7 @@
 {% load static from staticfiles %}
 
 {% block js %}
+<script src="{% static 'reviews/js/mustache.js' %}"></script>
 <script src="{% static 'reviews/js/typeahead.js' %}"></script>
 <script src="{% static 'reviews/js/search.js' %}"></script>
 {% endblock %}
@@ -10,8 +11,8 @@
   <h2>Welcome to the new Midd course reviews site.</h2>
   <div class="row">
     <div class="col-sm-6 col-md-6">
-      <form method="GET" action="/test_search">
-        <input id="search-bar" class="form-control input-lg" type="text" placeholder="Search for Professors or Courses">
+      <form method="GET" action="/search">
+        <input id="search-bar" class="form-control input-lg" type="text" name="q" placeholder="Search for Professors or Courses">
       </form>
     </div>
   </div>
@@ -35,4 +36,5 @@
   </ul>
   {% endif %}
   <a class="btn btn-primary" href="{% url 'new_review' %}">Write a review</a>
+
 {% endblock %}
