@@ -40,7 +40,8 @@ def course_detail(request, course_slug):
     # return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
 
 def prof_detail(request, prof_slug):
-    return TemplateResponse(request, 'reviews/prof_detail.html')    
+  professor = Professor.objects.get(slug=prof_slug)
+  return TemplateResponse(request, 'reviews/prof_detail.html', {'professor': professor})    
 
 @login_required
 def create(request):
