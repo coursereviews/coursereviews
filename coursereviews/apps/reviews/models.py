@@ -63,7 +63,7 @@ class Course(models.Model):
         return self.code + " - " + self.title
 
     def save(self):
-        self.lookup = self.__unicode__()
+        self.lookup = self.title
         self.slug = slugify(self.code)
         super(Course, self).save()
 

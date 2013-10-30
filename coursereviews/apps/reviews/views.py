@@ -99,4 +99,4 @@ def search(request):
       result = Course.objects.get(lookup=query)
       return redirect('course_detail', result.slug)
     except Course.DoesNotExist:
-      return HttpResponse(404)
+      return HttpResponse(status=404)
