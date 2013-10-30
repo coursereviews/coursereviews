@@ -93,6 +93,10 @@ def search(request):
   query = request.GET.get("q", "")
   try:
     result = Professor.objects.get(lookup=query)
-    return prof_detail(request, result.slug)
+    return redirect('prof_detail', result.slug)
   except Professor.DoesNotExist:
-    return HttpResponse(404)
+    try:
+      result = Course.objects.get(lookup=query)
+      return redirect('course_detail', result.slug)
+    except Course.DoesNotExist:
+      return HttpResponse(404)

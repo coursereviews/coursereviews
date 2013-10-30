@@ -1,0 +1,25 @@
+[
+  {
+    "tokens": [
+      "Murray",
+      "Dry",
+      "Political",
+      "Science",
+      "dry@middlebury.edu"
+    ],
+    "name": "Murray Dry",
+    "value": "Murray Dry"
+  },
+  {
+    "tokens": [
+      "Pieter",
+      "Broucke",
+      "History",
+      "Art",
+      "Architecture",
+      "broucke@middlebury.edu"
+    ],
+    "name": "Pieter Broucke",
+    "value": "Pieter Broucke"
+  }
+]

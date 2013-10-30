@@ -38,6 +38,7 @@
     description: 'This course is an introduction to the study of Western art history through an investigation of selected art works, considered individually and in broader contexts. The course chronicles the evolution in painting, sculpture, and architecture of the western world. It is designed for those who wish to build a broad acquaintance with the major works and ideas of Western art in their historical settings and to develop tools for understanding these works of art as aesthetic objects and bearers of meaning for the societies, groups, or individuals that produced them. Registration priority will be given to first and second year students. 2 hrs. lect./1 hr. disc..'
     dept: ['History of Art and Architecture']
     slug: 'HARC-100'
+    lookup: 'HARC 100 - Monuments/Ideas in Western Art'
 
 - model: reviews.Course
   pk: null
@@ -47,6 +48,7 @@
     description: 'A good course about Plato and stuff.'
     dept: ['Political Science']
     slug: 'PSCI-101'
+    lookup: 'PSCI 101 - Introduction to Political Philosophy'
 
 - model: reviews.Course
   pk: null

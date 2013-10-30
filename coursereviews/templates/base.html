@@ -33,6 +33,7 @@
       {# <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> #}
       
       {# development #}
+      <script type="text/javascript">var STATIC_URL={{ STATIC_URL }};</script>
       {% compressed_js 'local_libs' %}
       {% block js %}{% endblock %}
     </div>
