@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from reviews.models import Review, Professor, Course
 from reviews.forms import ReviewForm
 from reviews.decorators import quota_required
+from haystack.query import SearchQuerySet
+from haystack.inputs import Clean
 
 from django.core import serializers
 from operator import __or__
@@ -89,14 +91,32 @@ def delete(request, review_id):
     return redirect('/')
   return HttpResponse(status=403)
 
+@require_GET
 def search(request):
   query = request.GET.get("q", "")
+
+  # Check if result exactly matches a professor
   try:
-    result = Professor.objects.get(lookup=query)
+    result = Professor.objects.get(lookup__iexact=query)
     return redirect('prof_detail', result.slug)
   except Professor.DoesNotExist:
-    try:
-      result = Course.objects.get(lookup=query)
-      return redirect('course_detail', result.slug)
-    except Course.DoesNotExist:
-      return HttpResponse(status=404)
+    pass
+
+  # Check if a result exactly matches a course
+  try:
+    result = Course.objects.get(lookup__iexact=query)
+    return redirect('course_detail', result.slug)
+  except Course.DoesNotExist:
+    pass
+
+  # Perform a search using Haystack
+  course_results = SearchQuerySet().models(Course).filter(content=Clean(query))
+  professor_results = SearchQuerySet().models(Professor).filter(content=Clean(query))
+
+  results_count = len(course_results) + len(professor_results)
+
+  ctx_dict = {'count': results_count,
+              'courses': course_results,
+              'professors': professor_results,
+              'query': query}
+  return TemplateResponse(request, 'reviews/search_results.html', ctx_dict)

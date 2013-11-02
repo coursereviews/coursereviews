@@ -1,0 +1,4 @@
+{{ object.last }}
+{{ object.first }}
+{{ object.email }}
+{{ object.dept }}

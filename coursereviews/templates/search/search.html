@@ -1,24 +1,28 @@
 {% extends 'base.html' %}
-{% load static from staticfiles %}
-{% load humanize %}
-
-
-{% block js %}
-    
-        <script src="{% static 'listings/js/sorttable.js' %}" type="text/javascript"></script>
-    
-        <script src="{% static 'listings/js/search.js' %}" type="text/javascript"></script>
-{% endblock %}
 
 {% block content %}
-    <h2>Search</h2>
-    
-    <form class="search-form" method="GET">
-        {% csrf_token %}
+    <h2>{{ page|length }} results for <u>{{query}}</u></h2>
+
+    <form role="form" class="form-inline" method="get" action="">
+        <div class="row">
+            <div class="col-sm-6 col-md-6">
+              <form method="GET" action="/search">
+                <input id="id_q" class="form-control input-lg" type="text" name="q" placeholder="Search for Professors or Courses">
+              </form>
+            </div>
+        </div>
+
+        <label for="id_models_0">Search in</label>
+            <label for-"id_models_0" name="models" type="checkbox" value="reviews.course">
+                <input id="id_models_0" name="models" type="checkbox" value="reviews.course">Courses
+            </label>
+
+        <label for="id_models_1">
+            <input id="id_models_1" name="models" type="checkbox" value="reviews.professor">Professors
+        </label>
         <table>
-            {{ form.as_table }}
+            {{ form.as_p }}
             <tr>
-                <td>&nbsp;</td>
                 <td>
                     <input type="submit" value="Search">
                 </td>
@@ -26,40 +30,17 @@
         </table>
 
         {% if query %}
-            <h3>Results</h3>
-            <table class="table listings-table table-hover sortable">
-                <thead>
-                    <tr>
-                        <th><a href="#">Title</a></th>
-                        <th><a href="#">Price</a></th>
-                        {# <th class="sortable">Location</th> #}
-                        <th><a href="#">Category</a></th>
-                        <th><a href="#">Date Listed</a></th>
-                    </tr>
-                </thead>
-                <tbody class="listing-table-body">
+
+            {% ifequal page.object_list.0.model_name "course" %}<h3>Courses</h3>{% endifequal %}
+
             {% for result in page.object_list %}
-                <tr data-listing-id="{{ result.object.id }}" >
-                    <td>
-                        <a href="{{ result.object.get_absolute_url }}">
-                            {{ result.object.title }}
-                        </a>
-                    </td>
-                    <td>${{ result.object.price }}</td>
-                    {# <td>{{ result.object.location }}</td> #}
-                    <td>{{ result.object.category.name }}</td>
-                    <td><p class="hide">{{ result.object.create_date|date:"m/d/y P" }}</p>{{ result.object.create_date|naturaltime }}</td>
-                    <td>
-                        <div class="btn-toolbar" style="text-align: center;">
-                            <a href="{{ result.object.get_absolute_url }}">Link</a>
-                        </div>
-                    </td>
-                </tr>
-            {% empty %}
-                <p>No results found.</p>
+                {% ifequal page.object_list.0.model_name "course" %}
+                <p>
+                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a>
+                </p>
+                {% endifequal %}
             {% endfor %}
-                    </tbody>
-                </table>
+
             {% if page.has_previous or page.has_next %}
                 <div>
                     {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}

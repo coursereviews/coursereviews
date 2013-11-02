@@ -1,0 +1,41 @@
+{% extends 'reviews/base.html' %}
+{% load static from staticfiles %}
+
+{% block js %}
+<script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
+<script src="{% static 'reviews/js/typeahead.js' %}"></script>
+<script src="{% static 'reviews/js/search.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<h2>{{ count }} {% ifequal count 1%}result{% else %}results{% endifequal %} for <u>{{ query }}</u></h2>
+
+<div class="row">
+    <div class="col-sm-6 col-md-6">
+        <form method="GET" action="/search">
+            <input id="search-bar" class="form-control input-lg" type="text" name="q" placeholder="Search for Professors or Courses">
+        </form>
+    </div>  
+</div>
+
+{% if query %}
+    {% if courses %}
+        <h3>Courses</h3>
+        {% for course in courses %}
+            <p>
+                <a href="{{ course.object.get_absolute_url }}">{{ course.object.title }}</a>
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    {% if professors %}
+        <h3>Professors</h3>
+        {% for professor in professors %}
+            <p>
+                <a href="{{ professor.object.get_absolute_url }}">{{ professor.object }}</a>
+            </p>
+        {% endfor %}
+    {% endif %}
+{% endif %}
+
+{% endblock %}
