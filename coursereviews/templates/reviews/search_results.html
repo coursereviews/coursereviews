@@ -8,7 +8,11 @@
 {% endblock %}
 
 {% block content %}
+{% if query %}
 <h2>{{ count }} {% ifequal count 1%}result{% else %}results{% endifequal %} for <u>{{ query }}</u></h2>
+{% else %}
+<h2>Ask and you shall receive</h2>
+{% endif %}
 
 <div class="row">
     <div class="col-sm-6 col-md-6">
