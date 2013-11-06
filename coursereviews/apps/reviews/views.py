@@ -3,7 +3,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_GET
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from reviews.models import Review, Professor, Course
+from reviews.models import Review, Professor, Course, ProfCourse
 from reviews.forms import ReviewForm
 from reviews.decorators import quota_required
 from haystack.query import SearchQuerySet
@@ -18,9 +18,10 @@ def quota(request):
 
 @quota_required
 def browse(request):
+    recent_reviews = Review.objects.select_related().order_by('-date')[:8]
     profs = Professor.objects.all()[:5]
     courses = Course.objects.all()[:5]
-    return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
+    return TemplateResponse(request, 'reviews/browse.html', { 'recent_reviews': recent_reviews, 'profs': profs, 'courses': courses })
 
 @quota_required
 def browseProfs(request):
@@ -32,18 +33,24 @@ def browseCourses(request):
 
 def course_detail(request, course_slug):
     course = get_object_or_404(Course, slug=course_slug)
-    prof_courses = course.prof_courses.all()
+    prof_courses = course.prof_courses.all().select_related()
     # print prof_courses
-    reviews_queryset = reduce(__or__, map(lambda pc: pc.reviews.all(), prof_courses))
-    print reviews_queryset
-    reviews = serializers.serialize('json', reviews_queryset, use_natural_keys=True)
-    print reviews
-    return TemplateResponse(request, 'reviews/course_detail.html', {'course': course, 'reviews': reviews })
+    # reviews_queryset = reduce(__or__, map(lambda pc: pc.reviews.all(), prof_courses))
+    # print reviews_queryset
+    # reviews = serializers.serialize('json', reviews_queryset, use_natural_keys=True)
+    # print reviews
+    return TemplateResponse(request, 'reviews/course_detail.html', {'course': course, 'prof_courses': prof_courses})
     # return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
 
+def prof_course_detail(request, course_slug, prof_slug):
+    prof_course = get_object_or_404(ProfCourse.objects.select_related(), course__slug__exact=course_slug, prof__slug__exact=prof_slug)
+    reviews = prof_course.reviews.all()
+    return TemplateResponse(request, 'reviews/prof_course_detail.html', {'prof_course': prof_course, 'reviews': reviews})
+
 def prof_detail(request, prof_slug):
-  professor = Professor.objects.get(slug=prof_slug)
-  return TemplateResponse(request, 'reviews/prof_detail.html', {'professor': professor})    
+    professor = Professor.objects.get(slug=prof_slug)
+    prof_courses = professor.prof_courses.all().select_related()
+    return TemplateResponse(request, 'reviews/prof_detail.html', {'professor': professor, 'prof_courses': prof_courses})    
 
 @login_required
 def create(request):

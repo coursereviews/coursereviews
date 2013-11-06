@@ -77,13 +77,16 @@ class ProfCourseManager(models.Manager):
 class ProfCourse(models.Model):
     objects = ProfCourseManager()
     course = models.ForeignKey(Course, related_name='prof_courses')
-    prof = models.ForeignKey(Professor, related_name='courses')
+    prof = models.ForeignKey(Professor, related_name='prof_courses')
 
     class Meta:
         unique_together = (('course', 'prof'),)
 
     def natural_key(self):
         return (self.course.natural_key(), self.prof.natural_key())
+
+    def get_absolute_url(self):
+        return reverse('prof_course_detail', kwargs={ 'course_slug': self.course.slug, 'prof_slug': self.prof.slug })
 
     def __unicode__(self):
         return self.course.__unicode__() + ' ' + self.prof.__unicode__()
@@ -98,7 +101,7 @@ class Review(models.Model):
 
     prof_course = models.ForeignKey(ProfCourse, related_name='reviews')
     user = models.ForeignKey(User, related_name='reviews')
-
+    date = models.DateField(auto_now_add=True)
     # Value of course and concepts to overall education
     NOT_MUCH = 'N'
     AVERAGE = 'A'

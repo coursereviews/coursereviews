@@ -12,6 +12,7 @@ urlpatterns = patterns('reviews.views',
 
     url(r'^course/(?P<course_slug>[-\w\d]+)$', 'course_detail', name='course_detail'),
     url(r'^professor/(?P<prof_slug>[-\w\d]+)$', 'prof_detail', name='prof_detail'),
+    url(r'^course/(?P<course_slug>[-\w\d]+)/(?P<prof_slug>[-\w\d]+)$', 'prof_course_detail', name='prof_course_detail'),    
 
     url(r'^search$', 'search', name="search"),
 )

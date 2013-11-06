@@ -19,22 +19,38 @@
   {# {% if profs or courses %} #}
   {# <h3>Browse</h3> #}
   {# {% endif %} #}
-  {% if profs %}
-  <h4>Professors</h4>
-  <ul>
-    {% for prof in profs %}
-    <li><a href="{{ prof.get_absolute_url }}">{{ prof }}</a></li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-  {% if courses %}
-  <h4>Courses</h4>
-  <ul>
-    {% for course in courses %}
-    <li><a href="{{ course.get_absolute_url }}"><strong>{{ course.code }}</strong> &nbsp; {{ course.title }}</a></li>
-    {% endfor %}
-  </ul>
-  {% endif %}
+  <div class="row">
+    {% if courses %}
+    <div class="col-md-4">
+      <h4>Courses</h4>
+      <ul>
+        {% for course in courses %}
+        <li><a href="{{ course.get_absolute_url }}"><strong>{{ course.code }}</strong> &nbsp; {{ course.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    {% if profs %}
+    <div class="col-md-3">
+      <h4>Professors</h4>
+      <ul>
+        {% for prof in profs %}
+        <li><a href="{{ prof.get_absolute_url }}">{{ prof }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    {% if recent_reviews %}
+    <div class="col-md-3">
+      <h4>Recently Reviewed</h4>
+      <ul>
+      {% for review in recent_reviews %}
+        <li><a href="{{ review.get_absolute_url }}">{{ review.prof_course.prof }} <strong>{{ review.prof_course.course.code }}</strong></a></li>
+      {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
   <a class="btn btn-primary" href="{% url 'new_review' %}">Write a review</a>
 
 {% endblock %}
