@@ -14,11 +14,9 @@
       <form method="GET" action="/search">
         <input id="search-bar" class="form-control input-lg" type="text" name="q" placeholder="Search for Professors or Courses">
       </form>
+      <a class="btn btn-primary btn-new-review" href="{% url 'new_review' %}">Write a review</a>
     </div>
   </div>
-  {# {% if profs or courses %} #}
-  {# <h3>Browse</h3> #}
-  {# {% endif %} #}
   <div class="row">
     {% if courses %}
     <div class="col-md-4">
@@ -45,12 +43,11 @@
       <h4>Recently Reviewed</h4>
       <ul>
       {% for review in recent_reviews %}
-        <li><a href="{{ review.get_absolute_url }}">{{ review.prof_course.prof }} <strong>{{ review.prof_course.course.code }}</strong></a></li>
+        <li><a href="{{ review.get_absolute_url }}"><strong>{{ review.prof_course.course.code }}</strong> {{ review.prof_course.prof }}</li></a>
       {% endfor %}
       </ul>
     </div>
     {% endif %}
   </div>
-  <a class="btn btn-primary" href="{% url 'new_review' %}">Write a review</a>
 
 {% endblock %}
