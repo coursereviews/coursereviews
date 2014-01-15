@@ -27,8 +27,9 @@
 {% block js %}
   {{ block.super }}
   <script type="text/javascript">
-    var tabLinkId = "{{ tab|escapejs }}";
+    var tabLinkId = "{{ tab|escapejs }}" || "#login";
     $(tabLinkId).tab('show');
+    $("input[name='email']").focus();
     var buttonLinkId = tabLinkId.split('-partial')[0];
     if (buttonLinkId) {
       $(tabLinkId).addClass('active');
