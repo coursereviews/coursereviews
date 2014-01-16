@@ -6,11 +6,10 @@ class ReviewForm(forms.ModelForm):
     model = Review
     exclude = ('user')
     widgets = {
-        'value': forms.RadioSelect(),
-        'find': forms.RadioSelect(),
-        'atmosphere': forms.RadioSelect(),
-        'deserving': forms.RadioSelect(),
-        'help': forms.RadioSelect(),
+        'components': forms.SelectMultiple(),
+        'again': forms.RadioSelect(),
         'another': forms.RadioSelect(),
-        'recommend': forms.RadioSelect(),
+        'grasp': forms.RadioSelect(),
+        'value': forms.SelectMultiple(),
+        'why_take': forms.SelectMultiple()
     }

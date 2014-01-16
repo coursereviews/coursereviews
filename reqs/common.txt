@@ -23,3 +23,5 @@ slimit
 djangorestframework
 markdown
 django-filter
+
+django-multiselectfield

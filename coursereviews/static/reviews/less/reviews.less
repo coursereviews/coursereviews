@@ -14,16 +14,18 @@
 form.edit-review {
   padding-bottom: 20px;
   label { font-weight: 500 !important; }
+
+  // 25px at the bottom of each question
   .row {
     margin-bottom: 25px;
-    select, input, textarea {
-      margin-left: 10px;
-    }
+  }
+
+  // Style hours display and slider
+  .hours-container {
     .hours-display {
       width: 40px;
       text-align: center;
       font-weight: bold;
-      margin-left: 10px;
       margin-right: 10px;
       display: inline-block;
       margin-bottom: auto !important;
@@ -31,26 +33,59 @@ form.edit-review {
     .slider {
       width: calc(~"100% - 64px") !important;
     }
-    .btn-group {
-      margin-left: 10px;
-      label {
-        width: percentage(1/3);
-      }
-    }
-    .select2-container {
-      margin-left: 10px;
-      width: 100%;
-      .select2-choice {
-        height: 34px;
-        line-height: 34px;
-      }
+  }
+
+  // Set margin left on all top level answers
+  // and sublevel questions
+  .hours-display,
+  .select2-container,
+  .btn-group:not(.subq),
+  .prof-questions-container > .row > label,
+  textarea {
+    margin-left: 10px;
+  }
+
+  // Button groups of top level answers
+  .btn-group:not(.subq) {
+    label {
+      width: percentage(1/3);
     }
     @media (max-width: 480px) {
-      .btn-group { width: 100%; }
+      width: 100%;
     }
   }
+
+  // Button groups of sublevel answers
+  .btn-group.subq {
+    @media (max-width: 480px) {
+      margin-left: 10px;
+      width: 100%;
+        label {
+        width: percentage(1/5);
+      }
+    }
+  }
+
+  // Set sublevel questions to 100% at <= 480px
+  .prof-questions-container > .row > label {
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+  }
+
+
+
+  // Dropdown
+  .select2-container {
+    width: 100%;
+    .select2-choice {
+      height: 34px;
+      line-height: 34px;
+    }
+  }
+    
   .error {
-    h4 { color: @error-color !important; }
+    h4, h5 { color: @error-color !important; }
     .btn-group {
       label:not(:first-child):not(:last-child) {
         border-top: 1px solid @error-color;
@@ -67,7 +102,7 @@ form.edit-review {
         border-right: 1px solid @error-color;
       }
     }
-    .select2-choice {
+    .select2-choice, .select2-choices {
       border: 1px solid @error-color;
     }
   }

@@ -2,6 +2,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from multiselectfield import MultiSelectField
 
 # Used for both ListingCategory and ListingType and Buyer
 class GenericManager(models.Manager):
@@ -102,48 +103,95 @@ class Review(models.Model):
     prof_course = models.ForeignKey(ProfCourse, related_name='reviews')
     user = models.ForeignKey(User, related_name='reviews')
     date = models.DateField(auto_now_add=True)
-    # Value of course and concepts to overall education
-    NOT_MUCH = 'N'
-    AVERAGE = 'A'
-    VALUABLE = 'V'
-    VALUE_CHOICES = ((NOT_MUCH, 'Not much'), (AVERAGE, 'Average'), (VALUABLE, 'Valuable'))
-    value = models.CharField(max_length=1, choices=VALUE_CHOICES, default=AVERAGE) #label="Value of course and concepts to overall education",
 
-    # Did you find the material presented
-    BORING = 'B'
-    FASCINATING = 'F'
-    FIND_CHOICES = ((BORING, 'Boring'), (AVERAGE, 'Average'), (FASCINATING, 'Fascinating'))
-    find = models.CharField(max_length=1, choices=FIND_CHOICES, default=AVERAGE) # label="Did you find the material presented..",
-
-    # Overall class atmosphere
-    FRIENDLY = 'F'
-    COMPETITIVE = 'C'
-    ATM_CHOICES = ((FRIENDLY, 'Friendly'), (AVERAGE, 'Average'), (COMPETITIVE, 'Competitive'))
-    atmosphere = models.CharField(max_length=1, choices=ATM_CHOICES, default=AVERAGE) # label="Overall class atmosphere",
-
-    # Hours per week spent preparing for class
-    hours = models.IntegerField(max_length=2) #, label="Hours per week spent preparing for class")
-
-    # Were your grades deserving of your efforts?
+    ## Reusable yes/no choices
     YES = 'Y'
     NO = 'N'
+    YES_NO_CHOICES = ((YES, 'Yes'), (NO, 'No'))
+
+    ## What were the primary components of this course?
+    ## Select all that apply
+    LECTURE = 'A'
+    DISCUSSION = 'B'
+    PAPER = 'C'
+    READING = 'D'
+    LAB_FIELD = 'E'
+    PRESENTATION = 'F'
+    GROUP = 'G'
+    SCREENING = 'H'
+    FINAL = 'I'
+    TEST_MID = 'J'
+    COMPONENTS_CHOICES = ((LECTURE, 'Lectures'),
+                        (DISCUSSION, 'Discussions'),
+                        (PAPER, 'Papers'),
+                        (READING, 'Readings'),
+                        (LAB_FIELD, 'Lab/Field work'),
+                        (PRESENTATION, 'Presentations'),
+                        (GROUP, 'Group work'),
+                        (SCREENING, 'Screenings'),
+                        (FINAL, 'Final'),
+                        (TEST_MID, 'Tests/Midterms'))
+    components = MultiSelectField(choices=COMPONENTS_CHOICES)
+
+    ## Would you take this course again?
+    again = models.CharField(max_length=1, choices=YES_NO_CHOICES)
+
+    ## How many hours per week did you spend preparing for this course?
+    hours = models.IntegerField(max_length=2)
+
+    ## Would you take another course with this professor?
+    another = models.CharField(max_length=1, choices=YES_NO_CHOICES)
+
+    ## How was your grade in relation to your grasp of the material?
     LOWER = 'L'
     HIGHER = 'H'
     ACCURATE = 'A'
     DESERVING_CHOICES = ((LOWER, 'Lower'), (ACCURATE, 'Accurate'), (HIGHER, 'Higher'))
-    deserving = models.CharField(max_length=1, choices=DESERVING_CHOICES)
+    grasp = models.CharField(max_length=1, choices=DESERVING_CHOICES)
 
-    # Professor or assistants were available to help, if needed
-    YES_NO_CHOICES = ((YES, 'Yes'), (NO, 'No'))
-    help = models.CharField(max_length=1, choices=YES_NO_CHOICES, default=YES) # , label="Professor or assistants were available to help, if needed",
+    ## Evaluate the professor in the following areas?
+    ## Each field is 1 to 5
+    prof_lecturing = models.IntegerField(max_length=1)
+    prof_leading = models.IntegerField(max_length=1)
+    prof_help = models.IntegerField(max_length=1)
+    prof_feedback = models.IntegerField(max_length=1)
 
-    # Would you take another class with this professor?
-    another = models.CharField(max_length=1, choices=YES_NO_CHOICES, default=YES) # label="Would you take another class with this professor?",
+    ## Why was this course valuable?
+    ## Select all that apply
+    PROFESSOR = 'P'
+    WORK = 'W'
+    STUDENTS = 'S'
+    VALUABLE_CHOICES = ((PROFESSOR, 'The professor'),
+                        (STUDENTS, 'The students'),
+                        (WORK, 'Work outside class'))
+    value = MultiSelectField(choices=VALUABLE_CHOICES)
 
-    # Would you recommend this class to a friend
-    recommend = models.CharField(max_length=1, choices=YES_NO_CHOICES, default=YES) # label="Would you recommend this class to a friend",
+    ## Why did you take this course?
+    ## Select all that apply
+    MAJOR = 'A'
+    MINOR = 'I'
+    DIST = 'D'
+    TRY = 'T'
+    REC = 'R'
+    WHY_TAKE_CHOICES = ((MAJOR, 'My major'),
+                        (MINOR, 'My minor'),
+                        (DIST, 'Distribution requirement'),
+                        (TRY, 'To try something new'),
+                        (REC, 'Recommendation from a friend'))
+    why_take = MultiSelectField(choices=WHY_TAKE_CHOICES)
 
-    comment = models.TextField() # label="Additional comments"
+    ## What grade did you receive in this course?
+    # GRADE_CHOICES = (('A', 'A to A-'),
+    #                  ('B', 'B+ to B-'),
+    #                  ('C', 'C+ to C-'),
+    #                  ('D', 'D+ to D-'),
+    #                  ('F', 'F'),
+    #                  ('P', 'Pass'),
+    #                  ('N', 'Prefer not to say'))
+    # grade = models.CharField(max_length=1, choices=GRADE_CHOICES)
+
+    ## Additional comments:
+    comment = models.TextField()
 
     def get_absolute_url(self):
         return reverse('view_review', args=[self.id])

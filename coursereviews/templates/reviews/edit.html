@@ -3,14 +3,14 @@
 {% block content %}
   <h2>Write a review</h2>
   {% if form.errors %}
-  <div style="color: #b94a48">Oops, looks like you missed a field or two</div>
+  <div style="color: #b94a48">Oops, looks like you missed a field or two.</div>
   {% endif %}
   <a class="btn btn-link" href="/">Back to search</a>
   <form class="edit-review" role="form" method="POST">
     <div class="prof_course-container{% if form.prof_course.errors %} error{% endif %}">
       <h4><label for="id_prof_course">Pick a course</label></h4>
       <div class="row">
-        <div class="col-lg-4 col-md-4">
+        <div class="col-lg-4 col-md-4 col-sm-6">
           <input type="hidden" name="prof_course" id="id_prof_course" data-placeholder="Dropdown to search" {% if form.prof_course.value %}value="{{ form.prof_course.value }}"{% endif %}>
           <script type="text/javascript" id="prof_course_choices">
           [
@@ -22,66 +22,23 @@
         </div>
       </div>
     </div>
-    <div class="value-container{% if form.value.errors %} error{% endif %}">
-      <h4><label for="id_value">How valuable was the course and its concepts to overall education?</label></h4>
-      <div class="row">
-        <div class="btn-group col-lg-4 col-md-4" data-toggle="buttons">
-          {% for value, text in form.value.field.choices %}
-            {% if text != "---------" %}
-            <label class="btn btn-default{% if form.value.value == value %} active{% endif %}">
-              <input type="radio" name="value" value="{{ value }}">{{ text }}
-            </label>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-    <div class="find-container{% if form.find.errors %} error{% endif %}">
-      <h4><label for="id_find">How did you find the material presented?</label></h4>
-      <div class="row">
-        <div class="btn-group col-lg-4 col-md-4" data-toggle="buttons">
-          {% for value, text in form.find.field.choices %}
-            {% if text != "---------" %}
-            <label class="btn btn-default{% if form.find.value == value %} active{% endif %}">
-              <input type="radio" name="find" value="{{ value }}">{{ text }}
-            </label>
-            {% endif %}
-          {% endfor %}
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="atmosphere-container{% if form.atmosphere.errors %} error{% endif %}">
-      <h4><label for="id_atmosphere">How was the overall class atmposphere?</label></h4>
-      <div class="row">
-        <div class="btn-group col-lg-4 col-md-4" data-toggle="buttons">
-          {% for value, text in form.atmosphere.field.choices %}
-            {% if text != "---------" %}
-            <label class="btn btn-default{% if form.atmosphere.value == value %} active{% endif %}">
-              <input type="radio" name="atmosphere" value="{{ value }}">{{ text }}
-            </label>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
-    </div>
     <div class="hours-container{% if form.hours.errors %} error{% endif %}">
-      <h4><label for="id_hours">How many hours per week did you spend preparing for the class?</label></h4>
+      <h4><label for="id_hours">How many hours per week did you spend preparing for this course?</label></h4>
       <div class="row">
-        <div class="col-lg-4 col-md-4">
+        <div class="col-lg-4 col-md-4 col-sm-6">
           <div class="hours-display well well-sm">{{ form.hours.value }}</div>
           <input type="text" class="form-control hide" name="hours" value="{{ form.hours.value }}" id="id_hours" data-slider-value="{{ form.hours.value }}">
         </div>
       </div>
     </div>
-    <div class="deserving-container{% if form.deserving.errors %} has-error{% endif %}">
-      <h4><label for="id_deserving">How were your grades in relation to your effort?</label></h4>
+    <div class="again-container{% if form.again.errors %} error{% endif %}">
+      <h4><label for="id_again">Would you take this course again?</label></h4>
       <div class="row">
-        <div class="btn-group col-lg-4 col-md-4" data-toggle="buttons">
-          {% for value, text in form.deserving.field.choices %}
+        <div class="btn-group col-lg-4 col-md-4 col-sm-6 col-xs-6" data-toggle="buttons">
+          {% for value, text in form.again.field.choices %}
             {% if text != "---------" %}
-            <label class="btn btn-default{% if form.deserving.value == value %} active{% endif %}">
-              <input type="radio" name="deserving" value="{{ value }}">{{ text }}
+            <label class="btn btn-default{% if form.again.value == value %} active{% endif %}">
+              <input type="radio" name="again" value="{{ value }}">{{ text }}
             </label>
             {% endif %}
           {% endfor %}
@@ -89,24 +46,10 @@
         </div>
       </div>
     </div>
-    <div class="help-container{% if form.help.errors %} error{% endif %}">
-      <h4><label for="id_help">Were professors or assistants available to help?</label></h4>
-      <div class="row">
-        <div class="btn-group col-lg-4 col-md-4" data-toggle="buttons">
-          {% for value, text in form.help.field.choices %}
-            {% if text != "---------" %}
-            <label class="btn btn-default{% if form.help.value == value %} active{% endif %}">
-              <input type="radio" name="help" value="{{ value }}">{{ text }}
-            </label>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
-    </div>
     <div class="another-container{% if form.another.errors %} error{% endif %}">
-      <h4><label for="id_another">Would you take another class with this professor?</label></h4>
+      <h4><label for="id_another">Would you take another course with this professor?</label></h4>
       <div class="row">
-        <div class="btn-group col-lg-4 col-md-4" data-toggle="buttons">
+        <div class="btn-group col-lg-4 col-md-4 col-sm-6 col-xs-6" data-toggle="buttons">
           {% for value, text in form.another.field.choices %}
             {% if text != "---------" %}
             <label class="btn btn-default{% if form.another.value == value %} active{% endif %}">
@@ -117,23 +60,102 @@
         </div>
       </div>
     </div>
-    <div class="recommend-container{% if form.recommend.errors %} error{% endif %}">
-      <h4><label for="id_recommend">Would you recommend this class to a friend?</label></h4>
+    <div class="grasp-container{% if form.grasp.errors %} error{% endif %}">
+      <h4><label for="id_grasp">How was your grade in relation to your grasp of the material?</label></h4>
       <div class="row">
-        <div class="btn-group col-lg-4 col-md-4" data-toggle="buttons">
-          {% for value, text in form.recommend.field.choices %}
+        <div class="btn-group col-lg-4 col-md-4 col-sm-6 col-xs-6" data-toggle="buttons">
+          {% for value, text in form.grasp.field.choices %}
             {% if text != "---------" %}
-            <label class="btn btn-default{% if form.recommend.value == value %} active{% endif %}">
-              <input type="radio" name="recommend" value="{{ value }}">{{ text }}
+            <label class="col-sm-4 btn btn-default{% if form.grasp.value == value %} active{% endif %}">
+              <input type="radio" name="grasp" value="{{ value }}">{{ text }}
             </label>
             {% endif %}
           {% endfor %}
         </div>
       </div>
     </div>
+    <div class="prof-questions-container">
+      <h4><label for="id_prof_lecturing">Evaluate the professor in the following areas:</label></h4>
+      <div class="row {% if form.prof_lecturing.errors %} error{% endif %}">
+        <label for="id_prof_lecturing" class="col-lg-2 col-md-2 col-sm-3 col-xs-3 prof_lecturing-container"><h5>Lecturing</h5></label>
+        <div class="subq btn-group col-lg-8 col-md-8 col-sm-8" data-toggle="buttons">
+          {% for i in "12345" %}
+          <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_lecturing.value == i %} active{% endif %}">
+            <input type="radio" name="prof_lecturing" value="{{ i }}">{{ i }}
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="row {% if form.prof_leading.errors %} error{% endif %}">
+        <label for="id_prof_leading" class="col-lg-2 col-md-2 col-sm-3 col-xs-3 prof_leading-container"><h5>Leading discussion</h5></label>
+        <div class="subq btn-group col-lg-8 col-md-8 col-sm-8" data-toggle="buttons">
+          {% for i in "12345" %}
+          <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_leading.value == i %} active{% endif %}">
+            <input type="radio" name="prof_leading" value="{{ i }}">{{ i }}
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="row {% if form.prof_help.errors %} error{% endif %}">
+        <label for="id_prof_help" class="col-lg-2 col-md-2 col-sm-3 col-xs-3 prof_help-container"><h5>Providing help</h5></label>
+        <div class="subq btn-group col-lg-8 col-md-8 col-sm-8" data-toggle="buttons">
+          {% for i in "12345" %}
+          <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_help.value == i %} active{% endif %}">
+            <input type="radio" name="prof_help" value="{{ i }}">{{ i }}
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="row {% if form.prof_feedback.errors %} error{% endif %}">
+        <label for="id_prof_feedback" class="col-lg-2 col-md-2 col-sm-3 col-xs-3 prof_feedback-container"><h5>Providing feedback</h5></label>
+        <div class="subq btn-group col-lg-8 col-md-8 col-sm-8" data-toggle="buttons">
+          {% for i in "12345" %}
+          <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_feedback.value == i %} active{% endif %}">
+            <input type="radio" name="prof_feedback" value="{{ i }}">{{ i }}
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="components-container{% if form.components.errors %} error{% endif %}">
+      <h4><label for="id_components">What were the primary components of this course?</label></h4>
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4" data-toggle="buttons">
+          <select name="components" multiple id="id_components">
+          {% for value, text in form.components.field.choices %}
+            <option {% if value in form.components.value %}selected{% endif %} value="{{ value }}">{{ text }}</option>
+          {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="value-container{% if form.value.errors %} error{% endif %}">
+      <h4><label for="id_value">Why was this course valuable?</label></h4>
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4" data-toggle="buttons">
+          <select name="value" multiple id="id_value">
+          {% for value, text in form.value.field.choices %}
+            <option {% if value in form.value.value %}selected{% endif %} value="{{ value }}">{{ text }}</option>
+          {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="why_take-container{% if form.why_take.errors %} error{% endif %}">
+      <h4><label for="id_why_take">Why did you take this course?</label></h4>
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4" data-toggle="buttons">
+          <select name="why_take" multiple id="id_why_take">
+          {% for value, text in form.why_take.field.choices %}
+            <option {% if value in form.why_take.value %}selected{% endif %} value="{{ value }}">{{ text }}</option>
+          {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
     <h4><label for="id_comment">Additional comments:</label></h4>
     <div class="row">
-      <div class="col-lg-6 col-md-6">
+      <div class="col-lg-6 col-md-6 col-sm-8">
         <textarea id="id_comment" name="comment" class="form-control" rows="7">{% if form.comment.value %}{{ form.comment.value }}{% endif %}</textarea>
       </div>
     </div>
