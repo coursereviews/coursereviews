@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from reviews.models import Review, Professor, Course, ProfCourse
 from reviews.forms import ReviewForm
 from reviews.decorators import quota_required
-from reviews.utils import aggregate_review, Review_Aggregator
+from reviews.utils import Review_Aggregator
 from haystack.query import SearchQuerySet
 from haystack.inputs import Clean
 
@@ -36,8 +36,8 @@ def course_detail(request, course_slug):
     prof_courses = course.prof_courses.all().select_related()
     prof_courses_ids = map(lambda pc: pc.id, prof_courses)
     reviews = reduce(__or__, map(lambda pc: pc.reviews.all().values(), prof_courses))
-    print reviews
-    Review_Aggregator(reviews)
+    aggregator = Review_Aggregator(reviews)
+    print aggregator.aggregate()
     return TemplateResponse(request, 
                             'reviews/review_detail.html', 
                             { 'course': course, 
