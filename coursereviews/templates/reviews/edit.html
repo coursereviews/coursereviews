@@ -80,7 +80,7 @@
         <label for="id_prof_lecturing" class="col-lg-2 col-md-2 col-sm-3 col-xs-3 prof_lecturing-container"><h5>Lecturing</h5></label>
         <div class="subq btn-group col-lg-8 col-md-8 col-sm-8" data-toggle="buttons">
           {% for i in "12345" %}
-          <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_lecturing.value == i %} active{% endif %}">
+          <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_lecturing.value == forloop.counter %} active{% endif %}">
             <input type="radio" name="prof_lecturing" value="{{ i }}">{{ i }}
           </label>
           {% endfor %}

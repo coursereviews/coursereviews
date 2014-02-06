@@ -6,10 +6,10 @@ from django.http import HttpResponse
 from reviews.models import Review, Professor, Course, ProfCourse
 from reviews.forms import ReviewForm
 from reviews.decorators import quota_required
+from reviews.utils import aggregate_review, Review_Aggregator
 from haystack.query import SearchQuerySet
 from haystack.inputs import Clean
 
-from django.core import serializers
 from operator import __or__
 
 @login_required
@@ -34,12 +34,15 @@ def browseCourses(request):
 def course_detail(request, course_slug):
     course = get_object_or_404(Course, slug=course_slug)
     prof_courses = course.prof_courses.all().select_related()
-    # print prof_courses
-    # reviews_queryset = reduce(__or__, map(lambda pc: pc.reviews.all(), prof_courses))
-    # print reviews_queryset
-    # reviews = serializers.serialize('json', reviews_queryset, use_natural_keys=True)
-    # print reviews
-    return TemplateResponse(request, 'reviews/course_detail.html', {'course': course, 'prof_courses': prof_courses})
+    prof_courses_ids = map(lambda pc: pc.id, prof_courses)
+    reviews = reduce(__or__, map(lambda pc: pc.reviews.all().values(), prof_courses))
+    print reviews
+    Review_Aggregator(reviews)
+    return TemplateResponse(request, 
+                            'reviews/review_detail.html', 
+                            { 'course': course, 
+                              'prof_courses': prof_courses,
+                              'type': 'course' })
     # return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
 
 def prof_course_detail(request, course_slug, prof_slug):
@@ -60,7 +63,6 @@ def create(request):
   elif request.method == "POST":
     review = Review(user=request.user)
     form = ReviewForm(request.POST, instance=review)
-    print request.POST
     if form.is_valid():
       form.save()
       profile = request.user.get_profile()
@@ -68,7 +70,6 @@ def create(request):
       profile.save()
       return redirect('index')
     else:
-      print form.errors
       return TemplateResponse(request, 'reviews/edit.html', {'form': form})
 
 def detail(request, review_id, edit=False):
@@ -81,7 +82,6 @@ def detail(request, review_id, edit=False):
       return TemplateResponse(request, 'reviews/edit.html', {'form': form})
     elif request.method == "POST":
       form = ReviewForm(request.POST, instance=review)
-      print request.POST
       if form.is_valid():
         form.save()
         return redirect(review)
