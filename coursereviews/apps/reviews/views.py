@@ -11,6 +11,7 @@ from haystack.query import SearchQuerySet
 from haystack.inputs import Clean
 
 from operator import __or__
+import json
 
 @login_required
 def quota(request):
@@ -51,13 +52,16 @@ def course_detail(request, course_slug):
 
     # Aggregate the values
     aggregator = Review_Aggregator(reviews)
-    stats = aggregator.aggregate()
+    stats = aggregator.aggregate(as_dict=True)
+
+    print stats
 
     return TemplateResponse(request, 
                             'reviews/review_detail.html', 
                             { 'course': course, 
                               'prof_courses': prof_courses,
-                              'data': stats,
+                              'comments': stats['comments'],
+                              'data': json.dumps(stats),
                               'type': 'course' })
 
 def prof_detail(request, prof_slug):
@@ -74,15 +78,18 @@ def prof_detail(request, prof_slug):
                                               'prof_leading',
                                               'prof_help',
                                               'prof_feedback',
-                                              'comment'), prof_courses))
+                                              'comment',
+                                              'prof_course'), prof_courses))
 
-    aggregator = Review_Aggregator(reviews)
-    stats = aggregator.aggregate()
+    aggregator = Review_Aggregator(reviews, attach_comment_slug=True)
+    stats = aggregator.aggregate(as_dict=True)
+
     return TemplateResponse(request, 
                             'reviews/review_detail.html', 
                             { 'prof': professor, 
                               'prof_courses': prof_courses,
-                              'data': stats,
+                              'comments': stats['comments'],
+                              'data': json.dumps(stats),
                               'type': 'prof' })
 
 def prof_course_detail(request, course_slug, prof_slug):
@@ -94,12 +101,13 @@ def prof_course_detail(request, course_slug, prof_slug):
     reviews = prof_course.reviews.all().values()
 
     aggregator = Review_Aggregator(reviews)
-    stats = aggregator.aggregate()
+    stats = aggregator.aggregate(as_dict=True)
 
     return TemplateResponse(request,
                             'reviews/review_detail.html',
                             { 'prof_course': prof_course,
-                              'data': stats,
+                              'comments': stats['comments'],
+                              'data': json.dumps(stats),
                               'type': 'prof_course'})
 
 @login_required

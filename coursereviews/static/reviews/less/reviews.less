@@ -160,3 +160,18 @@ h2.review-title {
     color: #999;
   }
 }
+
+.comments {
+  li {
+    padding-bottom: 20px;
+    &:not(:first-child) {
+      padding-top: 20px;
+    }
+    &:not(:last-child) {
+      border-bottom: 1px solid #999;
+    }
+    a, span.dash {
+      color: #999;
+    }
+  }
+}

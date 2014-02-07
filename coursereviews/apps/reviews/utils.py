@@ -1,5 +1,5 @@
 from django.utils.dateformat import DateFormat
-from reviews.models import Review
+from reviews.models import Review, ProfCourse
 
 import datetime
 import json
@@ -7,8 +7,11 @@ import json
 class Review_Aggregator:
     """Aggregate all the reviews for a professor 
        or course and prepare for d3.js charts."""
-    def __init__(self, reviews):
+    def __init__(self, reviews, attach_comment_slug=False):
         self.reviews = reviews
+
+        # If True, attach the slug of the course related to the comment
+        self.attach_comment_slug = attach_comment_slug
 
         # Initialize with keys that will be present regardless
         # of course or professor, avoids KeyErrors in the aggregators.
@@ -16,7 +19,7 @@ class Review_Aggregator:
         # date is initialized as wayyyyy back (Unix Epoch)
         self.aggregate_values = {}
 
-    def aggregate(self):
+    def aggregate(self, as_dict=False):
         map(self.aggregate_review, self.reviews)
 
         # Format the date as "February 2, 2014"
@@ -24,7 +27,10 @@ class Review_Aggregator:
             df = DateFormat(self.aggregate_values['date'])
             self.aggregate_values['date'] = df.format('F j, Y')
 
-        return json.dumps(self.aggregate_values)
+        if as_dict:
+            return self.aggregate_values
+        else:
+            return json.dumps(self.aggregate_values)
 
     def aggregate_review(self, review):
 
@@ -41,7 +47,7 @@ class Review_Aggregator:
             elif field == 'date':
                 self.most_recent_date(review['date'])
             elif field == 'comment':
-                self.comment_aggregator(review['comment'])
+                self.comment_aggregator(review, field)
             else:
                 self.integer_aggregator(review, field)
 
@@ -108,13 +114,21 @@ class Review_Aggregator:
         if date > self.aggregate_values['date']:
             self.aggregate_values['date'] = date
 
-    def comment_aggregator(self, comment):
+    def comment_aggregator(self, review, field):
         """Adds each comment to the `aggregate_values`."""
 
         if 'comments' not in self.aggregate_values:
             self.aggregate_values['comments'] = []
 
-        self.aggregate_values['comments'].append(comment)
+        if self.attach_comment_slug:
+            prof_course = ProfCourse.objects.get(id=review['prof_course'])
+            course_code = prof_course.course.code
+            course_url = prof_course.course.get_absolute_url()
+
+            self.aggregate_values['comments'].append({'comment': review[field], 'course_code': course_code, 'course_url': course_url})
+
+        else:
+            self.aggregate_values['comments'].append(review[field])
 
     def integer_aggregator(self, review, field):
         """Aggregates the integer fields from each review."""

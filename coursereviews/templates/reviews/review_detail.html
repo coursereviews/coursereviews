@@ -59,6 +59,17 @@
       </div>
       <div class="col-md-6">
         <h4>Comments</h4>
+        <ul class="list-unstyled comments">
+        {% if type == 'prof' %}
+          {% for comment in comments %}
+            <li>{{ comment.comment }}<span class="dash">&nbsp;&mdash;&nbsp;</span><a href="{{ comment.course_url }}">{{ comment.course_code }}</a></li>
+          {% endfor %}
+        {% else %}
+          {% for comment in comments %}
+            <li>{{ comment }}</li>
+          {% endfor %}
+        {% endif %}
+        </ul>
       </div>
     </div>
   </div>
