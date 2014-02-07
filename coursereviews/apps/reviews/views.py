@@ -33,27 +33,74 @@ def browseCourses(request):
 
 def course_detail(request, course_slug):
     course = get_object_or_404(Course, slug=course_slug)
+
+    # Get all Prof_Courses objects for a course
     prof_courses = course.prof_courses.all().select_related()
-    prof_courses_ids = map(lambda pc: pc.id, prof_courses)
-    reviews = reduce(__or__, map(lambda pc: pc.reviews.all().values(), prof_courses))
+
+    # Gather all the reviews for a course
+    reviews = reduce(__or__, 
+                     map(lambda pc: pc.reviews \
+                                      .all()   \
+                                      .values('components',
+                                              'again',
+                                              'hours',
+                                              'grasp',
+                                              'value',
+                                              'why_take',
+                                              'comment'), prof_courses))
+
+    # Aggregate the values
     aggregator = Review_Aggregator(reviews)
-    print aggregator.aggregate()
+    stats = aggregator.aggregate()
+
     return TemplateResponse(request, 
                             'reviews/review_detail.html', 
                             { 'course': course, 
                               'prof_courses': prof_courses,
+                              'data': stats,
                               'type': 'course' })
-    # return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
-
-def prof_course_detail(request, course_slug, prof_slug):
-    prof_course = get_object_or_404(ProfCourse.objects.select_related(), course__slug__exact=course_slug, prof__slug__exact=prof_slug)
-    reviews = prof_course.reviews.all()
-    return TemplateResponse(request, 'reviews/prof_course_detail.html', {'prof_course': prof_course, 'reviews': reviews})
 
 def prof_detail(request, prof_slug):
-    professor = Professor.objects.get(slug=prof_slug)
+    professor = get_object_or_404(Professor, slug=prof_slug)
+
+    # Get all Prof_Courses objects for a professor
     prof_courses = professor.prof_courses.all().select_related()
-    return TemplateResponse(request, 'reviews/prof_detail.html', {'professor': professor, 'prof_courses': prof_courses})    
+
+    reviews = reduce(__or__,
+                     map(lambda pc: pc.reviews \
+                                      .all()   \
+                                      .values('another',
+                                              'prof_lecturing',
+                                              'prof_leading',
+                                              'prof_help',
+                                              'prof_feedback',
+                                              'comment'), prof_courses))
+
+    aggregator = Review_Aggregator(reviews)
+    stats = aggregator.aggregate()
+    return TemplateResponse(request, 
+                            'reviews/review_detail.html', 
+                            { 'prof': professor, 
+                              'prof_courses': prof_courses,
+                              'data': stats,
+                              'type': 'prof' })
+
+def prof_course_detail(request, course_slug, prof_slug):
+    prof_course = get_object_or_404(ProfCourse.objects.select_related(), 
+                                    course__slug__exact=course_slug, 
+                                    prof__slug__exact=prof_slug)
+
+    # Get all reviews for the prof_courses
+    reviews = prof_course.reviews.all().values()
+
+    aggregator = Review_Aggregator(reviews)
+    stats = aggregator.aggregate()
+
+    return TemplateResponse(request,
+                            'reviews/review_detail.html',
+                            { 'prof_course': prof_course,
+                              'data': stats,
+                              'type': 'prof_course'})
 
 @login_required
 def create(request):

@@ -9,30 +9,56 @@
 {% endblock %}
 
 {% block content %}
-  <h2>
+  {% if type == 'course' %}
+  <h2 class="review-title">
     {{ course.title }}&nbsp;
     <small>{{course.code}}</small>
   </h2>
+  <h4><a href="{{ course.dept }}">{{ course.dept }}</a></h4>
   <p>{{ course.description }}</p>
-  {% if prof_courses %}
-  <h4>Professors</h4>
-  <ul>
-    {% for prof_course in prof_courses %}
-    <li><a href="{{ prof_course.get_absolute_url }}">{{ prof_course.prof }}</a></li>
-    {% endfor %}
-  </ul>
+  <span class="h4">
+    Taught by
+    <ul style="display: inline-block;" class="list-inline">
+      {% for prof_course in prof_courses %}
+      <li><a href="{{ prof_course.get_absolute_url }}">{{ prof_course.prof }}</a>{% if not forloop.last %},{% endif %}</li>
+      {% endfor %}
+    </ul>
+  </span>
+
+  {% elif type == 'prof' %}
+  <h2 class="review-title">
+    {{ prof }}&nbsp;
+    <small><a href="mailto:{{ prof.email }}">{{ prof.email }}</a></small>
+  </h2>
+  <h4><a href="{{ prof.dept }}">{{ prof.dept }}</a></h4>
+  <span class="h4">
+    Teaches
+    <ul style="display: inline-block;" class="list-inline">
+      {% for prof_course in prof_courses %}
+      <li><a href="{{ prof_course.get_absolute_url }}">{{ prof_course.course.title }}</a>{% if not forloop.last %},{% endif %}</li>
+      {% endfor %}
+    </ul>
+  </span>
+
+  {% else %}
+  <h2 class="review-title">
+    {{ prof_course.course.title }}&nbsp;
+    <small>
+      <a href="{{ prof_course.course.get_absolute_url }}">{{ prof_course.course.code }}</a>&nbsp;&mdash;
+      <a href="{{ prof_course.prof.get_absolute_url }}">{{ prof_course.prof }}</a>
+    </small>
+  </h2>
+  <h4><a href="{{ prof_course.course.dept }}">{{ prof_course.course.dept }}</a></h4>
+  <p>{{ prof_course.course.description }}</p>
   {% endif %}
+
   <div id="review-body">
     <div class="row">
       <div class="col-md-6">
-        {% ifequal type 'course' %}
-          {% include 'reviews/partials/course_review.html' %}
-        {% else %}
-          {% include 'reviews/partials/professor_review.html' %}
-        {% endifequal %}
+        {{ data }}
       </div>
       <div class="col-md-6">
-        {% include 'reviews/partials/comments.html' %}
+        <h4>Comments</h4>
       </div>
     </div>
   </div>
