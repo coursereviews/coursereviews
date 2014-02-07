@@ -14,14 +14,15 @@ class Review_Aggregator:
         # of course or professor, avoids KeyErrors in the aggregators.
         # comments is an array of strings, date is a datetime.date
         # date is initialized as wayyyyy back (Unix Epoch)
-        self.aggregate_values = {'comments': [], 'date': datetime.date(1970, 1, 1)}
+        self.aggregate_values = {}
 
     def aggregate(self):
         map(self.aggregate_review, self.reviews)
 
         # Format the date as "February 2, 2014"
-        df = DateFormat(self.aggregate_values['date'])
-        self.aggregate_values['date'] = df.format('F j, Y')
+        if 'date' in self.aggregate_values:
+            df = DateFormat(self.aggregate_values['date'])
+            self.aggregate_values['date'] = df.format('F j, Y')
 
         return json.dumps(self.aggregate_values)
 
@@ -37,9 +38,9 @@ class Review_Aggregator:
                 self.multi_choice_aggregator(review, field)
             elif field in ('again', 'another', 'grasp'):
                 self.single_choice_aggregator(review, field)
-            elif field is 'date':
+            elif field == 'date':
                 self.most_recent_date(review['date'])
-            elif field is 'comment':
+            elif field == 'comment':
                 self.comment_aggregator(review['comment'])
             else:
                 self.integer_aggregator(review, field)
@@ -55,9 +56,9 @@ class Review_Aggregator:
             self.aggregate_values[field] = {}
 
         # Assign choices based on field name
-        if field is 'components':
+        if field == 'components':
             choices = components_choices
-        elif field is 'value':
+        elif field == 'value':
             choices = value_choices
         else:
             choices = why_take_choices
@@ -101,11 +102,17 @@ class Review_Aggregator:
         """Updates `aggregate_values` with the date 
            of the most recent review."""
 
+        if 'date' not in self.aggregate_values:
+            self.aggregate_values['date'] = datetime.date(1970, 1, 1)
+
         if date > self.aggregate_values['date']:
             self.aggregate_values['date'] = date
 
     def comment_aggregator(self, comment):
         """Adds each comment to the `aggregate_values`."""
+
+        if 'comments' not in self.aggregate_values:
+            self.aggregate_values['comments'] = []
 
         self.aggregate_values['comments'].append(comment)
 
