@@ -58,6 +58,7 @@
         {{ data }}
       </div>
       <div class="col-md-6">
+        {% if comments %}
         <h4>Comments</h4>
         <ul class="list-unstyled comments">
         {% if type == 'prof' %}
@@ -70,6 +71,7 @@
           {% endfor %}
         {% endif %}
         </ul>
+        {% endif %}
       </div>
     </div>
   </div>

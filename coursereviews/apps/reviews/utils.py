@@ -117,18 +117,20 @@ class Review_Aggregator:
     def comment_aggregator(self, review, field):
         """Adds each comment to the `aggregate_values`."""
 
-        if 'comments' not in self.aggregate_values:
-            self.aggregate_values['comments'] = []
+        if review[field]:
 
-        if self.attach_comment_slug:
-            prof_course = ProfCourse.objects.get(id=review['prof_course'])
-            course_code = prof_course.course.code
-            course_url = prof_course.course.get_absolute_url()
+            if 'comments' not in self.aggregate_values:
+                self.aggregate_values['comments'] = []
 
-            self.aggregate_values['comments'].append({'comment': review[field], 'course_code': course_code, 'course_url': course_url})
+            if self.attach_comment_slug:
+                prof_course = ProfCourse.objects.select_related('course').get(id=review['prof_course'])
+                course_code = prof_course.course.code
+                course_url = prof_course.course.get_absolute_url()
 
-        else:
-            self.aggregate_values['comments'].append(review[field])
+                self.aggregate_values['comments'].append({'comment': review[field], 'course_code': course_code, 'course_url': course_url})
+
+            else:
+                self.aggregate_values['comments'].append(review[field])
 
     def integer_aggregator(self, review, field):
         """Aggregates the integer fields from each review."""

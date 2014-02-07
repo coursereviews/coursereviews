@@ -54,18 +54,21 @@ def course_detail(request, course_slug):
     aggregator = Review_Aggregator(reviews)
     stats = aggregator.aggregate(as_dict=True)
 
-    print stats
+    try:
+      comments = stats['comments']
+    except KeyError:
+      comments = []
 
     return TemplateResponse(request, 
                             'reviews/review_detail.html', 
                             { 'course': course, 
                               'prof_courses': prof_courses,
-                              'comments': stats['comments'],
+                              'comments': comments,
                               'data': json.dumps(stats),
                               'type': 'course' })
 
 def prof_detail(request, prof_slug):
-    professor = get_object_or_404(Professor, slug=prof_slug)
+    professor = get_object_or_404(Professor.objects.select_related(), slug=prof_slug)
 
     # Get all Prof_Courses objects for a professor
     prof_courses = professor.prof_courses.all().select_related()
@@ -84,11 +87,16 @@ def prof_detail(request, prof_slug):
     aggregator = Review_Aggregator(reviews, attach_comment_slug=True)
     stats = aggregator.aggregate(as_dict=True)
 
+    try:
+      comments = stats['comments']
+    except KeyError:
+      comments = []
+
     return TemplateResponse(request, 
                             'reviews/review_detail.html', 
                             { 'prof': professor, 
                               'prof_courses': prof_courses,
-                              'comments': stats['comments'],
+                              'comments': comments,
                               'data': json.dumps(stats),
                               'type': 'prof' })
 
@@ -103,10 +111,15 @@ def prof_course_detail(request, course_slug, prof_slug):
     aggregator = Review_Aggregator(reviews)
     stats = aggregator.aggregate(as_dict=True)
 
+    try:
+      comments = stats['comments']
+    except KeyError:
+      comments = []
+
     return TemplateResponse(request,
                             'reviews/review_detail.html',
                             { 'prof_course': prof_course,
-                              'comments': stats['comments'],
+                              'comments': comments,
                               'data': json.dumps(stats),
                               'type': 'prof_course'})
 
