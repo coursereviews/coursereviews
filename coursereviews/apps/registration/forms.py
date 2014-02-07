@@ -91,8 +91,8 @@ class AuthenticationForm(forms.Form):
     password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
 
     error_messages = {
-        'invalid_login': _("Please enter a correct %(email)s and password. "
-                           "Note that both fields may be case-sensitive."),
+        'invalid_login': _("Please enter a correct email and password. "
+                           "Note that both fields are case-sensitive."),
         'inactive': _("This account is inactive."),
     }
 
