@@ -32,6 +32,8 @@ def browseProfs(request):
 def browseCourses(request):
     pass
 
+@login_required
+@quota_required
 def course_detail(request, course_slug):
     course = get_object_or_404(Course, slug=course_slug)
 

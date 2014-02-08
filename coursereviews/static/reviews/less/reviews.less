@@ -175,3 +175,29 @@ h2.review-title {
     }
   }
 }
+
+svg {
+  g.bar {
+    rect {
+      fill: #3276b1;
+      &:hover {
+        fill: lighten(#3276b1, 10%);
+      }
+    }
+    text {
+      fill: #ffffff;
+      font-size: 13px;
+    }
+  }
+  .axis {
+    text {
+      font-size: 12px;
+      fill: #333;
+    }
+    path, line {
+      fill: none;
+      stroke: #333;
+      shape-rendering: crispEdges;
+    }
+  }
+}

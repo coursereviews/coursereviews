@@ -5,9 +5,7 @@ $(document).ready(function () {
     data: JSON.parse($("script#prof_course_choices").html()),
     containerCss: "height: 34px;"
   });
-
-  // $("input#id_grade").select2();
-
+  
   $("select").select2({
     placeholder: "Select all that apply"
   });
