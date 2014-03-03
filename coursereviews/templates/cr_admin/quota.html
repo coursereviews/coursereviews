@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Manage quotas and site access</h2>
+
+<p>The quota is the number of reviews a user needs to create before he or she can view reviews.</p>
+<div class="row">
+  <div class="col-sm-4">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td>Users</td>
+          <td>Quota</td>
+        </tr>
+      </thead>
+      <tbody>
+      {% for quota in quota_data %}
+        <tr>
+          <td>{{ quota.quota__count }}</td>
+          <td>{{ quota.quota }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{{ quota_form.as_p }}
+
+
+{% endblock %}

@@ -136,7 +136,8 @@ def create(request):
     if form.is_valid():
       form.save()
       profile = request.user.get_profile()
-      profile.quota -= 1
+      if profile.quota > 0:
+        profile.quota -= 1
       profile.save()
       return redirect('index')
     else:
