@@ -15,10 +15,11 @@ urlpatterns = patterns('',
     url(r'^contact/$', 'static_pages.views.contact', name='contact'),
     url(r'', include('registration.urls')),
     url(r'', include('reviews.urls')),
+    url(r'^admin/', include('admin.urls')),
     # url(r'^users/', include('users.urls')),    
 
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^djadmin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^djadmin/', include(admin.site.urls)),
 
     # api patterns      
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
