@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Hi, {{ request.user.get_profile.get_display_name }}!</h2>
+<h3>Time to do some administrating!</h3>
+
+<p><a href="{% url 'admin_quota' %}">Manage quotas and site access</a></p>
+<p><a href="{% url 'admin_flags' %}">Manage flagged reviews</a></p>
+{% endblock %}
