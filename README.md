@@ -2,6 +2,8 @@
 
 __a Django project__
 
+[![Build Status](https://travis-ci.org/coursereviews/coursereviews.png?branch=master)](https://travis-ci.org/coursereviews/coursereviews)
+
 _Last updated: 8/8/13_
 
 ### Settings notes
