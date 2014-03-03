@@ -142,23 +142,30 @@ def create(request):
     else:
       return TemplateResponse(request, 'reviews/edit.html', {'form': form})
 
-def detail(request, review_id, edit=False):
+def edit(request, review_id):
   review = get_object_or_404(Review.objects.select_related(), id=review_id)
-  if edit == True:
-    if request.user != review.user:
-      return HttpResponse(status=404)
-    if request.method == "GET":
-      form = ReviewForm(instance=review)
+
+  # Cannot view an individual review of another user
+  if request.user != review.user:
+    return HttpResponse(status=404)
+
+  # Show the edit page
+  if request.method == "GET":
+    form = ReviewForm(instance=review)
+    return TemplateResponse(request, 'reviews/edit.html', {'form': form})
+
+  # Update the review
+  elif request.method == "POST":
+    form = ReviewForm(request.POST, instance=review)
+    if form.is_valid():
+      form.save()
+      return redirect('index')
+    else:
       return TemplateResponse(request, 'reviews/edit.html', {'form': form})
-    elif request.method == "POST":
-      form = ReviewForm(request.POST, instance=review)
-      if form.is_valid():
-        form.save()
-        return redirect(review)
-      else:
-        return TemplateResponse(request, 'reviews/edit.html', {'form': form})
+
   else:
-    return TemplateResponse(request, 'reviews/view.html', {'review': review})
+    return HttpResponse(status=404)
+
 
 @require_GET
 def delete(request, review_id):

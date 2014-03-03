@@ -6,8 +6,7 @@ urlpatterns = patterns('reviews.views',
     url(r'^quota$', 'quota', name='quota'),
 
     url(r'^review/new$', 'create', name='new_review'),
-    url(r'^review/(?P<review_id>\d+)$', 'detail', {'edit': False}, name='view_review'),
-    url(r'^review/(?P<review_id>\d+)/edit$', 'detail', {'edit': True}, name='edit_review'),
+    url(r'^review/(?P<review_id>\d+)$', 'edit', name='edit_review'),
     url(r'^review/(?P<review_id>\d+)/delete$', 'delete', name='delete_review'),
 
     url(r'^course/(?P<course_slug>[-\w\d]+)$', 'course_detail', name='course_detail'),
