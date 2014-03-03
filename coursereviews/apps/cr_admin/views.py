@@ -4,7 +4,7 @@ from django.db.models import Count
 
 from reviews.models import Review
 from users.models import UserProfile
-from .forms import QuotaForm
+from cr_admin.forms import QuotaForm
 
 def index(request):
     return TemplateResponse(request, 'cr_admin/index.html')
