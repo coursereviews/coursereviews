@@ -19,10 +19,9 @@ def quota(request):
 
 @quota_required
 def browse(request):
-    recent_reviews = Review.objects.select_related().order_by('-date')[:10]
     profs = Professor.objects.all()[:10]
     courses = Course.objects.all()[:10]
-    return TemplateResponse(request, 'reviews/browse.html', { 'recent_reviews': recent_reviews, 'profs': profs, 'courses': courses })
+    return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
 
 @quota_required
 def browseProfs(request):

@@ -38,16 +38,6 @@
       </ul>
     </div>
     {% endif %}
-    {% if recent_reviews %}
-    <div class="col-md-3">
-      <h4>Recently Reviewed</h4>
-      <ul>
-      {% for review in recent_reviews %}
-        <li><a href="{{ review.get_absolute_url }}"><strong>{{ review.prof_course.course.code }}</strong> {{ review.prof_course.prof }}</li></a>
-      {% endfor %}
-      </ul>
-    </div>
-    {% endif %}
   </div>
 
 {% endblock %}
