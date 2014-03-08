@@ -180,6 +180,7 @@ LOCAL_APPS = (
     'registration',
     'static_pages',
     'users',
+    'cr_admin',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
