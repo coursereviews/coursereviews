@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^contact/$', 'static_pages.views.contact', name='contact'),
     url(r'', include('registration.urls')),
     url(r'', include('reviews.urls')),
-    url(r'^admin/', include('admin.urls')),
+    url(r'^admin/', include('cr_admin.urls')),
     # url(r'^users/', include('users.urls')),    
 
     url(r'^djadmin/doc/', include('django.contrib.admindocs.urls')),

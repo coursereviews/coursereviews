@@ -26,6 +26,9 @@
   </div>
 </div>
 
+<p>Current quota: {{ current_admin_quota.new_quota }}</p>
+<p>Next reset date: {{ current_admin_quota.reset_date }}</p>
+
 {{ quota_form.as_p }}
 
 

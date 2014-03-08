@@ -1,0 +1,5 @@
+- model: cr_admin.AdminQuota
+  pk: 1
+  fields:
+    reset_date:
+    new_quota: 2
