@@ -162,13 +162,31 @@ h2.review-title {
 }
 
 .comments {
-  li {
-    padding-bottom: 20px;
-    &:not(:first-child) {
-      padding-top: 20px;
+  .comment {
+    padding-bottom: 10px;
+    .comment-voting {
+      width: 40px;
+      vertical-align: top;
+      font-size: 20px;
+      color: #999;
+      .upvote {
+        color: #47a447;
+      }
+      .downvote {
+        color: #d9534f;
+      }
+      span:last-child {
+        margin: 0 0 0 1px;
+      }
+    }
+    .comment-body {
+      vertical-align: top;
     }
     &:not(:last-child) {
       border-bottom: 1px solid #999;
+    }
+    &:last-child {
+      padding-top: 10px;
     }
     a, span.dash {
       color: #999;

@@ -60,17 +60,39 @@
       <div class="col-md-6">
         {% if comments %}
         <h4>Comments</h4>
-        <ul class="list-unstyled comments">
+        <div class="comments">
         {% if type == 'prof' %}
           {% for comment in comments %}
-            <li>{{ comment.comment }}<span class="dash">&nbsp;&mdash;&nbsp;</span><a href="{{ comment.course_url }}">{{ comment.course_code }}</a></li>
+            <div class="comment">
+            <table>
+            <tbody>
+              <tr data-comment-id="">
+                <td class="comment-voting">
+                  <span class="glyphicon glyphicon-arrow-up upvote"></span>
+                  <span class="glyphicon glyphicon-arrow-down downvote"></span>
+                </td>
+                <td class="comment-body">
+                  {{ comment.comment }}
+                  <span class="dash">&nbsp;&mdash;&nbsp;</span>
+                  <a href="{{ comment.course_url }}">{{ comment.course_code }}</a>
+                </td>
+              </tr>
+            </tbody>
+            </table>
+            </div>
           {% endfor %}
         {% else %}
           {% for comment in comments %}
-            <li>{{ comment }}</li>
+            <li>
+              <div class="comment-voting">
+                <span class="glyphicon glyphicon-arrow-up"></span>
+                <span class="glyphicon glyphicon-arrow-down"></span>
+              </div>
+              {{ comment }}
+            </li>
           {% endfor %}
         {% endif %}
-        </ul>
+        </div>
         {% endif %}
       </div>
     </div>
