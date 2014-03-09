@@ -27,6 +27,9 @@ class Review_Aggregator:
             df = DateFormat(self.aggregate_values['date'])
             self.aggregate_values['date'] = df.format('F j, Y')
 
+        if 'prof_course' in self.aggregate_values:
+            self.aggregate_values.pop('prof_course', None)
+
         if as_dict:
             return self.aggregate_values
         else:
