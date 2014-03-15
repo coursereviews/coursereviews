@@ -148,3 +148,16 @@ class Review_Aggregator:
             self.aggregate_values[field][review[field]] += 1
         except KeyError:
             self.aggregate_values[field][review[field]] = 1
+
+def user_vote_type(request, review_id):
+    """Returns `up` or `down` given a user and a review."""
+
+    user = request.user
+    review = Review.objects.get(id=review_id)
+
+    if user in review.up_votes:
+        return 'up'
+    elif user in review.down_votes:
+        return 'down'
+    else:
+        return None

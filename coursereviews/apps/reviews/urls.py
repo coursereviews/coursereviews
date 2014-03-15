@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
+from reviews import api
+
 # serving up static pages with RequestContext variables
 urlpatterns = patterns('reviews.views',
     url(r'^quota$', 'quota', name='quota'),
@@ -14,4 +16,10 @@ urlpatterns = patterns('reviews.views',
     url(r'^course/(?P<course_slug>[-\w\d]+)/(?P<prof_slug>[-\w\d]+)$', 'prof_course_detail', name='prof_course_detail'),    
 
     url(r'^search$', 'search', name="search"),
+
+    url(r'^api/(?P<review_id>\d+)/vote$', 'vote', name='vote_review'),
+)
+
+urlpatterns += patterns('reviews.api',
+    url(r'^api/(?P<pk>\d+)/comment$', api.Comment.as_view()),
 )

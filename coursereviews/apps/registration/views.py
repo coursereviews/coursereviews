@@ -10,7 +10,6 @@ from registration.backend import Backend
 from django import forms
 from registration.forms import RegistrationForm
 from django.forms.util import ErrorList
-from registration.tasks import gravatar_task
 
 def activate(request, backend,
              template_name='registration/activate.html',
@@ -51,7 +50,6 @@ def register(request, success_url=None,
             new_user = backend.register(request, **form.cleaned_data)
             profile = UserProfile.objects.get(user=new_user)
             profile.save()
-            gravatar_task.delay(new_user, new_user.pk)
             if request.GET.get('next',''):
                 success_url = request.GET.get('next','')
                 return redirect(success_url)

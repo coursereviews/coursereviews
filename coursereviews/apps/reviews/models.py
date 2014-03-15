@@ -103,9 +103,13 @@ class Review(models.Model):
     prof_course = models.ForeignKey(ProfCourse, related_name='reviews')
     user = models.ForeignKey(User, related_name='reviews')
     date = models.DateField(auto_now_add=True)
+
     flagged = models.BooleanField(default=False)
     flagged_by = models.ForeignKey(User, related_name='reviews_flag', blank=True, null=True)
     flagged_count = models.IntegerField(default=0)
+
+    up_votes = models.ManyToManyField(User, related_name='reviews_up_votes')
+    down_votes = models.ManyToManyField(User, related_name='reviews_down_votes')
 
     ## Reusable yes/no choices
     YES = 'Y'
