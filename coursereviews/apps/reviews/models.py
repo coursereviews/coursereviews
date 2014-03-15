@@ -40,10 +40,10 @@ class Professor(models.Model):
     def __unicode__(self):
         return self.first + ' ' + self.last
 
-    def save(self):
+    def save(self, *args, **kwargs):
         self.slug = slugify(self.last)
         self.lookup = self.__unicode__()
-        super(Professor, self).save()
+        super(Professor, self).save(*args, **kwargs)
 
 class Course(models.Model):
     objects = GenericManager(field_name='code')
@@ -63,10 +63,10 @@ class Course(models.Model):
     def __unicode__(self):
         return self.code + " - " + self.title
 
-    def save(self):
+    def save(self, *args, **kwargs):
         self.lookup = self.title
         self.slug = slugify(self.code)
-        super(Course, self).save()
+        super(Course, self).save(*args, **kwargs)
 
 class ProfCourseManager(models.Manager):
     def get_by_natural_key(self, prof, course):

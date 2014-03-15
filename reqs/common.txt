@@ -1,4 +1,4 @@
-Django
+Django>=1.5.0,<=1.5.9
 
 django-celery
 
@@ -25,3 +25,6 @@ markdown
 django-filter
 
 django-multiselectfield
+
+BeautifulSoup4
+requests
