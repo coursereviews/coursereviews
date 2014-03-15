@@ -17,7 +17,7 @@ $(document).ready(function () {
   }
   ]).on("keydown", function(e) {
     if (e.which == 13) {
-        $("form").submit();
+        $("form.big-search").submit();
     }
   });
 });

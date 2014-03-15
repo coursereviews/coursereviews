@@ -6,7 +6,7 @@ class CourseIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.EdgeNgramField(document=True, use_template=True)
     code = indexes.CharField(model_attr="code")
     title = indexes.CharField(model_attr="title")
-    description = indexes.CharField(model_attr="description")
+    description = indexes.CharField(model_attr="description", null=True)
     department = indexes.CharField(model_attr="dept")
 
     def get_model(self):
@@ -17,10 +17,10 @@ class CourseIndex(indexes.SearchIndex, indexes.Indexable):
 
 class ProfessorIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.EdgeNgramField(document=True, use_template=True)
-    first_name = indexes.CharField(model_attr="first")
+    first_name = indexes.CharField(model_attr="first", null=True)
     last_name = indexes.CharField(model_attr="last")
-    email = indexes.CharField(model_attr="email")
-    department = indexes.CharField(model_attr="dept")
+    email = indexes.CharField(model_attr="email", null=True)
+    department = indexes.CharField(model_attr="dept", null=True)
 
     def get_model(self):
         return Professor

@@ -202,6 +202,8 @@ def search(request):
     course_results = SearchQuerySet().models(Course).filter(content=Clean(query))
     professor_results = SearchQuerySet().models(Professor).filter(content=Clean(query))
 
+    print course_results
+
     results_count = len(course_results) + len(professor_results)
 
     ctx_dict = {'count': results_count,

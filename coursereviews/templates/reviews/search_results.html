@@ -3,7 +3,7 @@
 
 {% block js %}
 <script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
-<script src="{% static 'reviews/js/typeahead.js' %}"></script>
+<script src="{% static 'reviews/js/typeahead.min.js' %}"></script>
 <script src="{% static 'reviews/js/search.js' %}"></script>
 {% endblock %}
 
@@ -16,7 +16,7 @@
 
 <div class="row">
     <div class="col-sm-6 col-md-6">
-        <form method="GET" action="/search">
+        <form class="big-search" method="GET" action="/search">
             <input id="search-bar" class="form-control input-lg" type="text" name="q" placeholder="Search for Professors or Courses">
         </form>
     </div>  
