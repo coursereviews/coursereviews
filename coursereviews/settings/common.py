@@ -289,8 +289,6 @@ PIPELINE_JS = {
     'local_libs' : {
         'source_filenames': (
             'coursereviews/js/jquery-1.9.0.js',
-            'coursereviews/js/underscore.min.js',
-            'coursereviews/js/backbone.min.js',                        
             'coursereviews/js/bootstrap/bootstrap.min.js',
             'coursereviews/js/global.js',
         ),
