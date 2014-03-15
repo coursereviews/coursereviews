@@ -8,19 +8,109 @@ from reviews.models import (Professor,
 import requests
 from bs4 import BeautifulSoup
 
+import sys
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+
 class Command(BaseCommand):
     args = '<term>'
-    help = "Scrapes all courses and professors from middlebury.edu."
+    help = """Scrapes all courses and professors from middlebury.edu.
+
+Requires the term as the first and only argument.  Get the
+course by visiting the appropriate Middlebury course catalog 
+page and getting the value of the url parameter 'p_term'."""
 
     def __init__(self, *args, **kwargs):
-        self.new_dept = Department()
+        self.term = ''
+
+        # Need prof_dept and course_dept variables for the dept from the try/except
+        # in the professor and course scrapers so we can save it for the professor/course
+        self.prof_dept = Department()
+        self.course_dept = Department()
+
+        self.course = Course()
+        self.professor = Professor()
+
+        self.description = ''
+
+        self.instructor_first = ''
+        self.instructor_last = ''
+
+        # We make a few attempts to clean up and unify the database
+        # Don't add any high level research/thesis courses,
+        # discussion sections, labs, drills, or cross references
+        self.bad_course_names = ('Advanced Studies',
+                                 'Advanced Study',
+                                 'Adv Individual Study',
+                                 'Independent',
+                                 'Ind.',
+                                 'Indep.',
+                                 'Indep Project',
+                                 'Thesis',
+                                 'Research',
+                                 'Resrch',
+                                 'Senior',
+                                 'Sr Essay',
+                                 'Sr. Thesis',
+                                 'Honors',
+                                 'Special Project',
+                                 'Advanced Study',
+                                 'Please register via',
+                                 'Lab',
+                                 'Discussion',
+                                 'Drill')
+
+        # Aliases for inconsistent department names
+        self.aliases = {
+                        'Center Comparative Study of Race & Ethnicity': 'Center Comparative Study of Race and Ethnicity',
+                        "Chemistry and Biochemistry/Dean of Faculty's Office": 'Chemistry and Biochemistry',
+                        'Chinese School': 'Chinese',
+                        'Classics/Commons Office - Ross': 'Classics',
+                        'Economics/Creativity & Innovation': 'Economics',
+                        'Education Studies/Commons Office - Wonnacott': 'Education Studies',
+                        'English & American Literatures': 'English and American Literatures',
+                        'Environmental Affairs': 'Environmental Studies',
+                        'Environmental Studies/Biology': 'Environmental Studies',
+                        'Environmental Studies/History': 'Environmental Studies',
+                        'Gender, Sexuality & Feminist Studies': 'Gender, Sexuality, and Feminist Studies',
+                        'Geography/Commons Office - Atwater': 'Geography',
+                        'German School': 'German',
+                        'German/Commons Office - Brainerd': 'German',
+                        'History of Art & Architecture': 'History of Art and Architecture',
+                        'History of Art & Architecture/Arts Center': 'History of Art and Architecture',
+                        'Dean of Students/History of Art & Architecture': 'History of Art and Architecture',
+                        'International & Global Studies': 'International and Global Studies',
+                        'Italian School': 'Italian',
+                        'Italian/Commons Office - Cook': 'Italian',
+                        'Italian/Italian School': 'Italian',
+                        'Japanese Studies': 'Japenese',
+                        'Planning and Assessment/Psychology': 'Psychology',
+                        'Portuguese School': 'Portuguese',
+                        'Religion/Classics': 'Religion',
+                        'Religion/Commons Office - Ross': 'Religion',
+                        'Russian School': 'Russian',
+                        'Spanish School': 'Spanish',
+                        u'\xa0': ' '
+                        }
+
         super(Command, self).__init__()
 
     def handle(self, *args, **options):
+        if len(args) == 1:
+            self.term = args[0]
+        else:
+            raise CommandError('scrapeprofs requires exactly one argument, got %s.' % len(args))
+
         # Scrape the professors
+        self.stdout.write(bcolors.HEADER + 'Scraping professors . . .' + bcolors.ENDC)
 
-        print "Scraping professors..."
-
+        # Make an extensive post request for the professors
         profs_payload = {
             '__EVENTTARGET': '',
             '__EVENTARGUMENT': '',
@@ -40,53 +130,198 @@ class Command(BaseCommand):
 
         profs_r = requests.post("https://directory.middlebury.edu/default.aspx", data=profs_payload)
         profs_soup = BeautifulSoup(profs_r.text)
-
         profs_results = profs_soup.find_all(class_='ResultItem')
 
         for result in profs_results:
             contents = result.contents
 
+            # Using str() here raises a UnicodeEncodeError
+            # probably because of one department that's a \xa0 (nbsp)
+            # instead of a normal space
             name = contents[1].find('a').string.split(', ')
             first_name = name[1].encode('utf-8').strip()
             last_name = name[0].encode('utf-8').strip()
 
-            # Get the link to a specific professor
-            href = contents[1].find('a')['href'].encode('utf-8').strip()
-
             email = contents[2].find('a').string.encode('utf-8').strip()
-
-            phone = contents[3].string.encode('utf-8').strip()
 
             dept = contents[5].string.encode('utf-8').strip()
 
+            # Attempt to normalize the department names using our aliases
+            try:
+                dept = self.aliases[dept]
+            except KeyError:
+                pass
+
+            # Only want Middlebury College profs, not MIIS
             if 'miis' not in email:
 
+                # Only create departments that don't already exist
                 try:
-                    self.new_dept = Department.objects.get(name=dept)
+                    self.prof_dept = Department.objects.get(name=dept)
                 except Department.DoesNotExist:
-                    print "Creating department " + dept
-                    self.new_dept = Department.objects.create(name=dept)
+                    self.stdout.write(bcolors.OKBLUE + '  Creating department ' + dept + bcolors.ENDC)
+                    self.prof_dept = Department.objects.create(name=dept)
 
+                # Only create professors that don't already exist
                 try:
                     Professor.objects.get(email=email)
                 except Professor.DoesNotExist:
-                    print "Creating professor " + first_name + " " + last_name
+                    self.stdout.write(bcolors.OKBLUE + '  Creating professor ' +
+                                      first_name + " " + last_name + bcolors.ENDC)
                     Professor.objects.create(first=first_name,
                                              last=last_name,
-                                             dept=self.new_dept,
+                                             dept=self.prof_dept,
                                              email=email)
 
 
         # Scrape the courses
-        # course_base_url = 'https://ssb.middlebury.edu/PNTR/'
-        # url = 'https://ssb.middlebury.edu/PNTR/saturn_midd.course_catalog_utlq.catalog_page_by_dept?p_term='
-        # term = args[0]
+        self.stdout.write(bcolors.HEADER + 'Scraping courses . . .' + bcolors.ENDC)
 
-        # r = requests.get(url + term)
+        # Base url for a department page
+        department_base_url = 'https://ssb.middlebury.edu/PNTR/'
 
-        # soup = BeautifulSoup(r.text)
+        # Url to retrieve all departments
+        # Need to append the term, i.e. 201420
+        # To get the term, go to the course page and get the url parameter of p_term
+        # This should be the first and only argument to scrapecourses
+        url = 'https://ssb.middlebury.edu/PNTR/saturn_midd.course_catalog_utlq.catalog_page_by_dept?p_term='
 
-        # links = soup.find('table').find_all("a")
+        courses_r = requests.get(url + self.term)
 
-        # for link in links:
-        #     print course_base_url + link['href']
+        if courses_r.status_code != 200:
+            raise CommandError('Unable to retrieve initial course catalog. Status code: %s. URL attempted: %s' % (
+                               courses_r.status_code, url + self.term))
+
+        courses_soup = BeautifulSoup(courses_r.text)
+        courses_links = courses_soup.find('table').find_all("a")
+
+        for link in courses_links:
+            dept = link.string.encode('utf-8')
+            self.stdout.write(bcolors.OKBLUE + '  Scraping courses from department ' + dept + bcolors.ENDC)
+
+            course_dept_r = requests.get(department_base_url + link['href'])
+            course_dept_soup = BeautifulSoup(course_dept_r.text)
+
+            # First table is the departments, first tr is the header
+            # We don't want either
+            courses_results = course_dept_soup.find_all("table")[1].find_all("tr")[1:]
+
+            # Attempt to normalize the department names using our aliases
+            try:
+                dept = self.aliases[dept]
+            except KeyError:
+                pass
+
+            for result in courses_results:
+                contents = result.contents
+
+                # First get the title and check it against the list of bad course names
+                # We can save a lot of time if we don't want the course
+                title = contents[17].string
+
+                if title != None and not any([bad_name in title for bad_name in self.bad_course_names]):
+                    title = title.encode('utf-8')
+
+                    try:
+                        self.course_dept = Department.objects.get(name=dept)
+                    except Department.DoesNotExist:
+                        self.stdout.write(bcolors.OKBLUE + '  Creating department ' + dept + bcolors.ENDC)
+                        self.course_dept = Department.objects.create(name=dept)
+
+                    # First part is CSCI
+                    # Second part is 0302 so int it to drop any leading 0s
+                    # then convert back to string to avoid concatenation issues
+                    # Third part is section, we don't care about it
+                    raw_code = contents[5].string.encode('utf-8').split(" ")
+                    dept_code, course_code = raw_code[0], str(int(raw_code[1]))
+                    code = dept_code + course_code
+
+                    try:
+                        self.course = Course.objects.get(code=code)
+                    except Course.DoesNotExist:
+                        # Get the crn link to go get the description
+                        # First Year Seminars don't have catalog entries
+                        # Don't ask me why...
+                        crn_link = result.find('a')['href']
+                        self.description = get_course_description(crn_link)
+
+                        self.stdout.write(bcolors.OKBLUE + '  Creating course ' + code + bcolors.ENDC)
+                        self.course = Course.objects.create(code=code,
+                                                            title=title,
+                                                            description=self.description,
+                                                            dept=self.course_dept)
+
+                    # Sometimes there are multiple professors listed separated by ' / '
+                    # Only keep the first one
+                    instructor = contents[37].string.encode('utf-8').split(' / ')[0].split(', ')
+                    try:
+                        self.instructor_last, self.instructor_first = instructor[0], instructor[1]
+                    except IndexError:
+                        # Probably means it came up with 'STAFF'
+                        # We'll only allow this for Physical Education
+                        if dept == 'Physical Education' and instructor == 'STAFF':
+                            self.instructor_first = ''
+                            self.instructor_last = 'STAFF'
+
+                    try:
+                        self.professor = Professor.objects.get(last=self.instructor_last,
+                                                               first__startswith=self.instructor_first)
+                    except Professor.MultipleObjectsReturned:
+                        self.stdout.write(bcolors.WARNING + '  Warning: multiple professors returned for ' +
+                                          self.instructor_last + ' ' + self.instructor_first + bcolors.ENDC)
+                        self.stdout.write(bcolors.WARNING + '  Choose a professor for ' + code + bcolors.ENDC)
+                        self.professor = pick_professor_interactive(self.instructor_first, self.instructor_last)
+                    except Professor.DoesNotExist:
+                        self.stdout.write(bcolors.OKBLUE + '  Creating professor ' +
+                                          self.instructor_first + ', ' + self.instructor_last + bcolors.ENDC)
+                        self.professor = Professor.objects.create(first=self.instructor_first,
+                                                                  last=self.instructor_last,
+                                                                  dept=self.course_dept)
+
+                    try:
+                        ProfCourse.objects.get(prof=self.professor, course=self.course)
+                    except ProfCourse.DoesNotExist:
+                        self.stdout.write(bcolors.OKBLUE + '  Creating ProfCourse ' +
+                                          code + ' ' + self.instructor_last + bcolors.ENDC)
+                        ProfCourse.objects.create(prof=self.professor, course=self.course)
+
+def get_course_description(crn_url):
+    """
+    Returns the cleaned course description from the associated CRN page.
+    """
+
+    base_url = 'https://ssb.middlebury.edu'
+
+    # Follow the first link to the listing page to get the catalog entry
+    listing_r = requests.get(base_url + '/PNTR/' + crn_url)
+    listing_soup = BeautifulSoup(listing_r.text)
+
+    # Follow the catalog link to the catalog entry
+    try:
+        catalog_url = listing_soup.find('a', text='View Catalog Entry')['href']
+        catalog_r = requests.get(base_url + catalog_url)
+        catalog_soup = BeautifulSoup(catalog_r.text)
+
+        # Get the catalog entry
+        catalog_entry = catalog_soup.find('td', class_='ntdefault')
+        description = catalog_entry.get_text() \
+                                   .encode('utf-8') \
+                                   .strip() \
+                                   .split('\n')[1]
+
+        return description
+    except TypeError:
+        # No catalog entry
+        return ''
+
+def pick_professor_interactive(first, last):
+    choices = Professor.objects.filter(last=last,
+                                       first__startswith=first)
+    for i, c in enumerate(choices):
+        sys.stdout.write('%s  %s. %s %s\n' % (bcolors.WARNING, i + 1, c, bcolors.ENDC))
+    choice = raw_input(bcolors.WARNING + '-->' + bcolors.ENDC)
+    while int(choice) not in range(1, len(choices) + 1):
+        sys.stdout.write(bcolors.WARNING + '  Pick a valid choice.' + bcolors.ENDC)
+        choice = raw_input(bcolors.WARNING + '-->' + bcolors.ENDC)
+    return choices[int(choice) - 1]
+
