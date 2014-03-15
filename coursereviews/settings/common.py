@@ -299,11 +299,11 @@ PIPELINE_JS = {
 }
 
 ############# AWS CONFIG
-S3_URL = 'http://static.courserevie.ws/'
+S3_URL = 'http://static.middcourses.com/'
 AWS_ACCESS_KEY_ID = environ.get('AWS_KEY', '')
 AWS_SECRET_ACCESS_KEY = environ.get('AWS_SECRET', '')
 AWS_STORAGE_BUCKET_NAME = environ.get('AWS_STORAGE_BUCKET_NAME', '')
-AWS_S3_CUSTOM_DOMAIN = 'static.rocketlistings.com'
+AWS_S3_CUSTOM_DOMAIN = 'static.middcourses.com'
 AWS_AUTO_CREATE_BUCKET = True
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_SECURE_URLS = False
@@ -328,7 +328,7 @@ AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
-DEFAULT_FROM_EMAIL = 'teddy@courserevie.ws'
+DEFAULT_FROM_EMAIL = 'dana@middcourses.com'
 
 LOGIN_URL = '/login/' # references users/urls.py name
 

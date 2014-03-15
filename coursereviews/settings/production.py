@@ -58,12 +58,13 @@ INSTALLED_APPS += (
 )
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-STATICFILES_STORAGE = 'rocket.settings.storage.NonPackagingS3PipelineStorage'
+STATICFILES_STORAGE = 'coursereviews.settings.storage.NonPackagingS3PipelineStorage'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
   '.herokuapp.com',
-  'courserevie.ws' 
+  'courserevie.ws',
+  'middcourses.com' 
 ]
 
 DOMAIN_NAME = "courserevie.ws"
