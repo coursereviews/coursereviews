@@ -286,10 +286,16 @@ PIPELINE_CSS = {
 }
 
 PIPELINE_JS = {
-    'local_libs' : {
+    'local_libs_development' : {
         'source_filenames': (
             'coursereviews/js/jquery-1.9.0.js',
             'coursereviews/js/bootstrap/bootstrap.min.js',
+            'coursereviews/js/global.js',
+        ),
+        'output_filename': 'js/libs.js'
+    },
+    'local_libs_production' : {
+        'source_filenames': (
             'coursereviews/js/global.js',
         ),
         'output_filename': 'js/libs.js'

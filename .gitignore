@@ -21,3 +21,7 @@ tmp
 /**/less/*.css
 *.db
 assets
+
+# Generated typeahead files
+courses.json
+professors.json
