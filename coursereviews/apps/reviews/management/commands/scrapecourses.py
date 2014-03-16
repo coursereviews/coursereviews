@@ -236,7 +236,7 @@ page and getting the value of the url parameter 'p_term'."""
                     # Second part is 0302 so int it to drop any leading 0s
                     # then convert back to string to avoid concatenation issues
                     # Third part is section, we don't care about it
-                    raw_code = contents[5].string.encode('utf-8').split(" ")
+                    raw_code = contents[5].string.encode('utf-8').lower().split(" ")
                     dept_code, course_code = raw_code[0], str(int(raw_code[1]))
                     code = dept_code + course_code
 

@@ -2,11 +2,11 @@ from django.template.response import TemplateResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 
 from reviews.models import Review, Professor, Course, ProfCourse
 from reviews.forms import ReviewForm
-from reviews.decorators import quota_required
+from reviews.decorators import quota_required, no_professor_access
 from reviews.utils import Review_Aggregator, user_vote_type
 from reviews.serializers import CommentSerializer
 
@@ -14,7 +14,7 @@ from haystack.query import SearchQuerySet
 from haystack.inputs import Clean
 from rest_framework.response import Response
 
-from operator import __or__
+from operator import __or__, __and__
 import json
 
 @login_required
@@ -43,34 +43,40 @@ def course_detail(request, course_slug):
     # Get all Prof_Courses objects for a course
     prof_courses = course.prof_courses.all().select_related()
 
-    # Gather all the reviews for a course
-    reviews = reduce(__or__, 
-                     map(lambda pc: pc.reviews \
-                                      .all()   \
-                                      .values('components',
-                                              'again',
-                                              'hours',
-                                              'grasp',
-                                              'value',
-                                              'why_take',
-                                              'comment'), prof_courses))
+    # If this is a professor account
+    user_professor = request.user.get_profile().professor_assoc
+    if user_professor == None or user_professor in [pc.prof for pc in prof_courses]:
 
-    # Aggregate the values
-    aggregator = Review_Aggregator(reviews)
-    stats = aggregator.aggregate(as_dict=True)
+        # Gather all the reviews for a course
+        reviews = reduce(__or__, 
+                         map(lambda pc: pc.reviews \
+                                          .all()   \
+                                          .values('components',
+                                                  'again',
+                                                  'hours',
+                                                  'grasp',
+                                                  'value',
+                                                  'why_take',
+                                                  'comment'), prof_courses))
 
-    try:
-      comments = stats['comments']
-    except KeyError:
-      comments = []
+        # Aggregate the values
+        aggregator = Review_Aggregator(reviews)
+        stats = aggregator.aggregate(as_dict=True)
 
-    return TemplateResponse(request, 
-                            'reviews/review_detail.html', 
-                            { 'course': course, 
-                              'prof_courses': prof_courses,
-                              'comments': comments,
-                              'data': json.dumps(stats),
-                              'type': 'course' })
+        try:
+            comments = stats['comments']
+        except KeyError:
+            comments = []
+
+        return TemplateResponse(request, 
+                                'reviews/review_detail.html', 
+                                { 'course': course, 
+                                  'prof_courses': prof_courses,
+                                  'comments': comments,
+                                  'data': json.dumps(stats),
+                                  'type': 'course' })
+    else:
+        raise Http404
 
 def prof_detail(request, prof_slug):
     professor = get_object_or_404(Professor.objects.select_related(), slug=prof_slug)
@@ -78,59 +84,71 @@ def prof_detail(request, prof_slug):
     # Get all Prof_Courses objects for a professor
     prof_courses = professor.prof_courses.all().select_related()
 
-    reviews = reduce(__or__,
-                     map(lambda pc: pc.reviews \
-                                      .all()   \
-                                      .values('another',
-                                              'prof_lecturing',
-                                              'prof_leading',
-                                              'prof_help',
-                                              'prof_feedback',
-                                              'comment',
-                                              'prof_course'), prof_courses))
+    # If this is a professor account
+    user_professor = request.user.get_profile().professor_assoc
+    if user_professor == None or user_professor == professor:
 
-    aggregator = Review_Aggregator(reviews, attach_comment_slug=True)
-    stats = aggregator.aggregate(as_dict=True)
+        reviews = reduce(__or__,
+                         map(lambda pc: pc.reviews \
+                                          .all()   \
+                                          .values('another',
+                                                  'prof_lecturing',
+                                                  'prof_leading',
+                                                  'prof_help',
+                                                  'prof_feedback',
+                                                  'comment',
+                                                  'prof_course'), prof_courses))
 
-    print stats
+        aggregator = Review_Aggregator(reviews, attach_comment_slug=True)
+        stats = aggregator.aggregate(as_dict=True)
 
-    try:
-      comments = stats['comments']
-    except KeyError:
-      comments = []
+        print stats
 
-    return TemplateResponse(request, 
-                            'reviews/review_detail.html', 
-                            { 'prof': professor, 
-                              'prof_courses': prof_courses,
-                              'comments': comments,
-                              'data': json.dumps(stats),
-                              'type': 'prof' })
+        try:
+          comments = stats['comments']
+        except KeyError:
+          comments = []
+
+        return TemplateResponse(request, 
+                                'reviews/review_detail.html', 
+                                { 'prof': professor, 
+                                  'prof_courses': prof_courses,
+                                  'comments': comments,
+                                  'data': json.dumps(stats),
+                                  'type': 'prof' })
+    else:
+        raise Http404
 
 def prof_course_detail(request, course_slug, prof_slug):
     prof_course = get_object_or_404(ProfCourse.objects.select_related(), 
                                     course__slug__exact=course_slug, 
                                     prof__slug__exact=prof_slug)
 
-    # Get all reviews for the prof_courses
-    reviews = prof_course.reviews.all().values()
+    user_professor = request.user.get_profile().professor_assoc
+    if user_professor == None or user_professor == prof_course.prof:
 
-    aggregator = Review_Aggregator(reviews)
-    stats = aggregator.aggregate(as_dict=True)
+        # Get all reviews for the prof_courses
+        reviews = prof_course.reviews.all().values()
 
-    try:
-      comments = stats['comments']
-    except KeyError:
-      comments = []
+        aggregator = Review_Aggregator(reviews)
+        stats = aggregator.aggregate(as_dict=True)
 
-    return TemplateResponse(request,
-                            'reviews/review_detail.html',
-                            { 'prof_course': prof_course,
-                              'comments': comments,
-                              'data': json.dumps(stats),
-                              'type': 'prof_course'})
+        try:
+          comments = stats['comments']
+        except KeyError:
+          comments = []
+
+        return TemplateResponse(request,
+                                'reviews/review_detail.html',
+                                { 'prof_course': prof_course,
+                                  'comments': comments,
+                                  'data': json.dumps(stats),
+                                  'type': 'prof_course'})
+    else:
+        raise Http404
 
 @login_required
+@no_professor_access
 def create(request):
     if request.method == "GET":
         form = ReviewForm(initial={'hours': 0})
@@ -148,6 +166,8 @@ def create(request):
         else:
             return TemplateResponse(request, 'reviews/edit.html', {'form': form})
 
+@login_required
+@no_professor_access
 def edit(request, review_id):
     review = get_object_or_404(Review.objects.select_related(), id=review_id)
 

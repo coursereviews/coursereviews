@@ -2,10 +2,10 @@
 from fabric.api import local, env, require
 
 def resetdb():
-  local('rm -f coursereviews/default.db')
-  local('python manage.py syncdb --noinput --migrate')
-  local('python manage.py loaddata test_data.yaml')
-  # local('python manage.py rebuild_index --noinput')
+    local('rm -f coursereviews/default.db')
+    local('python manage.py syncdb --noinput --migrate')
+    local('python manage.py loaddata test_data.yaml')
+    # local('python manage.py rebuild_index --noinput')
 
 def deploy():
     """fab [environment] deploy"""
