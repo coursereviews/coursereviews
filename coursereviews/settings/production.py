@@ -69,7 +69,8 @@ STATICFILES_STORAGE = 'coursereviews.settings.storage.NonPackagingS3PipelineStor
 ALLOWED_HOSTS = [
   '.herokuapp.com',
   'courserevie.ws',
-  'middcourses.com' 
+  'middcourses.com',
+  'www.middcourses.com'
 ]
 
 DOMAIN_NAME = "middcourses.com"
