@@ -5,7 +5,8 @@ class ReviewForm(forms.ModelForm):
 
   class Meta:
     model = Review
-    exclude = ('user')
+    exclude = ('user', 'flagged', 'flagged_by', 'flagged_count',
+               'up_votes', 'down_votes')
     widgets = {
         'components': forms.SelectMultiple(),
         'again': forms.RadioSelect(),

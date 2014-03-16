@@ -109,17 +109,15 @@ def prof_detail(request, prof_slug):
                                                   'prof_help',
                                                   'prof_feedback',
                                                   'comment',
-                                                  'prof_course'), prof_courses))
+                                                  'prof_course', 'date'), prof_courses))
 
         aggregator = Review_Aggregator(reviews, attach_comment_slug=True)
         stats = aggregator.aggregate(as_dict=True)
 
-        print stats
-
         try:
-          comments = stats['comments']
+            comments = stats['comments']
         except KeyError:
-          comments = []
+            comments = []
 
         return TemplateResponse(request, 
                                 'reviews/review_detail.html', 
@@ -140,15 +138,18 @@ def prof_course_detail(request, course_slug, prof_slug):
     if user_professor == None or user_professor == prof_course.prof:
 
         # Get all reviews for the prof_courses
-        reviews = prof_course.reviews.all().values()
+        reviews = prof_course.reviews.all().values('components', 'again', 'hours',
+                                                   'another', 'grasp', 'prof_lecturing',
+                                                   'prof_leading', 'prof_help', 'prof_feedback',
+                                                   'value', 'why_take', 'comment', 'date')
 
         aggregator = Review_Aggregator(reviews)
         stats = aggregator.aggregate(as_dict=True)
 
         try:
-          comments = stats['comments']
+            comments = stats['comments']
         except KeyError:
-          comments = []
+            comments = []
 
         return TemplateResponse(request,
                                 'reviews/review_detail.html',
@@ -168,6 +169,7 @@ def create(request):
     elif request.method == "POST":
         review = Review(user=request.user)
         form = ReviewForm(request.POST, instance=review)
+        print form
         if form.is_valid():
             form.save()
             profile = request.user.get_profile()
