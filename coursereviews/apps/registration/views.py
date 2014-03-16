@@ -2,14 +2,16 @@ from django.shortcuts import redirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.models import User
-from users.models import UserProfile
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from registration.backend import Backend
 from django import forms
-from registration.forms import RegistrationForm
 from django.forms.util import ErrorList
+
+from registration.forms import RegistrationForm
+from users.models import UserProfile
+from reviews.models import Professor
 
 def activate(request, backend,
              template_name='registration/activate.html',
@@ -50,6 +52,22 @@ def register(request, success_url=None,
             new_user = backend.register(request, **form.cleaned_data)
             profile = UserProfile.objects.get(user=new_user)
             profile.save()
+
+            professor = Professor()
+            is_professor = request.POST.get('is_professor', '')
+
+            try:
+                professor = Professor.objects.get(email=form.cleaned_data['email'])
+            except Professor.DoesNotExist:
+                # Not a professor in our db
+                if is_professor:
+                    return redirect('prof_reg_error')
+
+            # If a professor signed up but didn't check the box
+            if professor.email:
+                profile.professor_assoc = professor
+                profile.save()
+
             if request.GET.get('next',''):
                 success_url = request.GET.get('next','')
                 return redirect(success_url)

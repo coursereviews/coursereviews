@@ -1,0 +1,11 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<h2>Thank you, {{ name }}!</h2>
+
+<p>Hold tight and we'll get back to you as soon as possible to get you an account as a professor.</p>
+
+<p>If you have any other questions or comments, don't hesitate to <a href="mailto:middcourses@gmail.com">email us</a>.
+
+<p><a class="btn btn-primary" href="{% url 'index' %}">Back home</a></p>
+{% endblock %}

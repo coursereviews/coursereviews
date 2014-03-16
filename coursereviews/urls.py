@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^contact/$', 'static_pages.views.contact', name='contact'),
     url(r'', include('registration.urls')),
     url(r'', include('reviews.urls')),
+    url(r'', include('users.urls')),
     url(r'^admin/', include('cr_admin.urls')),
     # url(r'^users/', include('users.urls')),    
 

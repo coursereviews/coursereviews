@@ -1,0 +1,8 @@
+A professor account signup failed.
+
+Name: {{ name }}
+Email: {{ email }}
+Department: {{ department }}
+Courses: {{ courses }}
+
+Verify that this person is a Middlebury College professor before adding him or her to the database.
