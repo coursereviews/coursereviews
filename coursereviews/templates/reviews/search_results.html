@@ -24,7 +24,7 @@
 
 {% if query %}
     {% if courses %}
-        <h3>Courses</h3>
+        {# <h3>Courses</h3> #}
         {% for course in courses %}
             <p>
                 <a href="{{ course.object.get_absolute_url }}">{{ course.object.title }}</a>
@@ -33,7 +33,7 @@
     {% endif %}
 
     {% if professors %}
-        <h3>Professors</h3>
+        {# <h3>Professors</h3> #}
         {% for professor in professors %}
             <p>
                 <a href="{{ professor.object.get_absolute_url }}">{{ professor.object }}</a>
