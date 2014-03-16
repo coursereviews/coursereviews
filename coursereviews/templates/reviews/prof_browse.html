@@ -2,7 +2,7 @@
 {% load static from staticfiles %}
 
 {% block content %}
-  <h2>Welcome to the new Midd course reviews site.</h2>
+  {% include 'partials/logo.html' %}
   <div class="row">
     <div class="col-sm-12">
     <h3><a href="{{ professor.get_absolute_url }}">{{ professor }}</a></h3>

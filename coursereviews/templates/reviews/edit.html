@@ -1,14 +1,13 @@
 {% extends "reviews/base.html" %}
 
 {% block content %}
-  <h2>Write a review</h2>
+  {% include 'partials/logo.html' %}
   {% if form.errors %}
   <div style="color: #b94a48">Oops, looks like you missed a field or two.</div>
   {% endif %}
-  <a class="btn btn-link" href="/">Back to search</a>
   <form class="edit-review" role="form" method="POST">
     <div class="prof_course-container{% if form.prof_course.errors %} error{% endif %}">
-      <h4><label for="id_prof_course">Pick a course</label></h4>
+      <h4><label for="id_prof_course">Choose a course</label></h4>
       <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6">
           <input type="hidden" name="prof_course" id="id_prof_course" data-placeholder="Dropdown to search" {% if form.prof_course.value %}value="{{ form.prof_course.value }}"{% endif %}>
