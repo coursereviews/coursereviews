@@ -306,7 +306,7 @@ PIPELINE_JS = {
 }
 
 ############# AWS CONFIG
-S3_URL = 'http://static.middcourses.com/'
+S3_URL = 'http://static.middcourses.com.s3.amazonaws.com/'
 AWS_ACCESS_KEY_ID = environ.get('AWS_KEY', '')
 AWS_SECRET_ACCESS_KEY = environ.get('AWS_SECRET', '')
 AWS_STORAGE_BUCKET_NAME = environ.get('AWS_STORAGE_BUCKET_NAME', '')
