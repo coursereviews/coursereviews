@@ -27,19 +27,25 @@ def quota(request):
 
 @quota_required
 def browse(request):
-    departments = Department.objects.all().order_by('name').select_related()
-    profs_courses_by_dept = []
 
-    for dept in departments:
-        dept_courses = dept.courses.all()
-        dept_profs = dept.professors.all()
+    user_professor = request.user.get_profile().professor_assoc
+    if user_professor == None:
+        departments = Department.objects.all().order_by('name').select_related()
+        profs_courses_by_dept = []
 
-        # We can hide professor categories with no professors in the template
-        # Those professors still teach courses, they just might be in different departments
-        if dept_courses:
-            profs_courses_by_dept.append({ 'dept': dept, 'courses': dept_courses, 'profs': dept_profs })
+        for dept in departments:
+            dept_courses = dept.courses.all()
+            dept_profs = dept.professors.all()
 
-    return TemplateResponse(request, 'reviews/browse.html', { 'profs_courses_by_dept': profs_courses_by_dept })
+            # We can hide professor categories with no professors in the template
+            # Those professors still teach courses, they just might be in different departments
+            if dept_courses:
+                profs_courses_by_dept.append({ 'dept': dept, 'courses': dept_courses, 'profs': dept_profs })
+
+        return TemplateResponse(request, 'reviews/student_browse.html', { 'profs_courses_by_dept': profs_courses_by_dept })
+    else:
+        courses = ProfCourse.objects.filter(prof=user_professor)
+        return TemplateResponse(request, 'reviews/prof_browse.html', { 'professor': user_professor, 'courses': courses })
 
 @quota_required
 def browseProfs(request):

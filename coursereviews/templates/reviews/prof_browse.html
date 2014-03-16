@@ -1,0 +1,26 @@
+{% extends "reviews/base.html" %}
+{% load static from staticfiles %}
+
+{% block js %}
+<script src="{% static 'reviews/js/typeahead.min.js' %}"></script>
+<script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
+<script src="{% static 'reviews/js/search.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+  <h2>Welcome to the new Midd course reviews site.</h2>
+  <div class="row">
+    <div class="col-sm-12">
+    <h3><a href="{{ professor.get_absolute_url }}">{{ professor }}</a></h3>
+    <h4>Courses</h4>
+    <ul class="list-unstyled">
+    {% for course in courses %}
+      <li>
+        <a href="{{ course.course.get_absolute_url }}">{{ course.course.title }}</a
+        >&nbsp;&mdash;&nbsp;<a href="{{ course.get_absolute_url }}">Reviews specific to you</a>
+      </li>
+    {% endfor %}
+    </ul>
+    </div>
+  </div>
+{% endblock %}
