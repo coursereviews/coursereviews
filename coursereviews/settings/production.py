@@ -27,6 +27,7 @@ SITE_ID = 2
 # Email settings
 EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
 MAILGUN_ACCESS_KEY = environ.get('MAILGUN_ACCESS_KEY', '')
+MAILGUN_SERVER_NAME = 'middcourses.com'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
 CACHES = memcacheify()
