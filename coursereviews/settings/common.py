@@ -262,7 +262,7 @@ PIPELINE_CSS = {
             'coursereviews/vendorcss/slider.css',
             'reviews/less/reviews.less',
         ),
-        'output_filename': 'css/listings.css',
+        'output_filename': 'css/reviews.css',
         'variant': 'datauri',
     },
     'static_pages': {
