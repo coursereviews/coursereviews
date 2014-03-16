@@ -276,6 +276,13 @@ PIPELINE_CSS = {
         'output_filename': 'css/static_pages_base.css',
         'variant': 'datauri',
     },
+    'splash': {
+        'source_filenames': (
+            'static_pages/less/splash.less',
+        ),
+        'output_filename': 'css/splash.css',
+        'variant': 'datauri',
+    },
     'users': {
         'source_filenames': (
             'users/less/users.less',

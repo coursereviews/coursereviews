@@ -1,0 +1,103 @@
+.splash-container {
+  @media (min-width: 992px) {
+    height: 500px;
+  }
+}
+
+svg {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -1000;
+  @media (max-width: 991px) {
+    height: 300px;
+  }
+  @media (min-width: 992px) {
+    height: 500px;
+  }
+}
+
+.title {
+  font-weight: 300;
+  @media (max-width: 991px) {
+    font-size: 50px;
+    text-align: center;
+    margin: 100px 0 0 0;
+  }
+  @media (min-width: 992px) {
+    font-size: 75px;
+    text-align: right;
+    margin: 150px 0 0 0;
+  }
+  .midd {
+    color: #3376b1;
+  }
+  .courses {
+    color: #333;
+  }
+}
+
+.subtitle {
+  text-align: center;
+  font-weight: 300;
+  color: #999;
+  @media (max-width: 991px) {
+    font-size: 20px;
+    text-align: center;
+  }
+  @media (min-width: 992px) {
+    font-size: 30px;
+    text-align: right;
+  }
+}
+
+.signup-form {
+  input:not([type='checkbox']) {
+    height: 40px;
+  }
+  label {
+    padding-top: 10px !important;
+  }
+  @media (max-width: 991px) {
+    margin-top: 150px;
+    input[type='submit'] {
+      width: 100%;
+    }
+  }
+  @media (min-width: 992px) {
+    margin-top: 145px;
+  }
+}
+
+.features {
+  margin: 50px;
+  .feature {
+    text-align: center;
+    @media (max-width: 991px) {
+      &:not(:first-child) { margin-top: 50px; }
+    }
+    @media (min-width: 992px) {
+      padding: 0 75px;
+    }
+    span {
+      font-size: 40px;
+      border-radius: 40px;
+      border: 1px solid #e5e5e5;
+      padding: 20px;
+      transition: background-color .1s linear;
+      &:hover {
+        background-color: #ece7f2;
+        transition: background-color .1s linear;
+      }
+    }
+    p {
+      &.feature-heading {
+        margin-top: 10px;
+        font-size: 20px
+      }
+      &.feature-subheading {
+        color: #666;
+      }
+    }
+  }
+}

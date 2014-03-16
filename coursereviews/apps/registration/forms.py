@@ -43,6 +43,7 @@ class RegistrationForm(forms.Form):
                                 label=_("Password"))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
                                 label=_("Password (again)"))
+    is_professor = forms.CheckboxInput()
     
     def clean_username(self):
         """

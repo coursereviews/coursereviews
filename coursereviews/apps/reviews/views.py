@@ -47,14 +47,6 @@ def browse(request):
         courses = ProfCourse.objects.filter(prof=user_professor)
         return TemplateResponse(request, 'reviews/prof_browse.html', { 'professor': user_professor, 'courses': courses })
 
-@quota_required
-def browseProfs(request):
-    pass 
-
-@quota_required
-def browseCourses(request):
-    pass
-
 @login_required
 @quota_required
 def course_detail(request, course_slug):

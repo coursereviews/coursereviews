@@ -1,38 +1,61 @@
 {% extends "static_pages/base.html" %}
 {% load static from staticfiles %}
-{% load active from navigation %}
+{% load compressed %}
 
-{% block content %}
-  {% if message %}
-  <div class="splash-alert alert alert-info">
-    <h4>{{ message }}</h4>
-    <p>{{ sub_message }}</p>
-  </div>
-  {% endif %}
-  <h2>This is the new Midd course reviews website.</h2>
-  <div data-toggle="buttons">
-    <a class="btn btn-default" id="login" href="#login-partial" data-toggle="tab"><input type="radio" class="hide">Login</a>
-    <a class="btn btn-primary" id="sign-up" href="#sign-up-partial" data-toggle="tab"><input type="radio" class="hide">Sign up as a Student</a>
-  </div>
-  <div class="tab-content homepage-tab-content">
-    <div id="login-partial" class="tab-pane fade">
-      {% include 'cr_registration/login.html' %}
-    </div>
-    <div id="sign-up-partial" class="tab-pane fade">
-      {% include 'cr_registration/registration_form.html' %}
+{% block css %}
+{% compressed_css 'splash' %}
+{% endblock %}
+
+{% block marginless %}
+  <svg width="100" height="150" viewBox="0 50 100 100" preserveAspectRatio="none">
+    <defs>
+      <radialGradient id="gradient" cx="100%" cy="100%" r="100%">
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="25%" stop-color="#fff7fb"/>
+        <stop offset="85%" stop-color="#ece7f2"/>
+        <stop offset="100%" stop-color="#dfe0f2"/>
+      </radialGradient>
+    </defs>
+    <rect width="100" height="150" fill="url(#gradient)"/>
+  </svg>
+
+  <div class="container splash-container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1 class="title"><span class="midd">midd</span><span class="courses">courses</span></h1>
+        <h2 class="subtitle">Choose your courses. Better.</h2>
+      </div>
+      <div class="col-md-6">
+        {# <div class="row"> #}
+        {% include 'cr_registration/registration_form.html' %}
+        {# </div> #}
+      </div>
     </div>
   </div>
 {% endblock %}
-
-{% block js %}
-  {{ block.super }}
-  <script type="text/javascript">
-    var tabLinkId = "{{ tab|escapejs }}" || "#login";
-    $(tabLinkId).tab('show');
-    $("input[name='email']").focus();
-    var buttonLinkId = tabLinkId.split('-partial')[0];
-    if (buttonLinkId) {
-      $(tabLinkId).addClass('active');
-    }
-  </script>
+{% block content %}
+<div class="row features">
+  <div class="col-md-6 feature">
+    <span class="glyphicon glyphicon-pencil"></span>
+    <p class="feature-heading">Review your courses</p>
+    <p class="feature-subheading">Review all of your courses with one beautiful form.  We made the process short and painless.</p>
+  </div>
+  <div class="col-md-6 feature">
+    <span class="glyphicon glyphicon-thumbs-up"></span>
+    <p class="feature-heading">Vote on comments</p>
+    <p class="feature-subheading">Vote on comments to help the most valuable ones rise to the top.</p>
+  </div>
+</div>
+<div class="row features">
+  <div class="col-md-6 feature">
+    <span class="glyphicon glyphicon-book"></span>
+    <p class="feature-heading">Courses</p>
+    <p class="feature-subheading">We have the most comprehensive and up to date course review catalog with over 400 courses in 60 departments.</p>
+  </div>
+  <div class="col-md-6 feature">
+    <span class="glyphicon glyphicon-user"></span>
+    <p class="feature-heading">Professors</p>
+    <p class="feature-subheading">Go beyond courses to look at reviews for individual professors and any combination of the two.</p>
+  </div>
+</div>
 {% endblock %}

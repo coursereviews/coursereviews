@@ -1,8 +1,8 @@
-<form class="form-horizontal fixed-width-form" action="{% url 'registration_register' %}" method="POST">
+<form class="form-horizontal signup-form" action="{% url 'registration_register' %}" method="POST">
   {% csrf_token %}
   {% if form.non_field_errors %}
   <div class="form-group">
-    <div class="col-sm-3 col-sm-offset-2">
+    <div class="col-md-3 col-md-offset-2">
       <div class="alert alert-danger">
         {% for error in form.non_field_errors %}
           <span>{{error}}</span>
@@ -11,43 +11,45 @@
     </div>
   </div>
   {% endif %}
+
   <div class="form-group">
-    <div class="col-sm-3 col-sm-offset-2">
-      <h4>Sign Up</h4>
+    <label for="id_email" class="col-md-4 control-label">Midd Email</label>
+    <div class="col-md-8">
+      <input type="email" name="email" class="form-control" id="id_email" value="{% if form.email.value %}{{form.email.value}}{% endif %}">
     </div>
+    {% if form.email.errors %}
+    <div class="col-md-offset-4 col-md-8 help-block">{% for error in form.email.errors %}{{ error }}&nbsp;{% endfor %}</div>
+    {% endif %}
   </div>
-  {% comment %}
-  <div class="form-group {% if form.username.errors %}has-error{% endif %}">
-    <label for="id_username" class="col-sm-2 control-label">Username</label>
-    <div class="col-sm-3">
-      <input type="text" name="username" autocomplete="off" class="form-control" id="id_username" value="{% if form.username.value %}{{form.username.value}}{% endif %}">
-    </div>
-    <div class="help-block">{% for error in form.username.errors %}{{ error }}&nbsp;{% endfor %}</div>
-  </div>
-  {% endcomment %}
-  <div class="form-group {% if form.email.errors %}has-error{% endif %}">
-    <label for="id_email" class="col-sm-2 control-label">Midd Email</label>
-    <div class="col-sm-3">
-      <input type="email" name="email" autocomplete="off" class="form-control" id="id_email" value="{% if form.email.value %}{{form.email.value}}{% endif %}">
-    </div>
-    <div class="help-block">{% for error in form.email.errors %}{{ error }}&nbsp;{% endfor %}</div>
-  </div>
-  <div class="form-group {% if form.password1.errors %}has-error{% endif %}">
-    <label for="id_password1" class="col-sm-2 control-label">Password</label>
-    <div class="col-sm-3">
+  <div class="form-group">
+    <label for="id_password1" class="col-md-4 control-label">Password</label>
+    <div class="col-md-8">
       <input type="password" name="password1" autocomplete="off" class="form-control" id="id_password1" value="">
     </div>
-    <div class="help-block">{% for error in form.password1.errors %}{{ error }}&nbsp;{% endfor %}</div>
-  </div>
-  <div class="form-group {% if form.password2.errors %}has-error{% endif %}">
-    <label for="id_password2" class="col-sm-2 control-label">Password (again)</label>
-    <div class="col-sm-3">
-      <input type="password" name="password2" autocomplete="off" class="form-control" id="id_password2" value="">
-    </div>
-    <div class="help-block">{% for error in form.password2.errors %}{{ error }}&nbsp;{% endfor %}</div>
+    {% if form.password1.errors %}
+    <div class="col-md-offset-4 col-md-8 help-block">{% for error in form.password1.errors %}{{ error }}&nbsp;{% endfor %}</div>
+    {% endif %}
   </div>
   <div class="form-group">
-    <div class="col-sm-3 col-sm-offset-2">
+    <label for="id_password2" class="col-md-4 control-label">Password (again)</label>
+    <div class="col-md-8">
+      <input type="password" name="password2" autocomplete="off" class="form-control" id="id_password2" value="">
+    </div>
+    {% if form.password2.errors %}
+    <div class="col-md-offset-4 col-md-8 help-block">{% for error in form.password2.errors %}{{ error }}&nbsp;{% endfor %}</div>
+    {% endif %}
+  </div>
+  <div class="form-group">
+    <div class="col-md-8 col-md-offset-4">
+      <div class="checkbox">
+        <label for="id_is_professor">
+          <input type="checkbox" name="is_professor" id="id_is_professor"> I'm a professor
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-3 col-md-offset-4">
       <input class="btn btn-primary" type="submit" value="Create Account">
     </div>
   </div>
