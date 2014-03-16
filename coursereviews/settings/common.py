@@ -3,7 +3,7 @@
 from datetime import timedelta
 from sys import path
 from os.path import abspath, basename, dirname, join, normpath
-from djcelery import setup_loader
+# from djcelery import setup_loader
 from os import environ
 
 
@@ -152,7 +152,7 @@ THIRD_PARTY_APPS = (
     'south',
 
     # Asynchronous task queue:
-    'djcelery',
+    # 'djcelery',
 
     # search
     'haystack',
@@ -323,12 +323,12 @@ AWS_HEADERS = {
 
 ############# CELERY CONFIG
 # See: http://celery.readthedocs.org/en/latest/configuration.html#celery-task-result-expires
-CELERY_TASK_RESULT_EXPIRES = timedelta(minutes=30)
+# CELERY_TASK_RESULT_EXPIRES = timedelta(minutes=30)
 
 # See: http://celery.github.com/celery/django/
-setup_loader()
+# setup_loader()
 
-CELERY_IMPORTS = ('registration.tasks')
+# CELERY_IMPORTS = ('registration.tasks')
 
 ############# USER ACCOUNTS CONFIG
 AUTH_PROFILE_MODULE = 'users.UserProfile'
