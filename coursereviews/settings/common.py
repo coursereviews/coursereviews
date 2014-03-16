@@ -241,14 +241,14 @@ PIPELINE_COMPILERS = (
 )
 
 PIPELINE_CSS = {
-    # 'local_bs': {
-    #     'source_filenames': (
-    #         'coursereviews/vendorcss/bootstrap-glyphicons.css',
-    #         'coursereviews/vendorcss/bootstrap.min.css',
-    #     ),
-    #     'output_filename': 'css/bootstrap.css',
-    #     'variant': 'datauri',
-    # },
+    'local_bs': {
+        'source_filenames': (
+            'coursereviews/vendorcss/bootstrap-glyphicons.css',
+            'coursereviews/vendorcss/bootstrap.min.css',
+        ),
+        'output_filename': 'css/bootstrap.css',
+        'variant': 'datauri',
+    },
     'base': {
         'source_filenames': (
             'coursereviews/less/base.less',

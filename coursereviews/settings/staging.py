@@ -40,7 +40,8 @@ CELERY_ALWAYS_EAGER = True
 
 ALLOWED_HOSTS = ['*']
 
-STATICFILES_STORAGE = 'coursereviews.settings.storage.S3PipelineStorage'
+# STATICFILES_STORAGE = 'coursereviews.settings.storage.S3PipelineStorage'
+STATICFILES_STORAGE = 'coursereviews.settings.storage.NonPackagingS3PipelineStorage'
 
 # See: http://docs.celeryproject.org/en/latest/configuration.html#broker-transport
 # BROKER_TRANSPORT = 'amqplib'

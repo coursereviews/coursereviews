@@ -71,7 +71,7 @@ ALLOWED_HOSTS = [
   'middcourses.com' 
 ]
 
-DOMAIN_NAME = "courserevie.ws"
+DOMAIN_NAME = "middcourses.com"
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
