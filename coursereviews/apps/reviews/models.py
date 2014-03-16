@@ -158,10 +158,12 @@ class Review(models.Model):
 
     ## Evaluate the professor in the following areas?
     ## Each field is 1 to 5
-    prof_lecturing = models.IntegerField(max_length=1)
-    prof_leading = models.IntegerField(max_length=1)
-    prof_help = models.IntegerField(max_length=1)
-    prof_feedback = models.IntegerField(max_length=1)
+    ## This seems stupid, but it gets around type coersion issues in the template
+    PROF_EVAL_CHOICES = (('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'))
+    prof_lecturing = models.CharField(max_length=1, choices=PROF_EVAL_CHOICES)
+    prof_leading = models.CharField(max_length=1, choices=PROF_EVAL_CHOICES)
+    prof_help = models.CharField(max_length=1, choices=PROF_EVAL_CHOICES)
+    prof_feedback = models.CharField(max_length=1, choices=PROF_EVAL_CHOICES)
 
     ## Why was this course valuable?
     ## Select all that apply

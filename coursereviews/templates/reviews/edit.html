@@ -79,40 +79,48 @@
       <div class="row {% if form.prof_lecturing.errors %} error{% endif %}">
         <label for="id_prof_lecturing" class="col-lg-2 col-md-2 col-sm-3 col-xs-3 prof_lecturing-container"><h5>Lecturing</h5></label>
         <div class="subq btn-group col-lg-8 col-md-8 col-sm-8" data-toggle="buttons">
-          {% for i in "12345" %}
-          <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_lecturing.value == forloop.counter %} active{% endif %}">
-            <input type="radio" name="prof_lecturing" value="{{ i }}">{{ i }}
-          </label>
+          {% for value, text in form.prof_lecturing.field.choices %}
+            {% if text != "---------" %}
+              <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_lecturing.value == value %} active{% endif %}">
+                <input type="radio" name="prof_lecturing" value="{{ value }}">{{ text }}
+              </label>
+            {% endif %}
           {% endfor %}
         </div>
       </div>
       <div class="row {% if form.prof_leading.errors %} error{% endif %}">
         <label for="id_prof_leading" class="col-lg-2 col-md-2 col-sm-3 col-xs-3 prof_leading-container"><h5>Leading discussion</h5></label>
         <div class="subq btn-group col-lg-8 col-md-8 col-sm-8" data-toggle="buttons">
-          {% for i in "12345" %}
-          <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_leading.value == i %} active{% endif %}">
-            <input type="radio" name="prof_leading" value="{{ i }}">{{ i }}
-          </label>
+          {% for value, text in form.prof_leading.field.choices %}
+            {% if text != "---------" %}
+              <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_leading.value == value %} active{% endif %}">
+                <input type="radio" name="prof_leading" value="{{ value }}">{{ text }}
+              </label>
+            {% endif %}
           {% endfor %}
         </div>
       </div>
       <div class="row {% if form.prof_help.errors %} error{% endif %}">
         <label for="id_prof_help" class="col-lg-2 col-md-2 col-sm-3 col-xs-3 prof_help-container"><h5>Providing help</h5></label>
         <div class="subq btn-group col-lg-8 col-md-8 col-sm-8" data-toggle="buttons">
-          {% for i in "12345" %}
-          <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_help.value == i %} active{% endif %}">
-            <input type="radio" name="prof_help" value="{{ i }}">{{ i }}
-          </label>
+          {% for value, text in form.prof_help.field.choices %}
+            {% if text != "---------" %}
+              <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_help.value == value %} active{% endif %}">
+                <input type="radio" name="prof_help" value="{{ value }}">{{ text }}
+              </label>
+            {% endif %}
           {% endfor %}
         </div>
       </div>
       <div class="row {% if form.prof_feedback.errors %} error{% endif %}">
         <label for="id_prof_feedback" class="col-lg-2 col-md-2 col-sm-3 col-xs-3 prof_feedback-container"><h5>Providing feedback</h5></label>
         <div class="subq btn-group col-lg-8 col-md-8 col-sm-8" data-toggle="buttons">
-          {% for i in "12345" %}
-          <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_feedback.value == i %} active{% endif %}">
-            <input type="radio" name="prof_feedback" value="{{ i }}">{{ i }}
-          </label>
+          {% for value, text in form.prof_feedback.field.choices %}
+            {% if text != "---------" %}
+              <label class="col-lg-1 col-md-1 btn btn-default{% if form.prof_feedback.value == value %} active{% endif %}">
+                <input type="radio" name="prof_feedback" value="{{ value }}">{{ text }}
+              </label>
+            {% endif %}
           {% endfor %}
         </div>
       </div>
