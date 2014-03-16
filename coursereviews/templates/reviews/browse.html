@@ -17,27 +17,9 @@
       <a class="btn btn-primary btn-new-review" href="{% url 'new_review' %}">Write a review</a>
     </div>
   </div>
-  <div class="row">
-    {% if courses %}
-    <div class="col-md-4">
-      <h4>Courses</h4>
-      <ul>
-        {% for course in courses %}
-        <li><a href="{{ course.get_absolute_url }}"><strong>{{ course.code }}</strong> &nbsp; {{ course.title }}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
-    {% endif %}
-    {% if profs %}
-    <div class="col-md-3">
-      <h4>Professors</h4>
-      <ul>
-        {% for prof in profs %}
-        <li><a href="{{ prof.get_absolute_url }}">{{ prof }}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
-    {% endif %}
-  </div>
-
+  {% if request.user.get_profile.professor_assoc == None %}
+    {% include 'reviews/partials/student_browse.html' %}
+  {% else %}
+    {% include 'reviews/partials/prof_browse.html' %}
+  {% endif %}
 {% endblock %}

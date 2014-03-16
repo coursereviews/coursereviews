@@ -151,6 +151,30 @@ form.edit-review {
   margin-bottom: 10px;
 }
 
+.courses-list {
+  width: 100%;
+  float: left;
+  .dept {
+    width: 100%;
+    float: left;
+  }
+  li {
+    float: left;
+    @media (max-width: 480px) {
+      width: 100%
+    }
+    @media (min-width: 481px) {
+      width: 33%;
+    }
+  }
+}
+
+// Avoid Flash of Unstyled Content
+// while Typeahead adds the .twitter-typeahead class
+.big-search {
+  margin: 20px 0;
+}
+
 ////////////////////////////////////
 // REVIEWS DETAIL                 //
 ////////////////////////////////////

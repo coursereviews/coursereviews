@@ -4,7 +4,11 @@ from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 
-from reviews.models import Review, Professor, Course, ProfCourse
+from reviews.models import (Review,
+                            Professor,
+                            Course,
+                            ProfCourse,
+                            Department)
 from reviews.forms import ReviewForm
 from reviews.decorators import quota_required, no_professor_access
 from reviews.utils import Review_Aggregator, user_vote_type
@@ -23,9 +27,19 @@ def quota(request):
 
 @quota_required
 def browse(request):
-    profs = Professor.objects.all()[:10]
-    courses = Course.objects.all()[:10]
-    return TemplateResponse(request, 'reviews/browse.html', { 'profs': profs, 'courses': courses })
+    departments = Department.objects.all().order_by('name').select_related()
+    profs_courses_by_dept = []
+
+    for dept in departments:
+        dept_courses = dept.courses.all()
+        dept_profs = dept.professors.all()
+
+        # We can hide professor categories with no professors in the template
+        # Those professors still teach courses, they just might be in different departments
+        if dept_courses:
+            profs_courses_by_dept.append({ 'dept': dept, 'courses': dept_courses, 'profs': dept_profs })
+
+    return TemplateResponse(request, 'reviews/browse.html', { 'profs_courses_by_dept': profs_courses_by_dept })
 
 @quota_required
 def browseProfs(request):

@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-sm-12">
+  {% for department in profs_courses_by_dept %}
+    <ul class="courses-list list-unstyled">
+      <h4>{{ department.dept.name }}</h4>
+      <div class="dept courses">
+        <h5>Courses</h5>
+        {% for course in department.courses %}
+          <li><a href="{{ course.get_absolute_url }}">{{ course.title }}</a></li>
+        {% endfor %}
+      </div>
+      <div class="dept profs">
+        {% if department.profs|length > 0 %}
+          <h5>Professors</h5>
+          {% for prof in department.profs %}
+            <li><a href="{{ prof.get_absolute_url }}">{{ prof }}</a></li>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </ul>
+  {% endfor %}
+  </div>
+</div>
