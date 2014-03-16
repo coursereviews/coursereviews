@@ -60,9 +60,6 @@ USE_L10N = True
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-use-tls
 EMAIL_USE_TLS = True
 
-# AWS_S3_CUSTOM_DOMAIN = 'static.rocketlistings.com'
-# S3_URL = 'http://static.rocketlistings.com/'
-
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
 MEDIA_ROOT = normpath(join(DJANGO_ROOT, 'media'))
 
@@ -104,7 +101,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
-    # "listings.context_processors.s3_url",
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders

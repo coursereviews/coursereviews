@@ -21,11 +21,6 @@ THUMBNAIL_DEBUG = DEBUG
 # See: https://docs.djangoproject.com/en/dev/topics/email/#console-backend
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-############# MAILGUN CONFIG
-#EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
-MAILGUN_ACCESS_KEY = 'key-9flqj538z-my-qcnpc74c2wit4vibl-3'
-MAILGUN_SERVER_NAME = 'dev.rocketlistings.mailgun.org'
-
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
@@ -71,7 +66,7 @@ MIDDLEWARE_CLASSES += (
 
 DEBUG_TOOLBAR_CONFIG = { 'INTERCEPT_REDIRECTS': False }
 
-# STATICFILES_STORAGE = 'rocket.settings.storage.S3PipelineStorage'
+# STATICFILES_STORAGE = 'coursereviews.settings.storage.S3PipelineStorage'
 
 # See: http://docs.celeryproject.org/en/latest/configuration.html#broker-transport
 # BROKER_TRANSPORT = 'amqplib'

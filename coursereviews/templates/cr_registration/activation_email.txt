@@ -1,11 +1,13 @@
 Hey there!
 
-Thanks for registering with Rocket Listings. Copy and paste the link below into your browser to activate your account:
+Thanks for signing up for Midd Courses. Click the link below or copy and paste it into your browser to activate your account.
 
 http://{{site}}{% url 'registration_activate' activation_key %}
 
-This link expires in {{expiration_days}} days.
+If you didn't sign up for an account, you can ignore this email.
+
+This link expires in {{ expiration_days }} days.
 
 Thanks,
 
-The Rocket Listings team.
+The Midd Courses Team
