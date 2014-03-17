@@ -7,7 +7,7 @@
 - model: sites.site
   pk: 2
   fields:
-    domain: 'courserevie.ws'
+    domain: 'www.middcourses.com'
     name: 'CourseRevie.ws Prod'
 
 # password is 'test'

@@ -13,7 +13,7 @@ from registration.forms import RegistrationForm
 from users.models import UserProfile
 from reviews.models import Professor
 
-def activate(request, backend,
+def activate(request,
              template_name='registration/activate.html',
              success_url=None, extra_context=None, **kwargs):
     backend = Backend()
