@@ -9,9 +9,12 @@ from django.template.response import TemplateResponse
 from django.core.mail import send_mail
 from django.conf import settings
 
-from users.forms import ProfRegErrorForm
+from users.forms import ProfRegErrorForm 
 
 def professor_registration_error(request):
+    if request.user.is_authenticated():
+        return redirect('index')
+
     if request.method == 'POST':
         form = ProfRegErrorForm(request.POST)
         if form.is_valid():

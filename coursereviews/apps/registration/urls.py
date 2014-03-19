@@ -47,6 +47,7 @@ from registration.forms import AuthenticationForm
 from static_pages.views import splash
 from registration.views import activate
 from registration.views import register
+from registration.views import professor_register
 
 
 urlpatterns = patterns('',
@@ -96,8 +97,9 @@ urlpatterns = patterns('',
         name='registration_activate'),
     url(r'^register/$',
         register,
-        { 'template_name': 'static_pages/splash.html', 'extra_context': { 'tab': '#sign-up' }},
+        { 'template_name': 'static_pages/splash.html' },
         name='registration_register'),
+    url(r'^register/professor/$', professor_register, name='professor_register'),
     url(r'^register/sent$', 
         splash, 
         { 'message': 'Thanks for signing up!', 'sub_message': 'We sent your email an account activation link.'}, 

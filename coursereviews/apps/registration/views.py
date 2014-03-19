@@ -53,17 +53,22 @@ def register(request, success_url=None,
             profile = UserProfile.objects.get(user=new_user)
             profile.save()
 
+            # Initialize professor with a model instance
             professor = Professor()
             is_professor = request.POST.get('is_professor', '')
 
+            # Check if the email matches a professor in the db
             try:
                 professor = Professor.objects.get(email=form.cleaned_data['email'])
             except Professor.DoesNotExist:
-                # Not a professor in our db
+                # Not a professor in our db, but user came from
+                # professor registration page
                 if is_professor:
                     return redirect('prof_reg_error')
 
             # If a professor signed up but didn't check the box
+            # Checking the email field tells if the professor instance
+            # is now a real professor
             if professor.email:
                 profile.professor_assoc = professor
                 profile.save()
@@ -86,3 +91,29 @@ def register(request, success_url=None,
         context[key] = callable(value) and value() or value
 
     return render_to_response(template_name, {'form': form}, context_instance=context)
+
+def professor_register(request):
+    if request.user.is_authenticated():
+        return redirect('index')
+
+    context = RequestContext(request)
+
+    if request.method == 'POST':
+        form = RegistrationForm(data=request.POST)
+        if form.is_valid():
+            professor = Professor()
+
+            try:
+                professor = Professor.objects.get(email=form.cleaned_data['email'])
+                return register(request, template_name='cr_registration/professor_registration_form.html')
+            except Professor.DoesNotExist:
+                return redirect('prof_reg_error')
+
+        else:
+            return render_to_response('cr_registration/professor_registration_form.html',
+                                      {'form': form}, context_instance=context)
+
+    else:
+        form = RegistrationForm()
+        return render_to_response('cr_registration/professor_registration_form.html',
+                                  {'form': form}, context_instance=context)
