@@ -13,8 +13,8 @@
           <input type="hidden" name="prof_course" id="id_prof_course" data-placeholder="Dropdown to search" {% if form.prof_course.value %}value="{{ form.prof_course.value }}"{% endif %}>
           <script type="text/javascript" id="prof_course_choices">
           [
-            {% for option in form.prof_course.field.choices.queryset %}
-              {% templatetag openbrace %}"id": {{ forloop.counter }}, "text": "{{ option }}"{% templatetag closebrace %}{% if not forloop.last %},{% endif %}
+            {% for key, option in form.fields.prof_course.choices %}
+              {% templatetag openbrace %}"id": {{ key }}, "text": "{{ option }}"{% templatetag closebrace %}{% if not forloop.last %},{% endif %}
             {% endfor %}
           ]
           </script>

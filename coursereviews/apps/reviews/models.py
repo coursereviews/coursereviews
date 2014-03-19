@@ -41,7 +41,7 @@ class Professor(models.Model):
         return self.first + ' ' + self.last
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.last)
+        self.slug = slugify(self.first + '-' + self.last)
         self.lookup = self.__unicode__()
         super(Professor, self).save(*args, **kwargs)
 
