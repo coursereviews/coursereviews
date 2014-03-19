@@ -5,7 +5,7 @@ from sys import path
 from os.path import abspath, basename, dirname, join, normpath
 # from djcelery import setup_loader
 from os import environ
-
+import socket
 
 # Absolute filesystem path to the Django project directory:
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
@@ -32,6 +32,9 @@ MANAGERS = ADMINS = (
     ('Teddy Knox', 'teddy@rocketlistings.com'),
     ('Dana Silver', 'dsilver1221@gmail.com'),
 )
+
+# Add host to error messages
+SERVER_ADMIN = 'alerts+{0}@middcourses.com'.format(socket.gethostname())
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {

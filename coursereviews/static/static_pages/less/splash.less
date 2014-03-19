@@ -27,7 +27,7 @@ svg {
   @media (min-width: 992px) {
     font-size: 75px;
     text-align: right;
-    margin: 150px 0 0 0;
+    margin: 140px 0 0 0;
   }
   .midd {
     color: #3376b1;
@@ -55,7 +55,7 @@ svg {
   input:not([type='checkbox']) {
     height: 40px;
   }
-  label {
+  label.control-label {
     padding-top: 10px !important;
   }
   .help-block {
@@ -68,7 +68,7 @@ svg {
     }
   }
   @media (min-width: 992px) {
-    margin-top: 145px;
+    margin-top: 130px;
   }
 }
 
@@ -102,5 +102,16 @@ svg {
         color: #666;
       }
     }
+  }
+}
+
+// Navigation added here (also in base.less)
+// because base.less doesn't get applied to the splash
+.navigation {
+  float: right;
+  a {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
   }
 }
