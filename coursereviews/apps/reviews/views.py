@@ -109,7 +109,7 @@ def prof_detail(request, prof_slug):
                                                   'prof_help',
                                                   'prof_feedback',
                                                   'comment',
-                                                  'prof_course', 'date'), prof_courses), [])
+                                                  'prof_course', 'date'), prof_courses))
 
         aggregator = Review_Aggregator(reviews, attach_comment_slug=True)
         stats = aggregator.aggregate(as_dict=True)
