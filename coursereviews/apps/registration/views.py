@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.contrib.auth import views as auth_views
+from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from registration.backend import Backend
@@ -10,32 +11,26 @@ from django import forms
 from django.forms.util import ErrorList
 
 from registration.forms import RegistrationForm
+from registration.models import RegistrationProfile
+from registration import signals
 from users.models import UserProfile
 from reviews.models import Professor
 
-def activate(request,
-             template_name='registration/activate.html',
-             success_url=None, extra_context=None, **kwargs):
-    backend = Backend()
-    account = backend.activate(request, **kwargs)
-
+def activate(request, extra_context=None, activation_key=None, **kwargs):
+    account = RegistrationProfile.objects.activate_user(activation_key)
     if account:
-        if success_url is None:
-            to, args, kwargs = backend.post_activation_redirect(request, account)
-            return redirect(to, *args, **kwargs)
-        else:
-            return redirect(success_url)
-
-    if extra_context is None:
-        extra_context = {}
-    context = RequestContext(request)
-    for key, value in extra_context.items():
-        context[key] = callable(value) and value() or value
-
-    return render_to_response(template_name,
-                              kwargs,
-                              context_instance=context)
-
+        account.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, account)
+        signals.user_activated.send(sender=None, user=account, request=request)
+        return redirect('index')
+    else:
+        if extra_context is None:
+            extra_context = {}
+        context = RequestContext(request)
+        for key, value in extra_context.items():
+            context[key] = callable(value) and value() or value
+        kwargs['activation_key'] = activation_key
+        return render_to_response('cr_registration/activate.html', kwargs, context_instance=context)
 
 def register(request, success_url=None,
              disallowed_url='registration_disallowed',
