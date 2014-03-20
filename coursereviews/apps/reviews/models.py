@@ -200,7 +200,7 @@ class Review(models.Model):
     # grade = models.CharField(max_length=1, choices=GRADE_CHOICES)
 
     ## Additional comments:
-    comment = models.TextField()
+    comment = models.TextField(null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse('view_review', args=[self.id])
