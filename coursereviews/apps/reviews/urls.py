@@ -22,4 +22,6 @@ urlpatterns = patterns('reviews.views',
 
 urlpatterns += patterns('reviews.api',
     url(r'^api/(?P<pk>\d+)/comment$', api.Comment.as_view()),
+    url(r'^api/typeahead/courses$', 'typeahead_courses', name='typeahead_courses'),
+    url(r'^api/typeahead/professors$', 'typeahead_professors', name='typeahead_professors'),
 )
