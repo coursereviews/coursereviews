@@ -65,7 +65,7 @@ INSTALLED_APPS += (
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATICFILES_STORAGE = 'coursereviews.settings.storage.NonPackagingS3PipelineStorage'
 
-STATIC_URL = environ.get('AWS_S3_URL', '')
+STATIC_URL = environ.get('AWS_S3_URL', '') + '/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
