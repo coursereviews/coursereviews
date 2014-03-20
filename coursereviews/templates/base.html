@@ -35,7 +35,7 @@
       {% compressed_js 'local_libs_production' %}
       
       {# development #}
-      <script type="text/javascript">var STATIC_URL={{ STATIC_URL }};</script>
+      <script type="text/javascript">var STATIC_URL='{{ STATIC_URL|escapejs }}';</script>
       {# {% compressed_js 'local_libs_development' %} #}
       
       {% block js %}{% endblock %}
