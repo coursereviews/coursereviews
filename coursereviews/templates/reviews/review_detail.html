@@ -71,10 +71,12 @@
             <table>
             <tbody>
               <tr data-comment-id="">
+                {% comment %}
                 <td class="comment-voting">
                   <span class="glyphicon glyphicon-arrow-up upvote"></span>
                   <span class="glyphicon glyphicon-arrow-down downvote"></span>
                 </td>
+                {% endcomment %}
                 <td class="comment-body">
                   {{ comment.comment }}
                   <span class="dash">&nbsp;&mdash;&nbsp;</span>
@@ -86,15 +88,19 @@
             </div>
           {% endfor %}
         {% else %}
+          <ul class="list-unstyled">
           {% for comment in comments %}
             <li>
+              {% comment %}
               <div class="comment-voting">
                 <span class="glyphicon glyphicon-arrow-up"></span>
                 <span class="glyphicon glyphicon-arrow-down"></span>
               </div>
+              {% endcomment %}
               {{ comment }}
             </li>
           {% endfor %}
+          </ul>
         {% endif %}
         </div>
         {% endif %}
