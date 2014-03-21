@@ -100,16 +100,19 @@ def prof_detail(request, prof_slug):
     user_professor = request.user.get_profile().professor_assoc
     if user_professor == None or user_professor == professor:
 
-        reviews = reduce(__or__,
-                         map(lambda pc: pc.reviews \
-                                          .all()   \
-                                          .values('another',
-                                                  'prof_lecturing',
-                                                  'prof_leading',
-                                                  'prof_help',
-                                                  'prof_feedback',
-                                                  'comment',
-                                                  'prof_course', 'date'), prof_courses))
+        try:
+            reviews = reduce(__or__,
+                             map(lambda pc: pc.reviews \
+                                              .all()   \
+                                              .values('another',
+                                                      'prof_lecturing',
+                                                      'prof_leading',
+                                                      'prof_help',
+                                                      'prof_feedback',
+                                                      'comment',
+                                                      'prof_course', 'date'), prof_courses))
+        except TypeError:
+            reviews = []
 
         aggregator = Review_Aggregator(reviews, attach_comment_slug=True)
         stats = aggregator.aggregate(as_dict=True)

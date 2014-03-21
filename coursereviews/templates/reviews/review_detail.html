@@ -31,6 +31,7 @@
     <small><a href="mailto:{{ prof.email }}">{{ prof.email }}</a></small>
   </h2>
   <h4><a href="{{ prof.dept }}">{{ prof.dept }}</a></h4>
+  {% if prof_courses %}
   <span class="h4">
     Teaches
     <ul style="display: inline-block;" class="list-inline">
@@ -39,6 +40,7 @@
       {% endfor %}
     </ul>
   </span>
+  {% endif %}
 
   {% else %}
   <h2 class="review-title">
