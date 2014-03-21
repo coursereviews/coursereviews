@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  // Initialize typeahead on the homepage
   $("input#search-bar").typeahead([
   {
     name: 'professors',
