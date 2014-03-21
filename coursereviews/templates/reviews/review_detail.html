@@ -28,7 +28,9 @@
   {% elif type == 'prof' %}
   <h2 class="review-title">
     {{ prof }}&nbsp;
+    {% if prof.email %}
     <small><a href="mailto:{{ prof.email }}">{{ prof.email }}</a></small>
+    {% endif %}
   </h2>
   <h4><a href="{{ prof.dept }}">{{ prof.dept }}</a></h4>
   {% if prof_courses %}
