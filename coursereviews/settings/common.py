@@ -338,7 +338,7 @@ AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
-DEFAULT_FROM_EMAIL = 'dana@middcourses.com'
+DEFAULT_FROM_EMAIL = 'MiddCourses <notifications@middcourses.com>'
 
 LOGIN_URL = '/login/' # references users/urls.py name
 
