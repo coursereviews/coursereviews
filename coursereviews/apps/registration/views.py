@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import AuthenticationForm
@@ -20,6 +21,7 @@ def activate(request,
     account = backend.activate(request, **kwargs)
 
     if account:
+        messages.add_message(request, messages.INFO, "Your account was successfully activated!")
         if success_url is None:
             to, args, kwargs = backend.post_activation_redirect(request, account)
             return redirect(to, *args, **kwargs)

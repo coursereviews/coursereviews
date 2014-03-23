@@ -2,6 +2,18 @@
 
 {% block content %}
 {% include 'partials/logo.html' %}
+{% if messages %}
+<div class="row">
+  <div class="col-sm-6">
+    {% for message in messages %}
+    <div class="alert alert-info alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
 <form class="form-horizontal fixed-width-form" action="{% url 'auth_login' %}" method="POST">
   {% csrf_token %}
   <div class="form-group">

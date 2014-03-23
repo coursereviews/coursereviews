@@ -7,7 +7,7 @@ from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 
 from registration.signals import user_activated
-from django.contrib.auth import login
+# from django.contrib.auth import login
 from django.contrib.auth import authenticate
 
 
@@ -140,10 +140,10 @@ class Backend(object):
         """
         return ('registration_activation_complete', (), {})
      
-    def login_on_activation(sender, user, request, **kwargs):
-        """Logs in the user after activation"""
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
-        login(request, user)
+    # def login_on_activation(sender, user, request, **kwargs):
+    #     """Logs in the user after activation"""
+    #     user.backend = 'django.contrib.auth.backends.ModelBackend'
+    #     login(request, user)
 
-    # Registers the function with the django-registration user_activated signal
-    user_activated.connect(login_on_activation)
+    # # Registers the function with the django-registration user_activated signal
+    # user_activated.connect(login_on_activation)
