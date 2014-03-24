@@ -11,6 +11,12 @@
   {% include 'partials/logo.html' %}
   <div class="row">
     <div class="col-sm-6 col-md-6">
+      {% for message in messages %}
+        <div class="alert alert-info alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          {{ message }}
+        </div>
+      {% endfor %}
       <form class="big-search" method="GET" action="/search">
         <input id="search-bar" class="form-control input-lg" type="text" name="q" placeholder="Search for Professors or Courses">
       </form>
@@ -18,27 +24,40 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-sm-12">
-    {% for department in profs_courses_by_dept %}
-      <ul class="courses-list list-unstyled">
-        <h4>{{ department.dept.name }}</h4>
-        <div class="dept courses">
-          <h5>Courses</h5>
-          {% for course in department.courses %}
-            <li><a href="{{ course.get_absolute_url }}">{{ course.title }}</a></li>
-          {% endfor %}
-        </div>
-        <div class="dept profs">
-          {% if department.profs|length > 0 %}
-            <h5>Professors</h5>
-            {% for prof in department.profs %}
-              <li><a href="{{ prof.get_absolute_url }}">{{ prof }}</a></li>
+  {% with quota=request.user.get_profile.quota %}
+    {% if quota > 0 %}
+      <h4>Write {{ quota }} more review{{ quota|pluralize }} to gain access to reviews.</h4>
+    {% endif %}
+    <div class="row">
+      <div class="col-sm-12">
+      {% for department in profs_courses_by_dept %}
+        <ul class="courses-list list-unstyled">
+          <h4>{{ department.dept.name }}</h4>
+          <div class="dept courses">
+            <h5>Courses</h5>
+            {% for course in department.courses %}
+              {% if quota > 0 %}
+                <li class="text-muted">{{ course.title }}</li>
+              {% else %}
+                <li><a href="{{ course.get_absolute_url }}">{{ course.title }}</a></li>
+              {% endif %}
             {% endfor %}
-          {% endif %}
-        </div>
-      </ul>
-    {% endfor %}
+          </div>
+          <div class="dept profs">
+            {% if department.profs|length > 0 %}
+              <h5>Professors</h5>
+              {% for prof in department.profs %}
+                {% if quota > 0 %}
+                <li class="text-muted">{{ prof }}</li>
+                {% else %}
+                <li><a href="{{ prof.get_absolute_url }}">{{ prof }}</a></li>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          </div>
+        </ul>
+      {% endfor %}
+      </div>
     </div>
-  </div>
+  {% endwith %}
 {% endblock %}

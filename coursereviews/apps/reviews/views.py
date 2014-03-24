@@ -21,15 +21,9 @@ from rest_framework.response import Response
 from operator import __or__, __and__
 import json
 
-@login_required
-def quota(request):
-    return TemplateResponse(request, 'reviews/quota.html')
-
-@quota_required
 def browse(request):
-
     user_professor = request.user.get_profile().professor_assoc
-    if user_professor == None:
+    if not user_professor:
         departments = Department.objects.all().order_by('name').select_related()
         profs_courses_by_dept = []
 
@@ -42,7 +36,7 @@ def browse(request):
             if dept_courses:
                 profs_courses_by_dept.append({ 'dept': dept, 'courses': dept_courses, 'profs': dept_profs })
 
-        return TemplateResponse(request, 'reviews/student_browse.html', { 'profs_courses_by_dept': profs_courses_by_dept })
+        return TemplateResponse(request, 'reviews/student_browse.html', {  'profs_courses_by_dept': profs_courses_by_dept })
     else:
         courses = ProfCourse.objects.filter(prof=user_professor)
         return TemplateResponse(request, 'reviews/prof_browse.html', { 'professor': user_professor, 'courses': courses })
@@ -90,6 +84,9 @@ def course_detail(request, course_slug):
     else:
         raise Http404
 
+
+@login_required
+@quota_required
 def prof_detail(request, prof_slug):
     professor = get_object_or_404(Professor.objects.select_related(), slug=prof_slug)
 
@@ -132,6 +129,9 @@ def prof_detail(request, prof_slug):
     else:
         raise Http404
 
+
+@login_required
+@quota_required
 def prof_course_detail(request, course_slug, prof_slug):
     prof_course = get_object_or_404(ProfCourse.objects.select_related(), 
                                     course__slug__exact=course_slug, 

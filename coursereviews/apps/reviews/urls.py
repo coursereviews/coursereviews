@@ -5,8 +5,6 @@ from reviews import api
 
 # serving up static pages with RequestContext variables
 urlpatterns = patterns('reviews.views',
-    url(r'^quota$', 'quota', name='quota'),
-
     url(r'^review/new$', 'create', name='new_review'),
     url(r'^review/(?P<review_id>\d+)$', 'edit', name='edit_review'),
     url(r'^review/(?P<review_id>\d+)/delete$', 'delete', name='delete_review'),
