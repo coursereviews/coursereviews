@@ -49,7 +49,7 @@ def register(request, template_name='static_pages/splash.html'):
                     return redirect('prof_reg_error')
                 # else drop down to normal registration
 
-            messages.add_message(request, messages.INFO, "Great. Check your email for an account activation link to get started!")
+            messages.add_message(request, messages.INFO, "Thanks for signing up! Check your email for an activation link.")
             success_url = request.GET.get('next')
             if success_url:
                 return redirect(success_url)

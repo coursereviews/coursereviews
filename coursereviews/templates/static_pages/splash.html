@@ -26,15 +26,33 @@
         <h2 class="subtitle">Choose your courses. Better.</h2>
       </div>
       <div class="col-md-6">
-        {# <div class="row"> #}
+        <div class="messages-mobile hidden-md hidden-lg">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+
         {% include 'cr_registration/registration_form.html' %}
-        {% for message in messages %}
-          <div class="alert alert-info alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ message }}
+
+        <div class="hidden-xs hidden-sm">
+          {% if messages %}
+          <div class="row">
+            <div class="col-md-8 col-md-offset-4">
+            {% for message in messages %}
+              <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{ message }}
+              </div>
+            {% endfor %}
+            </div>
           </div>
-        {% endfor %}
-        {# </div> #}
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
