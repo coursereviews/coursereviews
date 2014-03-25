@@ -17,28 +17,45 @@ $(function() {
   // D3.js, display the stats
   var $statsContainer = $("#stats-container"),
       barHeight = 30,
-      margin = {top: 10, right: 10, bottom: 20, left: 10},
-      // Subtract 10 from width because of right border on body
-      width = $statsContainer.width() - 10;
+      margin = {top: 10, right: 10, bottom: 20, left: 10};
 
-  var x = d3.scale.linear()
-      .range([0, width]);
+  var x = d3.scale.linear();
 
   var xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom");
 
   var sortedStats = [];
-  for (var key in stats) {
-    if (key !== 'comments' &&
-        key !== 'date' &&
-        key !== 'prof_course_id') {
-      sortedStats.push({'key': key, 'stats': stats[key]});
-    }
-  }
-  sortedStats.sort(function(a,b) { return questionLookup.keys().indexOf(a.key) - questionLookup.keys().indexOf(b.key); });
+  d3.json(window.location.protocol + '//' + window.location.hostname
+        + (window.location.port ? ':' + window.location.port: '')
+        + '/api' + window.location.pathname + '/stats')
+      .header('X-CSRFToken', getCookie('csrftoken'))
+      .get(function(error, stats) {
+        if (error) throw error;
 
-  sortedStats.forEach(function(d) {
+        stats = JSON.parse(stats);
+        for (var key in stats) {
+          if (key !== 'comments' &&
+              key !== 'date' &&
+              key !== 'prof_course_id') {
+            sortedStats.push({'key': key, 'stats': stats[key]});
+          }
+        }
+        sortedStats.sort(function(a,b) {
+          return questionLookup.keys().indexOf(a.key) - 
+                 questionLookup.keys().indexOf(b.key);
+        });
+
+        makeCharts(sortedStats);
+      });
+
+  function makeCharts(stats) {
+    // Subtract 10 from width because of right border on body
+    width = $statsContainer.width() - 10;
+
+    x.range([0, width]);
+
+    stats.forEach(function(d) {
       var data = [];
       for (var k in d.stats) {
         data.push({'key': k, 'value': d.stats[k]});
@@ -88,7 +105,7 @@ $(function() {
           .attr('y', barHeight / 2 - 1)
           .attr('dy', '.35em')
           .attr('text-anchor', 'end')
-          .text(function(d) { return "" + d.key });
+          .text(function(d) { return '' + d.key });
 
       chart.append('g')
           .attr('class', 'x axis')
@@ -97,29 +114,11 @@ $(function() {
         .append('text')
           .attr('transform', 'translate(8,18)')
           .text('votes');
-  });
+    });
+  }
 
-  var charts = d3.selectAll('.middcourses-chart');
-  d3.select(window).on('resize', function() {
-    var newWidth = $statsContainer.width() - 10;
-
-    charts.attr('width', newWidth + margin.left + margin.right);
-
-    x.range([0, newWidth]);
-
-    charts.select('rect').attr('width', function(d) { return x(d.value); });
-    charts.select('text').attr('x', function(d) { return x(d.value) - 10; });
-
-    charts.select('g.x.axis').remove();
-    charts.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', function(d) { 
-          var rects = $(this.parentNode).find('rect');
-          return 'translate(10,' + (rects.length * barHeight + 10) + ')'; 
-        })
-        .call(xAxis)
-      .append('text')
-        .attr('transform', 'translate(8,18)')
-        .text('votes');
+  $(window).on("resize", function() {
+    $statsContainer.empty();
+    makeCharts(sortedStats);
   });
 });

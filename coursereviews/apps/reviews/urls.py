@@ -11,7 +11,7 @@ urlpatterns = patterns('reviews.views',
 
     url(r'^course/(?P<course_slug>[-\w\d]+)$', 'course_detail', name='course_detail'),
     url(r'^professor/(?P<prof_slug>[-\w\d]+)$', 'prof_detail', name='prof_detail'),
-    url(r'^course/(?P<course_slug>[-\w\d]+)/(?P<prof_slug>[-\w\d]+)$', 'prof_course_detail', name='prof_course_detail'),    
+    url(r'^course/(?P<course_slug>[-\w\d]+)/(?P<prof_slug>[-\w\d]+)$', 'prof_course_detail', name='prof_course_detail'),
 
     url(r'^search$', 'search', name="search"),
 
@@ -22,4 +22,14 @@ urlpatterns += patterns('reviews.api',
     url(r'^api/(?P<pk>\d+)/comment$', api.Comment.as_view()),
     url(r'^api/typeahead/courses$', 'typeahead_courses', name='typeahead_courses'),
     url(r'^api/typeahead/professors$', 'typeahead_professors', name='typeahead_professors'),
+
+    url(r'^api/course/(?P<course_slug>[-\w\d]+)/stats$',
+        'course_detail_stats',
+        name='course_detail_stats'),
+    url(r'^api/professor/(?P<prof_slug>[-\w\d]+)/stats$',
+        'prof_detail_stats',
+        name='prof_detail_stats'),
+    url(r'^api/course/(?P<course_slug>[-\w\d]+)/(?P<prof_slug>[-\w\d]+)/stats$',
+        'prof_course_detail_stats',
+        name='prof_course_detail_stats'),
 )
