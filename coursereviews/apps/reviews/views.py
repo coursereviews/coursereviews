@@ -18,7 +18,7 @@ from haystack.query import SearchQuerySet
 from haystack.inputs import Clean
 from rest_framework.response import Response
 
-from operator import __or__, __and__
+from operator import __or__, attrgetter
 import json
 
 def browse(request):
@@ -54,32 +54,13 @@ def course_detail(request, course_slug):
     if user_professor == None or user_professor in [pc.prof for pc in prof_courses]:
 
         # Gather all the reviews for a course
-        reviews = reduce(__or__, 
-                         map(lambda pc: pc.reviews \
-                                          .all()   \
-                                          .values('components',
-                                                  'again',
-                                                  'hours',
-                                                  'grasp',
-                                                  'value',
-                                                  'why_take',
-                                                  'comment'), prof_courses))
+        reviews = sorted(reduce(__or__, map(lambda pc: pc.reviews.all(), prof_courses)),
+                         key=attrgetter('vote_difference'), reverse=True)
 
-        # Aggregate the values
-        aggregator = Review_Aggregator(reviews)
-        stats = aggregator.aggregate(as_dict=True)
-
-        try:
-            comments = stats['comments']
-        except KeyError:
-            comments = []
-
-        return TemplateResponse(request, 
-                                'reviews/review_detail.html', 
+        return TemplateResponse(request, 'reviews/review_detail.html', 
                                 { 'course': course, 
                                   'prof_courses': prof_courses,
-                                  'comments': comments,
-                                  'data': json.dumps(stats),
+                                  'reviews': reviews,
                                   'type': 'course' })
     else:
         raise Http404
@@ -98,33 +79,15 @@ def prof_detail(request, prof_slug):
     if user_professor == None or user_professor == professor:
 
         try:
-            reviews = reduce(__or__,
-                             map(lambda pc: pc.reviews \
-                                              .all()   \
-                                              .values('another',
-                                                      'prof_lecturing',
-                                                      'prof_leading',
-                                                      'prof_help',
-                                                      'prof_feedback',
-                                                      'comment',
-                                                      'prof_course', 'date'), prof_courses))
+            reviews = sorted(reduce(__or__, map(lambda pc: pc.reviews.all(), prof_courses)),
+                             key=attrgetter('vote_difference'), reverse=True)
         except TypeError:
             reviews = []
 
-        aggregator = Review_Aggregator(reviews, attach_comment_slug=True)
-        stats = aggregator.aggregate(as_dict=True)
-
-        try:
-            comments = stats['comments']
-        except KeyError:
-            comments = []
-
-        return TemplateResponse(request, 
-                                'reviews/review_detail.html', 
+        return TemplateResponse(request, 'reviews/review_detail.html', 
                                 { 'prof': professor, 
                                   'prof_courses': prof_courses,
-                                  'comments': comments,
-                                  'data': json.dumps(stats),
+                                  'reviews': reviews,
                                   'type': 'prof' })
     else:
         raise Http404
@@ -141,24 +104,12 @@ def prof_course_detail(request, course_slug, prof_slug):
     if user_professor == None or user_professor == prof_course.prof:
 
         # Get all reviews for the prof_courses
-        reviews = prof_course.reviews.all().values('components', 'again', 'hours',
-                                                   'another', 'grasp', 'prof_lecturing',
-                                                   'prof_leading', 'prof_help', 'prof_feedback',
-                                                   'value', 'why_take', 'comment', 'date')
-
-        aggregator = Review_Aggregator(reviews)
-        stats = aggregator.aggregate(as_dict=True)
-
-        try:
-            comments = stats['comments']
-        except KeyError:
-            comments = []
+        reviews = sorted(prof_course.reviews.all(), key=attrgetter('vote_difference'), reverse=True)
 
         return TemplateResponse(request,
                                 'reviews/review_detail.html',
                                 { 'prof_course': prof_course,
-                                  'comments': comments,
-                                  'data': json.dumps(stats),
+                                  'reviews': reviews,
                                   'type': 'prof_course'})
     else:
         raise Http404

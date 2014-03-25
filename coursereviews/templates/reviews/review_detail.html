@@ -4,7 +4,6 @@
 {% block js %}
   <script src="{% static 'coursereviews/js/select2.min.js' %}"></script>
   <script src="{% static 'reviews/js/d3.v3.min.js' %}"></script>
-  <script>var stats = {{ data|safe }};</script>
   <script type="text/javascript" src="{% static 'reviews/js/detail.js' %}"></script>
 {% endblock %}
 
@@ -62,11 +61,12 @@
         
       </div>
       <div class="col-md-6">
-        {% if comments %}
+        {% if reviews %}
         <h4>Comments</h4>
         <div class="comments">
         {% if type == 'prof' %}
-          {% for comment in comments %}
+          {% for review in reviews %}
+            {% if review.comment %}
             <div class="comment">
             <table>
             <tbody>
@@ -78,18 +78,19 @@
                 </td>
                 {% endcomment %}
                 <td class="comment-body">
-                  {{ comment.comment }}
+                  {{ review.comment }}
                   <span class="dash">&nbsp;&mdash;&nbsp;</span>
-                  <a href="{{ comment.course_url }}">{{ comment.course_code }}</a>
+                  <a href="{{ review.prof_course.course.get_absolute_url }}">{{ review.prof_course.course.code }}</a>
                 </td>
               </tr>
             </tbody>
             </table>
             </div>
+            {% endif %}
           {% endfor %}
         {% else %}
           <ul class="list-unstyled">
-          {% for comment in comments %}
+          {% for review in reviews %}
             <li>
               {% comment %}
               <div class="comment-voting">
@@ -97,7 +98,7 @@
                 <span class="glyphicon glyphicon-arrow-down"></span>
               </div>
               {% endcomment %}
-              {{ comment }}
+              {% if review.comment %}{{ review.comment }}{% endif %}
             </li>
           {% endfor %}
           </ul>

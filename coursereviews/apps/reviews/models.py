@@ -202,5 +202,9 @@ class Review(models.Model):
     ## Additional comments:
     comment = models.TextField(null=True, blank=True)
 
+    @property
+    def vote_difference(self):
+        return self.up_votes.count() - self.down_votes.count()
+
     def get_absolute_url(self):
         return reverse('view_review', args=[self.id])
