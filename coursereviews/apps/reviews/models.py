@@ -19,6 +19,13 @@ class Department(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
 
+    @property
+    def slug(self):
+        return slugify(self.name)
+
+    def get_absolute_url(self):
+        return reverse('index') + "#" + slugify(self.name)
+
     def __unicode__(self):
         return self.name
 

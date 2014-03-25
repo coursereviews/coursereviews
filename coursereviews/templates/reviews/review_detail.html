@@ -13,15 +13,13 @@
     {{ course.title }}&nbsp;
     <small>{{course.code}}</small>
   </h2>
-  <h4><a href="{{ course.dept }}">{{ course.dept }}</a></h4>
+  <h4><a href="{{ course.dept.get_absolute_url }}">{{ course.dept }}</a></h4>
   <p>{{ course.description }}</p>
   <span class="h4">
-    Taught by
-    <ul style="display: inline-block;" class="list-inline">
-      {% for prof_course in prof_courses %}
-      <li><a href="{{ prof_course.get_absolute_url }}">{{ prof_course.prof }}</a>{% if not forloop.last %},{% endif %}</li>
-      {% endfor %}
-    </ul>
+    See this course with
+    {% for prof_course in prof_courses %}
+    <a href="{{ prof_course.get_absolute_url }}">{{ prof_course.prof }}</a>{% if not forloop.last %},{% endif %}
+    {% endfor %}
   </span>
 
   {% elif type == 'prof' %}
@@ -31,15 +29,13 @@
     <small><a href="mailto:{{ prof.email }}">{{ prof.email }}</a></small>
     {% endif %}
   </h2>
-  <h4><a href="{{ prof.dept }}">{{ prof.dept }}</a></h4>
+  <h4><a href="{{ prof.dept.get_absolute_url }}">{{ prof.dept }}</a></h4>
   {% if prof_courses %}
   <span class="h4">
-    Teaches
-    <ul style="display: inline-block;" class="list-inline">
-      {% for prof_course in prof_courses %}
-      <li><a href="{{ prof_course.get_absolute_url }}">{{ prof_course.course.title }}</a>{% if not forloop.last %},{% endif %}</li>
-      {% endfor %}
-    </ul>
+    See {{ prof }}'s reviews for
+    {% for prof_course in prof_courses %}
+    <a href="{{ prof_course.get_absolute_url }}">{{ prof_course.course.title }}</a>{% if not forloop.last %},{% endif %}
+    {% endfor %}
   </span>
   {% endif %}
 
@@ -51,36 +47,34 @@
       <a href="{{ prof_course.prof.get_absolute_url }}">{{ prof_course.prof }}</a>
     </small>
   </h2>
-  <h4><a href="{{ prof_course.course.dept }}">{{ prof_course.course.dept }}</a></h4>
+  <h4><a href="{{ prof_course.course.dept.get_absolute_url }}">{{ prof_course.course.dept }}</a></h4>
   <p>{{ prof_course.course.description }}</p>
   {% endif %}
 
   <div id="review-body">
     <div class="row">
-      <div class="col-md-6" id="stats-container">
-        
-      </div>
+      <div class="col-md-6" id="stats-container"></div>
       <div class="col-md-6">
         {% if reviews %}
-        <h4>Comments</h4>
+        <h4>Comments<small class="pull-right">sorted by most valuable</small></h4>
         <div class="comments">
-        {% if type == 'prof' %}
           {% for review in reviews %}
             {% if review.comment %}
             <div class="comment">
             <table>
             <tbody>
               <tr data-comment-id="">
-                {% comment %}
                 <td class="comment-voting">
                   <span class="glyphicon glyphicon-arrow-up upvote"></span>
                   <span class="glyphicon glyphicon-arrow-down downvote"></span>
                 </td>
-                {% endcomment %}
                 <td class="comment-body">
                   {{ review.comment }}
-                  <span class="dash">&nbsp;&mdash;&nbsp;</span>
-                  <a href="{{ review.prof_course.course.get_absolute_url }}">{{ review.prof_course.course.code }}</a>
+                  {% if type == 'prof' %}
+                  <i class="comment-context">Course: <a href="{{ review.prof_course.course.get_absolute_url }}">{{ review.prof_course.course.code }}</a>
+                  {% elif type == 'course' %}
+                  <i class="comment-context">Professor: <a href="{{ review.prof_course.prof.get_absolute_url }}">{{ review.prof_course.prof }}</a></i>
+                  {% endif %}
                 </td>
               </tr>
             </tbody>
@@ -88,21 +82,6 @@
             </div>
             {% endif %}
           {% endfor %}
-        {% else %}
-          <ul class="list-unstyled">
-          {% for review in reviews %}
-            <li>
-              {% comment %}
-              <div class="comment-voting">
-                <span class="glyphicon glyphicon-arrow-up"></span>
-                <span class="glyphicon glyphicon-arrow-down"></span>
-              </div>
-              {% endcomment %}
-              {% if review.comment %}{{ review.comment }}{% endif %}
-            </li>
-          {% endfor %}
-          </ul>
-        {% endif %}
         </div>
         {% endif %}
       </div>

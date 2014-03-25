@@ -33,7 +33,7 @@
       <div class="col-sm-12">
       {% for department in profs_courses_by_dept %}
         <ul class="courses-list list-unstyled">
-          <h4>{{ department.dept.name }}</h4>
+          <h4 id="{{ department.dept.slug }}">{{ department.dept.name }}</h4>
           <div class="dept courses">
             <h5>Courses</h5>
             {% for course in department.courses %}
