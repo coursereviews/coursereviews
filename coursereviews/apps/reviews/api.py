@@ -7,6 +7,7 @@ from django.http import (Http404,
                          HttpResponse)
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 
 from reviews.models import (Review,
                             Professor,
@@ -14,6 +15,8 @@ from reviews.models import (Review,
                             ProfCourse)
 from reviews.serializers import CommentSerializer
 from reviews.utils import Review_Aggregator
+from reviews.decorators import no_professor_access
+from reviews.forms import FlagForm
 
 from operator import __or__
 import json
@@ -157,11 +160,19 @@ def prof_course_detail_stats(request, course_slug, prof_slug):
         return HttpResponse(404)
 
 @login_required
+@no_professor_access
 @csrf_protect
 @api_view(['POST',])
 def vote(request, review_id):
+    try:
+        review = Review.objects.get(id=review_id)
+    except Review.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if review.flagged:
+        return HttpResponse(status=403)
+
     user = request.user
-    review = Review.objects.get(id=review_id)
     vote_type = request.POST.get('vote_type', None)
 
     if vote_type == 'up':
@@ -171,8 +182,7 @@ def vote(request, review_id):
             if user in review.down_votes.all():
                 review.down_votes.remove(user)
                 
-            serializer = CommentSerializer(review, 
-                                           context={'request': request})
+            serializer = CommentSerializer(review, context={'request': request})
             return Response(serializer.data)
         else:
             return HttpResponse(json.dumps({'error': 'User has already upvoted this comment.'}), status=400)
@@ -184,8 +194,7 @@ def vote(request, review_id):
             if user in review.up_votes.all():
                 review.up_votes.remove(user)
 
-            serializer = CommentSerializer(review,
-                                           context={'request': request})
+            serializer = CommentSerializer(review, context={'request': request})
             return Response(serializer.data)
         else:
             return HttpResponse(json.dumps({'error': 'User has already downvoted this comment.'}), status=400)
@@ -193,6 +202,32 @@ def vote(request, review_id):
     else:
         return HttpResponse(status=403)
 
+@login_required
+@no_professor_access
+@csrf_protect
+@api_view(['POST',])
+def flag(request, review_id):
+    try:
+        review = Review.objects.get(id=review_id)
+    except Review.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if review.flagged:
+        return HttpResponse(status=403)
+
+    form = FlagForm(request.POST)
+    if form.is_valid():
+        user = request.user
+        review.flagged = True
+        review.flagged_by = user
+        review.flagged_count = F('flagged_count') + 1
+        review.why_flag = form.cleaned_data['why_flag']
+        review.save()
+
+        serializer = CommentSerializer(review, context={'request': request})
+        return Response(serializer.data)
+    else:
+        return HttpResponse(json.dumps({'errors': form.errors}), status=200)
 
 # Helper methods to tokenize Professor, Course models
 def get_course_tokens(course):

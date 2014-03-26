@@ -150,4 +150,47 @@ $(function() {
     });
   });
 
+  var $flagModal = $('#flagModal'),
+      $flagModalErrors = $flagModal.find('#errors');
+  $('.flag').on('click', function() {
+    var id = $(this).data('comment-id'),
+        commentBody = $('.comment[data-comment-id="' + id + '"]')
+                      .find('.comment-body').text();
+
+    $flagModal.find('#modalCommentBody').text(commentBody);
+    $flagModal.data('comment-id', id);
+    $flagModal.modal('show');
+  });
+
+  $flagModal.on('hidden.bs.modal', function() {
+    $('input').attr('checked', false);
+    $flagModalErrors.text('').addClass('hide');
+  });
+
+  $('#submitFlag').on('click', function() {
+    var id = $flagModal.data('comment-id');
+    $.ajax({
+      type: 'POST',
+      url: '/api/' + id + '/flag',
+      data: $flagModal.find('#flagForm').serialize(),
+      dataType: 'json',
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+      },
+      success: function(res) {
+        if (res.hasOwnProperty('errors')) {
+          for (var err in res.errors.why_flag) {
+            // Only need to check why_flag, as we only have one field
+            $flagModalErrors.text(res.errors.why_flag[err]);
+          }
+          $flagModalErrors.removeClass('hide');
+        }
+        else if (res.flagged === true){
+          $flagModal.modal('hide');
+          $('.comment[data-comment-id="' + res.id + '"]')
+            .fadeOut(function() { $(this).remove(); });
+        }
+      }
+    });
+  });
 });

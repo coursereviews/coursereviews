@@ -11,6 +11,8 @@
   visibility: hidden;
 }
 
+body.modal-open { margin-right: 0px; }
+
 form.edit-review {
   padding-bottom: 20px;
   label { font-weight: 500 !important; }
@@ -185,23 +187,34 @@ h2.review-title {
   }
 }
 
+.no-reviews {
+  text-align: center;
+  margin-top: 20px;
+}
+
 .comments {
   .comment {
     padding-bottom: 10px;
-    .comment-voting {
-      width: 40px;
+    .comment-voting,
+    .comment-flagging {
       vertical-align: top;
-      font-size: 20px;
       color: #b4b4b4;
       text-align: center;
+      &:hover { cursor: pointer; }
+    }
+    .comment-voting {
+      font-size: 20px;
+      width: 40px;
       .upvote { margin-left: -2px; }
       .downvote  { margin-right: -1px; }
       .upvote-highlight { color: #47a447; }
       .downvote-highlight { color: #d9534f; }
       span {
         font-weight: 900;
-        &:hover { cursor: pointer; }
       }
+    }
+    .comment-flagging {
+      span:hover { color: darken(#b4b4b4, 10%); }
     }
     .comment-body {
       vertical-align: top;
@@ -217,6 +230,10 @@ h2.review-title {
       a { color: #888; }
     }
   }
+}
+
+#flagForm {
+  margin: 20px 0;
 }
 
 svg {

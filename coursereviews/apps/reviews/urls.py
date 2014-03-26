@@ -31,4 +31,5 @@ urlpatterns += patterns('reviews.api',
         'prof_course_detail_stats',
         name='prof_course_detail_stats'),
     url(r'^api/(?P<review_id>\d+)/vote$', 'vote', name='vote_review'),
+    url(r'^api/(?P<review_id>\d+)/flag$', 'flag', name='flag_review'),
 )

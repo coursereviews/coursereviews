@@ -7,10 +7,11 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Review
         exclude = (
             'prof_course', 'date', 'flagged_by',
-            'flagged_count', 'components', 'again',
-            'hours', 'another', 'grasp', 'prof_lecturing',
-            'prof_leading', 'prof_feedback', 'prof_help',
-            'value', 'why_take', 'user', 'up_votes', 'down_votes'
+            'flagged_count', 'flagged_mod', 'why_flag',
+            'components', 'again', 'hours', 'another',
+            'grasp', 'prof_lecturing', 'prof_leading',
+            'prof_feedback', 'prof_help', 'value', 'why_take',
+            'user', 'up_votes', 'down_votes',
         )
     
     def user_vote_type(self, obj):

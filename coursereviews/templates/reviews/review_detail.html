@@ -53,22 +53,25 @@
   {% endif %}
 
   <div id="review-body">
+    {% if reviews %}
     <div class="row">
       <div class="col-md-6" id="stats-container"></div>
       <div class="col-md-6">
-        {% if reviews %}
         <h4>Comments<small class="pull-right">sorted by most valuable</small></h4>
         <div class="comments">
+          {% if has_comments %}
           {% for review in reviews %}
             {% if review.comment %}
-            <div class="comment">
+            <div class="comment" data-comment-id="{{ review.id }}">
             <table>
             <tbody>
               <tr>
+                {% if not request.user.get_profile.professor_assoc %}
                 <td class="comment-voting" data-comment-id="{{ review.id }}">
                   <span class="glyphicon glyphicon-arrow-up upvote{% if request.user in review.up_votes.all %} upvote-highlight{% endif %}"></span>
                   <span class="glyphicon glyphicon-arrow-down downvote{% if request.user in review.down_votes.all %} downvote-highlight{% endif %}"></span>
                 </td>
+                {% endif %}
                 <td class="comment-body">
                   {{ review.comment }}
                   {% if type == 'prof' %}
@@ -77,15 +80,52 @@
                   <i class="comment-context">Professor: <a href="{{ review.prof_course.prof.get_absolute_url }}">{{ review.prof_course.prof }}</a></i>
                   {% endif %}
                 </td>
+                {% if not request.user.get_profile.professor_assoc != None %}
+                <td class="comment-flagging"><span class="glyphicon glyphicon-flag flag" data-comment-id="{{ review.id }}"></span></td>
+                {% endif %}
               </tr>
             </tbody>
             </table>
             </div>
             {% endif %}
           {% endfor %}
+          {% else %}
+          <p><b>There are no comments here! Maybe you want to <a href="{% url 'new_review' %}">write one</a>.</b></p>
+          {% endif %}
         </div>
-        {% endif %}
+      </div>
+    </div>
+    {% else %}
+    <p class="no-reviews"><b>There are no reviews here! Maybe you want to <a href="{% url 'new_review' %}">write one</a>.</b></p>
+    {% endif %}
+  </div>
+
+  {% if not request.user.get_profile.professor_assoc %}
+  <div class="modal" id="flagModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Are you sure you want to flag this comment?</h4>
+        </div>
+        <div class="modal-body">
+          <p><i><span id="modalCommentBody"></span></i></p>
+          <form id="flagForm">
+          {% for value, text in flag_form.why_flag.field.choices %}
+            <label>
+              <input type="radio" name="why_flag" value="{{ value }}"> {{ text }}
+            </label>
+          {% endfor %}
+          <div id="errors" class="alert alert-danger hide"></div>
+          </form>
+          <p>The comment and its associated review will not appear publically unless reinstated by the moderators. The original commenter will be notified, but you will remain anonymous.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Nevermind</button>
+          <button type="button" id="submitFlag" class="btn btn-danger">Flag this comment</button>
+        </div>
       </div>
     </div>
   </div>
+  {% endif %}
 {% endblock %}

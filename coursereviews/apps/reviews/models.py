@@ -111,9 +111,14 @@ class Review(models.Model):
     user = models.ForeignKey(User, related_name='reviews')
     date = models.DateField(auto_now_add=True)
 
+    FLAG_CHOICES = (('A', 'This comment contains hateful or obscene language.'),
+                    ('B', "This comment is not about this page's course or professor."),
+                    ('C', 'This comment is spam.'))
     flagged = models.BooleanField(default=False)
     flagged_by = models.ForeignKey(User, related_name='reviews_flag', blank=True, null=True)
+    flagged_mod = models.ForeignKey(User, related_name='reviews_mod_flag', blank=True, null=True)
     flagged_count = models.IntegerField(default=0)
+    why_flag = models.CharField(max_length=1, choices=FLAG_CHOICES, blank=True, null=True)
 
     up_votes = models.ManyToManyField(User, related_name='reviews_up_votes')
     down_votes = models.ManyToManyField(User, related_name='reviews_down_votes')
