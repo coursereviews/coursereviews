@@ -47,7 +47,9 @@ urlpatterns = patterns('',
         {'template_name': 'cr_registration/password_reset_done.html'},
         name='auth_password_reset_done'),
 
-    url(r'^activate/(?P<activation_key>\w+)/$', activate, name='registration_activate'),
+    url(r'^activate/(?P<activation_key>\w+)/$', activate,
+        {'template_name': 'cr_registration/activate.html'},
+        name='registration_activate'),
     url(r'^register/$', register, name='registration_register'),
     url(r'^register/professor/$', professor_register, name='professor_register'),
 )
