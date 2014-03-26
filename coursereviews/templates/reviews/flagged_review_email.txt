@@ -1,0 +1,9 @@
+Hi {{ name }},
+
+The comment on your review of {{ course }} with {{ prof }} has been flagged.
+
+{{ comment }}
+
+While the comment is reviewed by moderators, this review will not appear on the site.  We'll follow up to let you know the status of your review. If you think your comment was unfairly flagged, contact sga@middlebury.edu.
+
+The MiddCourses Team

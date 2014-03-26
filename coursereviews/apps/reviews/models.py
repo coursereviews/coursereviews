@@ -1,7 +1,10 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 from multiselectfield import MultiSelectField
 
 # Used for both ListingCategory and ListingType and Buyer
@@ -210,3 +213,24 @@ class Review(models.Model):
 
     def get_absolute_url(self):
         return reverse('view_review', args=[self.id])
+
+    def send_flagged_email(self):
+        ctx_dict = {'name': self.user.username,
+                    'course': self.prof_course.course.title,
+                    'prof': self.prof_course.prof,
+                    'comment': self.comment
+                    }
+        subject = render_to_string('reviews/flagged_review_email_subject.txt',
+                                   ctx_dict)
+        # Email subject *must not* contain newlines
+        subject = ''.join(subject.splitlines())
+        
+        message_text = render_to_string('reviews/flagged_review_email.txt',
+                                   ctx_dict)
+
+        message_html = render_to_string('reviews/flagged_review_email.html',
+                                    ctx_dict)
+
+        msg = EmailMultiAlternatives(subject, message_text, settings.DEFAULT_FROM_EMAIL, [self.user.email])
+        msg.attach_alternative(message_html, "text/html")
+        msg.send()

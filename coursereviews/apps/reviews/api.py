@@ -224,6 +224,8 @@ def flag(request, review_id):
         review.why_flag = form.cleaned_data['why_flag']
         review.save()
 
+        review.send_flagged_email()
+
         serializer = CommentSerializer(review, context={'request': request})
         return Response(serializer.data)
     else:
