@@ -306,6 +306,12 @@ PIPELINE_JS = {
         ),
         'output_filename': 'js/libs.js'
     },
+    'review_detail' : {
+        'source_filenames': (
+            'reviews/js/detail.js',
+        ),
+        'output_filename': 'js/detail.js'
+    },
 }
 
 ############# AWS CONFIG
