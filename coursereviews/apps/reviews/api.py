@@ -1,10 +1,12 @@
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 from django.http import (Http404,
                          HttpResponse)
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
 
 from reviews.models import (Review,
                             Professor,
@@ -52,6 +54,7 @@ def typeahead_professors(request):
 
     return HttpResponse(json.dumps(professor_index), status=200)
 
+@login_required
 @csrf_protect
 def prof_detail_stats(request, prof_slug):
     """
@@ -86,7 +89,7 @@ def prof_detail_stats(request, prof_slug):
     else:
         raise HttpResponse(status=403)
 
-
+@login_required
 @csrf_protect
 def course_detail_stats(request, course_slug):
     """
@@ -123,6 +126,7 @@ def course_detail_stats(request, course_slug):
     else:
         return HttpResponse(status=403)
 
+@login_required
 @csrf_protect
 def prof_course_detail_stats(request, course_slug, prof_slug):
     """
@@ -151,6 +155,44 @@ def prof_course_detail_stats(request, course_slug, prof_slug):
         return HttpResponse(json.dumps(stats), status=200)
     else:
         return HttpResponse(404)
+
+@login_required
+@csrf_protect
+@api_view(['POST',])
+def vote(request, review_id):
+    user = request.user
+    review = Review.objects.get(id=review_id)
+    vote_type = request.POST.get('vote_type', None)
+
+    if vote_type == 'up':
+        if user not in review.up_votes.all():
+            review.up_votes.add(user)
+
+            if user in review.down_votes.all():
+                review.down_votes.remove(user)
+                
+            serializer = CommentSerializer(review, 
+                                           context={'request': request})
+            return Response(serializer.data)
+        else:
+            return HttpResponse(json.dumps({'error': 'User has already upvoted this comment.'}), status=400)
+
+    elif vote_type == 'down':
+        if user not in review.down_votes.all():
+            review.down_votes.add(user)
+
+            if user in review.up_votes.all():
+                review.up_votes.remove(user)
+
+            serializer = CommentSerializer(review,
+                                           context={'request': request})
+            return Response(serializer.data)
+        else:
+            return HttpResponse(json.dumps({'error': 'User has already downvoted this comment.'}), status=400)
+
+    else:
+        return HttpResponse(status=403)
+
 
 # Helper methods to tokenize Professor, Course models
 def get_course_tokens(course):

@@ -11,7 +11,6 @@ from reviews.models import (Review,
                             Department)
 from reviews.forms import ReviewForm
 from reviews.decorators import quota_required, no_professor_access
-from reviews.utils import Review_Aggregator, user_vote_type
 from reviews.serializers import CommentSerializer
 
 from haystack.query import SearchQuerySet
@@ -197,39 +196,3 @@ def search(request):
                 'professors': professor_results,
                 'query': query}
     return TemplateResponse(request, 'reviews/search_results.html', ctx_dict)
-
-@require_POST
-@login_required
-def vote(request, review_id):
-    user = request.user
-    review = Review.objects.get(id=review_id)
-    vote_type = request.POST.get('vote_type', None)
-
-    if vote_type == 'up':
-        if user not in review.up_votes:
-            review.up_votes.add(user)
-
-            if user in review.down_votes:
-                review.down_votes.remove(user)
-
-            serializer = CommentSerializer(review, 
-                                           context={'user_vote_type': user_vote_type(request, review_id)})
-            return Response(serializer.data)
-        else:
-            return HttpResponse(json.dumps({'error': 'User has already upvoted this comment.'}), status=400)
-
-    elif vote_type == 'down':
-        if user not in review.down_votes:
-            review.down_votes.add(user)
-
-            if user in review.up_votes:
-                review.down_votes.remove(user)
-
-            serializer = CommentSerializer(review,
-                                           context={'user_vote_type': user_vote_type(request, review_id)})
-            return Response(serializer.data)
-        else:
-            return HttpResponse(json.dumps({'error': 'User has already downvoted this comment.'}), status=400)
-
-    else:
-        return HttpResponse(status=403)

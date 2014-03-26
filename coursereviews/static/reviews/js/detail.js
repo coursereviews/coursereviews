@@ -117,8 +117,37 @@ $(function() {
     });
   }
 
-  $(window).on("resize", function() {
+  $(window).on('resize', function() {
     $statsContainer.empty();
     makeCharts(sortedStats);
   });
+
+  // Voting
+  $('.upvote, .downvote').on('click', function() {
+    var $this = $(this),
+        id = $this.parent().data('comment-id'),
+        voteType = $this.hasClass('upvote') ? 'up' : 'down';
+
+    $.ajax({
+      type: 'POST',
+      url: '/api/' + id + '/vote',
+      data: {'vote_type': voteType},
+      dataType: 'json',
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+      },
+      success: function(res) {
+        var $comment = $('[data-comment-id="' + res.id + '"]')
+        if (res.vote_type === 'up') {
+          $comment.find('.upvote').addClass('upvote-highlight');
+          $comment.find('.downvote').removeClass('downvote-highlight');
+        }
+        else if (res.vote_type === 'down') {
+          $comment.find('.upvote').removeClass('upvote-highlight');
+          $comment.find('.downvote').addClass('downvote-highlight');
+        }
+      }
+    });
+  });
+
 });

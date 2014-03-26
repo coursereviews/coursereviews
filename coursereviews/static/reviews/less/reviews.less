@@ -194,18 +194,14 @@ h2.review-title {
       font-size: 20px;
       color: #b4b4b4;
       text-align: center;
-      .upvote-highlight {
-        color: #47a447;
-      }
-      .downvote-highlight {
-        color: #d9534f;
-      }
+      .upvote { margin-left: -2px; }
+      .downvote  { margin-right: -1px; }
+      .upvote-highlight { color: #47a447; }
+      .downvote-highlight { color: #d9534f; }
       span {
         font-weight: 900;
         &:hover { cursor: pointer; }
       }
-      span:first-child { margin-left: -2px; }
-      span:last-child  { margin-right: -1px; }
     }
     .comment-body {
       vertical-align: top;

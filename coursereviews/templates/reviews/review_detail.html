@@ -63,10 +63,10 @@
             <div class="comment">
             <table>
             <tbody>
-              <tr data-comment-id="">
-                <td class="comment-voting">
-                  <span class="glyphicon glyphicon-arrow-up upvote"></span>
-                  <span class="glyphicon glyphicon-arrow-down downvote"></span>
+              <tr>
+                <td class="comment-voting" data-comment-id="{{ review.id }}">
+                  <span class="glyphicon glyphicon-arrow-up upvote{% if request.user in review.up_votes.all %} upvote-highlight{% endif %}"></span>
+                  <span class="glyphicon glyphicon-arrow-down downvote{% if request.user in review.down_votes.all %} downvote-highlight{% endif %}"></span>
                 </td>
                 <td class="comment-body">
                   {{ review.comment }}

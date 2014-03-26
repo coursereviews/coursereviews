@@ -196,16 +196,6 @@ class Review(models.Model):
                         (REC, 'Recommendation from a friend'))
     why_take = MultiSelectField(choices=WHY_TAKE_CHOICES)
 
-    ## What grade did you receive in this course?
-    # GRADE_CHOICES = (('A', 'A to A-'),
-    #                  ('B', 'B+ to B-'),
-    #                  ('C', 'C+ to C-'),
-    #                  ('D', 'D+ to D-'),
-    #                  ('F', 'F'),
-    #                  ('P', 'Pass'),
-    #                  ('N', 'Prefer not to say'))
-    # grade = models.CharField(max_length=1, choices=GRADE_CHOICES)
-
     ## Additional comments:
     comment = models.TextField(null=True, blank=True)
 
