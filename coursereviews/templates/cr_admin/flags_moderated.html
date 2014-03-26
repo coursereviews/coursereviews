@@ -3,11 +3,11 @@
 {% block content %}
 {% include 'partials/logo.html' %}
 
-<h3><a href="{% url 'admin_index' %}">Admin</a> <small><a href="{% url 'admin_flags' %}">Flagged Reviews</a></small></h3>
+<h3><a href="{% url 'admin_index' %}">Admin</a> <small><a href="{% url 'admin_flags_moderated' %}">Moderated Reviews</a></small></h3>
 
-{% if request.user.get_profile.middcourses_admin %}
-<p><a href="{% url 'admin_flags_moderated' %}">See moderated reviews</a></p>
-{% endif %}
+<p><a href="{% url 'admin_flags' %}">See unmoderated reviews</a></p>
+
+<p>Only site administrators can see this page. It exists to revisit reviews that moderators have already removed.</p>
 
 <table class="table table-hover">
 <thead><tr>
@@ -15,6 +15,7 @@
   <td>Professor</td>
   <td>Created</td>
   <td># times flagged</td>
+  <td>Status</td>
 </tr></thead>
 <tbody>
 {% for review in reviews %}
@@ -23,6 +24,7 @@
     <td>{{ review.prof_course.prof }}</td>
     <td>{{ review.date }}</td>
     <td>{{ review.flagged_count }}</td>
+    <td>{% if review.flagged %}Flagged{% else %}Unflagged{% endif %}</td>
   </tr>
 {% endfor %}
 </tbody>

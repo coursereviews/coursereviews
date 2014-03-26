@@ -32,6 +32,11 @@ def flags(request):
     flagged_reviews = Review.objects.filter(flagged=True, flagged_mod=None)
     return TemplateResponse(request, 'cr_admin/flags.html', {'reviews': flagged_reviews})
 
+@middcourses_admin_required
+def flags_moderated(request):
+    flagged_reviews = Review.objects.all().exclude(flagged_mod=None)
+    return TemplateResponse(request, 'cr_admin/flags_moderated.html', {'reviews': flagged_reviews})
+
 @middcourses_moderator_required
 def flagged_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
