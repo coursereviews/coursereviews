@@ -13,9 +13,8 @@ class UserProfile(models.Model):
 	quota = models.IntegerField(max_length=2, default=2)
 	total_reviews = models.IntegerField(default=0)
 	professor_assoc = models.ForeignKey(Professor, related_name='user_profile', null=True)
- 
- 	# def get_absolute_url(self):
-		# return reverse('users.views.profile', args=[self.user])
+	middcourses_admin = models.BooleanField(default=False)
+	middcourses_moderator = models.BooleanField(default=False)
 
 	def get_display_name(self):
 		if self.name:
@@ -25,12 +24,6 @@ class UserProfile(models.Model):
 	def __unicode__(self):
 		return self.user.username
 
-# # Handles user profile creation if not already created
-# def create_user_profile(sender, instance, created, **kwargs):  
-#     if created:  
-#     	profile = UserProfile.objects.create(user=instance)
-
-# post_save.connect(create_user_profile, sender=User)
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):

@@ -1,0 +1,61 @@
+{% extends 'cr_admin/base.html' %}
+
+{% block content %}
+{% include 'partials/logo.html' %}
+
+<h3>Admin <small><a href="{% url 'admin_flags' %}">Flagged Reviews</a></small></h3>
+
+<h4 class="admin-label">Comment</h4>
+<p>{{ review.comment }}</p>
+
+<h4 class="admin-label">Context</h4>
+<p>Professor: {{ review.prof_course.prof }}</p>
+<p>Course: {{ review.prof_course.course }}</p>
+<table class="table">
+<thead>
+<tr>
+  <td>Why flagged</td>
+  <td># times flagged</td>
+  <td>Up votes</td>
+  <td>Down votes</td>
+  <td>Created</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>{{ review.get_why_flag_display }}</td>
+  <td>{{ review.flagged_count }}</td>
+  <td>{{ review.up_votes.count }}</td>
+  <td>{{ review.down_votes.count }}</td>
+  <td>{{ review.date }}</td>
+</tr>
+</tbody>
+</table>
+
+<h4 class="admin-label">Answers</h4>
+
+<div class="row">
+  <div class="col-sm-4">
+    <p>Components: {{ review.get_components_display }}</p>
+    <p>Again: {{ review.get_again_display }}</p>
+    <p>Another: {{ review.get_another_display }}</p>
+    <p>Hours: {{ review.hours }}</p>
+    <p>Grade: {{ review.get_grasp_display }}</p>
+    <p>Value: {{ review.get_value_display }}</p>
+    <p>Why take: {{ review.get_why_take_display }}</p>
+  </div>
+  <div class="col-sm-4">
+    <p>Lecturing: {{ review.prof_lecturing }}</p>
+    <p>Leading: {{ review.prof_leading }}</p>
+    <p>Help: {{ review.prof_help }}</p>
+    <p>Feedback: {{ review.prof_feedback }}</p>
+  </div>
+</div>
+
+<form method="POST">
+  {% csrf_token %}
+  <input type="submit" name="action" value="Unflag" class="btn btn-default">
+  <input type="submit" name="action" value="Remove" class="btn btn-danger">
+</form>
+<p>Your username will be recorded.</p>
+{% endblock %}

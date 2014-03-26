@@ -1,0 +1,27 @@
+{% extends 'cr_admin/base.html' %}
+
+{% block content %}
+{% include 'partials/logo.html' %}
+
+<h3><a href="{% url 'admin_index' %}">Admin</a> <small><a href="{% url 'admin_flags' %}">Flagged Reviews</a></small></h3>
+
+<table class="table table-hover">
+<thead><tr>
+  <td>Course</td>
+  <td>Professor</td>
+  <td>Created</td>
+  <td># times flagged</td>
+</tr></thead>
+<tbody>
+{% for review in reviews %}
+  <tr class="flagged-review-row" data-review-id="{{ review.id }}">
+    <td>{{ review.prof_course.course }}</td>
+    <td>{{ review.prof_course.prof }}</td>
+    <td>{{ review.date }}</td>
+    <td>{{ review.flagged_count }}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}

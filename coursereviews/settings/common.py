@@ -289,6 +289,12 @@ PIPELINE_CSS = {
         'output_filename': 'css/user.css',
         'variant': 'datauri',
     },
+    'cr_admin': {
+        'source_filenames': (
+            'cr_admin/less/cr_admin.less',
+        ),
+        'output_filename': 'css/cr_admin.css'
+    },
 }
 
 PIPELINE_JS = {
@@ -311,6 +317,12 @@ PIPELINE_JS = {
             'reviews/js/detail.js',
         ),
         'output_filename': 'js/detail.js'
+    },
+    'cr_admin': {
+        'source_filenames': (
+            'cr_admin/js/cr_admin.js',
+        ),
+        'output_filename': 'js/cr_admin.js'
     },
 }
 
