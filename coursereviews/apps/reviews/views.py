@@ -140,7 +140,7 @@ def edit(request, review_id):
 
     # Cannot view an individual review of another user
     if request.user != review.user:
-        return HttpResponse(status=404)
+        raise Http404
 
     # Show the edit page
     if request.method == "GET":
