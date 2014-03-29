@@ -1,4 +1,4 @@
-<form class="form-horizontal signup-form" action="{% url 'registration_register' %}" method="POST">
+<form class="form-horizontal signup-form {% if messages %}has-message{% endif %}" action="{% url 'registration_register' %}" method="POST">
   {% csrf_token %}
   {% if form.non_field_errors %}
   <div class="form-group">
