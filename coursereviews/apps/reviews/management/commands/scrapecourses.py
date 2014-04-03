@@ -62,7 +62,6 @@ page and getting the value of the url parameter 'p_term'."""
                                  'Special Project',
                                  'Advanced Study',
                                  'Please register via',
-                                 'Lab',
                                  'Discussion',
                                  'Drill')
 
@@ -257,37 +256,41 @@ page and getting the value of the url parameter 'p_term'."""
 
                     # Sometimes there are multiple professors listed separated by ' / '
                     # Only keep the first one
-                    instructor = contents[37].string.encode('utf-8').split(' / ')[0].split(', ')
-                    try:
-                        self.instructor_last, self.instructor_first = instructor[0], instructor[1]
-                    except IndexError:
-                        # Probably means it came up with 'STAFF'
-                        # We'll only allow this for Physical Education
-                        if dept == 'Physical Education' and instructor == 'STAFF':
-                            self.instructor_first = ''
-                            self.instructor_last = 'STAFF'
+                    instructors = contents[37].string.encode('utf-8').split(' / ')
 
-                    try:
-                        self.professor = Professor.objects.get(last=self.instructor_last,
-                                                               first__startswith=self.instructor_first)
-                    except Professor.MultipleObjectsReturned:
-                        self.stdout.write(bcolors.WARNING + '  Warning: multiple professors returned for ' +
-                                          self.instructor_last + ' ' + self.instructor_first + bcolors.ENDC)
-                        self.stdout.write(bcolors.WARNING + '  Choose a professor for ' + code + bcolors.ENDC)
-                        self.professor = pick_professor_interactive(self.instructor_first, self.instructor_last)
-                    except Professor.DoesNotExist:
-                        self.stdout.write(bcolors.OKBLUE + '  Creating professor ' +
-                                          self.instructor_first + ', ' + self.instructor_last + bcolors.ENDC)
-                        self.professor = Professor.objects.create(first=self.instructor_first,
-                                                                  last=self.instructor_last,
-                                                                  dept=self.course_dept)
+                    for instructor in instructors:
+                        instructor = instructor.split(', ')
 
-                    try:
-                        ProfCourse.objects.get(prof=self.professor, course=self.course)
-                    except ProfCourse.DoesNotExist:
-                        self.stdout.write(bcolors.OKBLUE + '  Creating ProfCourse ' +
-                                          code + ' ' + self.instructor_last + bcolors.ENDC)
-                        ProfCourse.objects.create(prof=self.professor, course=self.course)
+                        try:
+                            self.instructor_last, self.instructor_first = instructor[0], instructor[1]
+                        except IndexError:
+                            # Probably means it came up with 'STAFF'
+                            # We'll only allow this for Physical Education
+                            if dept == 'Physical Education' and instructor == 'STAFF':
+                                self.instructor_first = ''
+                                self.instructor_last = 'STAFF'
+
+                        try:
+                            self.professor = Professor.objects.get(last=self.instructor_last,
+                                                                   first__startswith=self.instructor_first)
+                        except Professor.MultipleObjectsReturned:
+                            self.stdout.write(bcolors.WARNING + '  Warning: multiple professors returned for ' +
+                                              self.instructor_last + ' ' + self.instructor_first + bcolors.ENDC)
+                            self.stdout.write(bcolors.WARNING + '  Choose a professor for ' + code + bcolors.ENDC)
+                            self.professor = pick_professor_interactive(self.instructor_first, self.instructor_last)
+                        except Professor.DoesNotExist:
+                            self.stdout.write(bcolors.OKBLUE + '  Creating professor ' +
+                                              self.instructor_first + ', ' + self.instructor_last + bcolors.ENDC)
+                            self.professor = Professor.objects.create(first=self.instructor_first,
+                                                                      last=self.instructor_last,
+                                                                      dept=self.course_dept)
+
+                        try:
+                            ProfCourse.objects.get(prof=self.professor, course=self.course)
+                        except ProfCourse.DoesNotExist:
+                            self.stdout.write(bcolors.OKBLUE + '  Creating ProfCourse ' +
+                                              code + ' ' + self.instructor_last + bcolors.ENDC)
+                            ProfCourse.objects.create(prof=self.professor, course=self.course)
 
 def get_course_description(crn_url):
     """
