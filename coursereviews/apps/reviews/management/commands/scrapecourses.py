@@ -69,7 +69,6 @@ page and getting the value of the url parameter 'p_term'."""
         self.aliases = {
                         'Center Comparative Study of Race & Ethnicity': 'Center Comparative Study of Race and Ethnicity',
                         "Chemistry and Biochemistry/Dean of Faculty's Office": 'Chemistry and Biochemistry',
-                        'Chinese School': 'Chinese',
                         'Classics/Commons Office - Ross': 'Classics',
                         'Economics/Creativity & Innovation': 'Economics',
                         'Education Studies/Commons Office - Wonnacott': 'Education Studies',
@@ -82,25 +81,28 @@ page and getting the value of the url parameter 'p_term'."""
                         'Gender Sexuality &Fem. Studies': 'Gender, Sexuality, and Feminist Studies',
                         'Gender Sexuality &Fem.; Studies': 'Gender, Sexuality, and Feminist Studies',
                         'Geography/Commons Office - Atwater': 'Geography',
-                        'German School': 'German',
                         'German/Commons Office - Brainerd': 'German',
                         'Hebrew (Modern)': 'Hebrew',
                         'History of Art & Architecture': 'History of Art and Architecture',
                         'History of Art & Architecture/Arts Center': 'History of Art and Architecture',
                         'Dean of Students/History of Art & Architecture': 'History of Art and Architecture',
                         'International & Global Studies': 'International and Global Studies',
-                        'Italian School': 'Italian',
                         'Italian/Commons Office - Cook': 'Italian',
                         'Italian/Italian School': 'Italian',
                         'Japanese Studies': 'Japenese',
                         'Planning and Assessment/Psychology': 'Psychology',
-                        'Portuguese School': 'Portuguese',
                         'Religion/Classics': 'Religion',
                         'Religion/Commons Office - Ross': 'Religion',
-                        'Russian School': 'Russian',
-                        'Spanish School': 'Spanish',
                         u'\xa0': ' '
                         }
+
+        self.bad_departments = ('Chinese School',
+                                'German School',
+                                'Russian School',
+                                'Spanish School',
+                                'Portuguese School',
+                                'Italian School',
+                                'Language Schools at Mills')
 
         super(Command, self).__init__()
 
@@ -156,7 +158,7 @@ page and getting the value of the url parameter 'p_term'."""
                 pass
 
             # Only want Middlebury College profs, not MIIS
-            if 'miis' not in email:
+            if 'miis' not in email and dept not in self.bad_departments:
 
                 # Only create departments that don't already exist
                 try:
