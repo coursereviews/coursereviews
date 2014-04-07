@@ -107,7 +107,9 @@ page and getting the value of the url parameter 'p_term'."""
                                 'Spanish School',
                                 'Portuguese School',
                                 'Italian School',
-                                'Language Schools at Mills')
+                                'Language Schools at Mills',
+                                'Internship',
+                                'Winter Term')
 
         self.prof_count = 0
         self.dept_count = 0
