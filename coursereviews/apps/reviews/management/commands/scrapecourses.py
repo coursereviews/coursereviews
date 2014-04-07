@@ -69,6 +69,8 @@ page and getting the value of the url parameter 'p_term'."""
         self.aliases = {
                         'Center Comparative Study of Race & Ethnicity': 'Center Comparative Study of Race and Ethnicity',
                         "Chemistry and Biochemistry/Dean of Faculty's Office": 'Chemistry and Biochemistry',
+                        'Molecular Biology  & Biochem': 'Chemistry and Biochemistry',
+                        'Molecular Biology & Biochem': 'Chemistry and Biochemistry',
                         'Classics/Commons Office - Ross': 'Classics',
                         'Economics/Creativity & Innovation': 'Economics',
                         'Education Studies/Commons Office - Wonnacott': 'Education Studies',
@@ -83,16 +85,19 @@ page and getting the value of the url parameter 'p_term'."""
                         'Geography/Commons Office - Atwater': 'Geography',
                         'German/Commons Office - Brainerd': 'German',
                         'Hebrew (Modern)': 'Hebrew',
+                        'Hebrew (Classical)': 'Hebrew',
                         'History of Art & Architecture': 'History of Art and Architecture',
                         'History of Art & Architecture/Arts Center': 'History of Art and Architecture',
                         'Dean of Students/History of Art & Architecture': 'History of Art and Architecture',
                         'International & Global Studies': 'International and Global Studies',
+                        'International Studies': 'International and Global Studies',
                         'Italian/Commons Office - Cook': 'Italian',
                         'Italian/Italian School': 'Italian',
                         'Japanese Studies': 'Japenese',
                         'Planning and Assessment/Psychology': 'Psychology',
                         'Religion/Classics': 'Religion',
                         'Religion/Commons Office - Ross': 'Religion',
+                        "Women's & Gender Studies": "Women's and Gender Studies",
                         u'\xa0': ' '
                         }
 
@@ -103,6 +108,11 @@ page and getting the value of the url parameter 'p_term'."""
                                 'Portuguese School',
                                 'Italian School',
                                 'Language Schools at Mills')
+
+        self.prof_count = 0
+        self.dept_count = 0
+        self.course_count = 0
+        self.prof_course_count = 0
 
         super(Command, self).__init__()
 
@@ -165,6 +175,7 @@ page and getting the value of the url parameter 'p_term'."""
                     self.prof_dept = Department.objects.get(name=dept)
                 except Department.DoesNotExist:
                     self.stdout.write(bcolors.OKBLUE + '  Creating department ' + dept + bcolors.ENDC)
+                    self.dept_count += 1
                     self.prof_dept = Department.objects.create(name=dept)
 
                 # Only create professors that don't already exist
@@ -173,6 +184,7 @@ page and getting the value of the url parameter 'p_term'."""
                 except Professor.DoesNotExist:
                     self.stdout.write(bcolors.OKBLUE + '  Creating professor ' +
                                       first_name + " " + last_name + bcolors.ENDC)
+                    self.prof_count += 1
                     Professor.objects.create(first=first_name,
                                              last=last_name,
                                              dept=self.prof_dept,
@@ -231,6 +243,7 @@ page and getting the value of the url parameter 'p_term'."""
                         self.course_dept = Department.objects.get(name=dept)
                     except Department.DoesNotExist:
                         self.stdout.write(bcolors.OKBLUE + '  Creating department ' + dept + bcolors.ENDC)
+                        self.dept_count += 1
                         self.course_dept = Department.objects.create(name=dept)
 
                     # First part is CSCI
@@ -251,6 +264,7 @@ page and getting the value of the url parameter 'p_term'."""
                         self.description = get_course_description(crn_link)
 
                         self.stdout.write(bcolors.OKBLUE + '  Creating course ' + code + bcolors.ENDC)
+                        self.course_count += 1
                         self.course = Course.objects.create(code=code,
                                                             title=title,
                                                             description=self.description,
@@ -283,6 +297,7 @@ page and getting the value of the url parameter 'p_term'."""
                         except Professor.DoesNotExist:
                             self.stdout.write(bcolors.OKBLUE + '  Creating professor ' +
                                               self.instructor_first + ', ' + self.instructor_last + bcolors.ENDC)
+                            self.prof_count += 1
                             self.professor = Professor.objects.create(first=self.instructor_first,
                                                                       last=self.instructor_last,
                                                                       dept=self.course_dept)
@@ -292,7 +307,13 @@ page and getting the value of the url parameter 'p_term'."""
                         except ProfCourse.DoesNotExist:
                             self.stdout.write(bcolors.OKBLUE + '  Creating ProfCourse ' +
                                               code + ' ' + self.instructor_last + bcolors.ENDC)
+                            self.prof_course_count += 1
                             ProfCourse.objects.create(prof=self.professor, course=self.course)
+
+        self.stdout.write(bcolors.OKGREEN + str(self.prof_count) + ' professors created.' + bcolors.ENDC)
+        self.stdout.write(bcolors.OKGREEN + str(self.dept_count) + ' departments created.' + bcolors.ENDC)
+        self.stdout.write(bcolors.OKGREEN + str(self.course_count) + ' courses created.' + bcolors.ENDC)
+        self.stdout.write(bcolors.OKGREEN + str(self.prof_course_count) + ' prof courses created.' + bcolors.ENDC)
 
 def get_course_description(crn_url):
     """
