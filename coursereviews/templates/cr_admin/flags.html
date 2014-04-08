@@ -3,7 +3,7 @@
 {% block content %}
 {% include 'partials/logo.html' %}
 
-<h3><a href="{% url 'admin_index' %}">Admin</a> <small><a href="{% url 'admin_flags' %}">Flagged Reviews</a></small></h3>
+<h3><a href="{% url 'admin_index' %}">Admin</a>&nbsp;<small>Flagged Reviews</small></h3>
 
 {% if request.user.get_profile.middcourses_admin %}
 <p><a href="{% url 'admin_flags_moderated' %}">See moderated reviews</a></p>

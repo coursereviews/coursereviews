@@ -3,7 +3,7 @@
 {% block content %}
 {% include 'partials/logo.html' %}
 
-<h3><a href="{% url 'admin_index' %}">Admin</a> <small><a href="{% url 'admin_flags' %}">Flagged Reviews</a></small></h3>
+<h3><a href="{% url 'admin_index' %}">Admin</a>&nbsp;<small><a href="{% url 'admin_flags' %}">Flagged Reviews</a></small></h3>
 
 <h4 class="admin-label">Comment</h4>
 <p>{{ review.comment }}</p>
