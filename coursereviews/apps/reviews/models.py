@@ -143,11 +143,13 @@ class Review(models.Model):
     SCREENING = 'H'
     FINAL = 'I'
     TEST_MID = 'J'
+    PROB_SET = 'K'
     COMPONENTS_CHOICES = ((LECTURE, 'Lectures'),
                         (DISCUSSION, 'Discussions'),
                         (PAPER, 'Papers'),
                         (READING, 'Readings'),
                         (LAB_FIELD, 'Lab/Field work'),
+                        (PROB_SET, 'Problem sets'),
                         (PRESENTATION, 'Presentations'),
                         (GROUP, 'Group work'),
                         (SCREENING, 'Screenings'),
@@ -185,9 +187,13 @@ class Review(models.Model):
     PROFESSOR = 'P'
     WORK = 'W'
     STUDENTS = 'S'
+    COURSEWORK = 'C'
+    NOT_VALUABLE = 'N'
     VALUABLE_CHOICES = ((PROFESSOR, 'The professor'),
                         (STUDENTS, 'The students'),
-                        (WORK, 'Work outside class'))
+                        (COURSEWORK, 'The coursework'),
+                        (WORK, 'Work outside class'),
+                        (NOT_VALUABLE, 'Not valuable'))
     value = MultiSelectField(choices=VALUABLE_CHOICES)
 
     ## Why did you take this course?
