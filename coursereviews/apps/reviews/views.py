@@ -194,14 +194,14 @@ def search(request):
     try:
         result = Professor.objects.get(lookup__iexact=query)
         return redirect('prof_detail', result.slug)
-    except Professor.DoesNotExist:
+    except (Professor.DoesNotExist, Professor.MultipleObjectsReturned):
         pass
 
     # Check if a result exactly matches a course
     try:
         result = Course.objects.get(lookup__iexact=query)
         return redirect('course_detail', result.slug)
-    except Course.DoesNotExist:
+    except (Course.DoesNotExist, Course.MultipleObjectsReturned):
         pass
 
     # Perform a search using Haystack
