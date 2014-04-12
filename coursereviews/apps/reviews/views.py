@@ -45,11 +45,16 @@ def browse(request):
 def course_detail(request, course_slug):
     course = get_object_or_404(Course, slug=course_slug)
 
-    # Get all Prof_Courses objects for a course
-    prof_courses = course.prof_courses.all().select_related()
-
-    # If this is a professor account
+    # Get professor association, None if student
     user_professor = request.user.get_profile().professor_assoc
+
+    if user_professor:
+        prof_courses = course.prof_courses.filter(prof=user_professor).select_related()
+    else:
+        # Get all Prof_Courses objects for a course
+        prof_courses = course.prof_courses.all().select_related()
+
+    # If this is not a professor account
     if user_professor == None or user_professor in [pc.prof for pc in prof_courses]:
 
         flag_form = FlagForm()
@@ -67,6 +72,7 @@ def course_detail(request, course_slug):
                                   'flag_form': flag_form,
                                   'has_comments': has_comments,
                                   'type': 'course' })
+
     else:
         raise Http404
 
