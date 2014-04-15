@@ -11,13 +11,6 @@
       <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6">
           <input type="hidden" name="prof_course" id="id_prof_course" data-placeholder="Dropdown to search" {% if form.prof_course.value %}value="{{ form.prof_course.value }}"{% endif %}>
-          <script type="text/javascript" id="prof_course_choices">
-          [
-            {% for key, option in form.fields.prof_course.choices %}
-              {% templatetag openbrace %}"id": {{ key }}, "text": "{{ option }}"{% templatetag closebrace %}{% if not forloop.last %},{% endif %}
-            {% endfor %}
-          ]
-          </script>
         </div>
       </div>
     </div>

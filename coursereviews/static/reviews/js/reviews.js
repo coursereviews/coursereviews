@@ -1,9 +1,12 @@
 $(document).ready(function () {
   // Initialize the create review page
-  $("input#id_prof_course").select2({
-    placeholder: "Select a course",
-    data: JSON.parse($("script#prof_course_choices").html()),
-    containerCss: "height: 34px;"
+
+  $.getJSON("/api/review/options", function(courses) {
+    $("input#id_prof_course").select2({
+      placeholder: "Select a course",
+      data: courses,
+      containerCss: "height: 34px;"
+    });
   });
   
   $("select").select2({

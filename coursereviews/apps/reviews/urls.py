@@ -20,6 +20,7 @@ urlpatterns += patterns('reviews.api',
     url(r'^api/(?P<pk>\d+)/comment$', api.Comment.as_view()),
     url(r'^api/typeahead/courses$', 'typeahead_courses', name='typeahead_courses'),
     url(r'^api/typeahead/professors$', 'typeahead_professors', name='typeahead_professors'),
+    url(r'^api/review/options$', 'new_review_course_options', name='new_review_course_options'),
 
     url(r'^api/course/(?P<course_slug>[-\w\d]+)/stats$',
         'course_detail_stats',

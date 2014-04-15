@@ -231,6 +231,20 @@ def flag(request, review_id):
     else:
         return HttpResponse(json.dumps({'errors': form.errors}), status=200)
 
+def new_review_course_options(request):
+    user_reviews = Review.objects.filter(user=request.user)
+    user_prof_courses = [r.prof_course.pk for r in user_reviews]
+
+    prof_courses = ProfCourse.objects.exclude(pk__in=user_prof_courses) \
+        .values('prof__first', 'prof__last', 'course__title', 'course__code', 'id')
+
+    options = [{'id': pc['id'],
+                'text': pc['course__code'] + ': ' +
+                        pc['course__title'] + ' with ' +
+                        pc['prof__first'] + ' ' + pc['prof__last']} for pc in prof_courses]
+
+    return HttpResponse(json.dumps(options), status=200)
+
 # Helper methods to tokenize Professor, Course models
 def get_course_tokens(course):
     """Return an array of single word tokens, given a course object."""
