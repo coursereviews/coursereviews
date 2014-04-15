@@ -312,6 +312,12 @@ PIPELINE_JS = {
         ),
         'output_filename': 'js/libs.js'
     },
+    'new_review': {
+        'source_filenames': (
+            'reviews/js/reviews.js',
+        ),
+        'output_filename': 'js/new_review.js'
+    },
     'review_detail' : {
         'source_filenames': (
             'reviews/js/detail.js',
