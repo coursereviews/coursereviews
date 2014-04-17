@@ -147,14 +147,14 @@ def create(request):
     elif request.method == "POST":
         review = Review(user=request.user)
         form = ReviewForm(request.POST, instance=review)
-        print form
         if form.is_valid():
             form.save()
             profile = request.user.get_profile()
             if profile.quota > 0:
                 profile.quota -= 1
                 profile.save()
-            return redirect('index')
+
+            return redirect('prof_course_detail', course_slug=review.prof_course.course.slug, prof_slug=review.prof_course.prof.slug)
         else:
             return TemplateResponse(request, 'reviews/edit.html', {'form': form})
 
