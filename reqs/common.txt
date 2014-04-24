@@ -28,3 +28,5 @@ django-multiselectfield
 
 BeautifulSoup4
 requests
+
+textblob
