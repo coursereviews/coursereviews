@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from reviews.models import Review
 from reviews.utils import Review_Aggregator
 
-
 from textblob import TextBlob
 import json
 
