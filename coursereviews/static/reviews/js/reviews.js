@@ -1,7 +1,14 @@
 $(document).ready(function () {
   // Initialize the create review page
 
+  var $coursesLoading = $("#coursesLoading");
+  var showLoading = window.setTimeout(function() {
+    $coursesLoading.removeClass("hide-fade");
+  }, 1000);
+
   $.getJSON("/api/review/options", function(courses) {
+    window.clearTimeout(showLoading);
+    $coursesLoading.addClass("hide");
     $("input#id_prof_course").select2({
       placeholder: "Select a course",
       data: courses,
