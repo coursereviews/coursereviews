@@ -236,7 +236,8 @@ def new_review_course_options(request):
     user_prof_courses = [r.prof_course.pk for r in user_reviews]
 
     prof_courses = ProfCourse.objects.exclude(pk__in=user_prof_courses) \
-        .values('prof__first', 'prof__last', 'course__title', 'course__code', 'id')
+        .values('prof__first', 'prof__last', 'course__title', 'course__code', 'id') \
+        .order_by('course__code')
 
     options = [{'id': pc['id'],
                 'text': pc['course__code'] + ': ' +
