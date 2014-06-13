@@ -3,18 +3,20 @@
 
 <div class="container">
   <div class="navigation">
+    <div class="mini-logo pull-left"><a href="{% url 'index' %}"
+      ><span class="midd">midd</span><span class="courses">courses</span
+      ><small>&#x3b2;</small></a></div>
     {% if request.user.is_authenticated %}
-    <div class="mini-logo pull-left"><a href="{% url 'index' %}"><span class="midd">midd</span><span class="courses">courses</span><small>&#x3b2;</small></a></div>
-    <div class="pull-right">
-      <a class="btn btn-primary" href="{% url 'new_review' %}">Write a review</a>
-      <a class="logout btn btn-default" href="{% url 'auth_logout' %}">
-        <span class="glyphicon glyphicon-off"></span>
-      </a>
-    </div>
+      <div class="pull-right">
+        <a class="btn btn-primary" href="{% url 'new_review' %}">Write a review</a>
+        <a class="logout btn btn-default" href="{% url 'auth_logout' %}">
+          <span class="glyphicon glyphicon-off"></span>
+        </a>
+      </div>
     {% else %}
-    <div class="pull-right">
-    <a class="login btn btn-default" href="{% url 'auth_login' %}">Login</a>
-    </div>
+      <div class="pull-right">
+        <a class="login btn btn-default" href="{% url 'auth_login' %}">Login</a>
+      </div>
     {% endif %}
   </div>
 </div>

@@ -9,3 +9,14 @@
 {% block js %}
 <script src="{% static 'users/js/users.js' %}" type="text/javascript"></script>
 {% endblock %}
+
+{% block body %}
+  {% include "partials/header.html" %}
+  {# <div class="wrap"> #}
+    {# {% include "static_pages/partials/header_static.html" %} #}
+    <div class="container">
+      {% block content %}<h3>Error 404</h3>{% endblock %}
+    </div>
+    {# <div class="push"></div>{# sticky footer div #}
+  {# </div> #}
+{% endblock %}

@@ -4,21 +4,17 @@
 {% load active from navigation %}
 
 {% block js %}
-  <script type="text/javascript" src="{% static 'static_pages/js/static_pages.js' %}"></script> 
+  <script type="text/javascript"
+    src="{% static 'static_pages/js/static_pages.js' %}"></script>
 {% endblock %}
 
 {% block css %}
   {% compressed_css 'static_pages' %}
-{% endblock %} 
+{% endblock %}
 
 {% block body %}
-  {# <div class="wrap"> #}
-    {# {% include "static_pages/partials/header_static.html" %} #}
-    {% block marginless %}{% endblock %}
-    <div class="container">
-      {% block content %}<h3>Error 404</h3>{% endblock %}
-    </div>  
-    {# <div class="push"></div>{# sticky footer div #}
-  {# </div> #}
-  {% include "static_pages/partials/footer_static.html" %}
+  {% include "partials/header.html" %}
+  <div class="container">
+    {% block content %}<h3>Error 404</h3>{% endblock %}
+  </div>
 {% endblock %}

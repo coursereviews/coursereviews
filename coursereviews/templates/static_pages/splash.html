@@ -1,12 +1,12 @@
-{% extends "static_pages/base.html" %}
+{% extends "base.html" %}
 {% load static from staticfiles %}
 {% load compressed %}
 
 {% block css %}
-{% compressed_css 'splash' %}
+  {% compressed_css 'splash' %}
 {% endblock %}
 
-{% block marginless %}
+{% block body %}
   <svg width="100" height="150" viewBox="0 50 100 100" preserveAspectRatio="none">
     <defs>
       <radialGradient id="gradient" cx="100%" cy="100%" r="100%">
@@ -20,9 +20,15 @@
   </svg>
 
   <div class="container splash-container">
+    <div class="navigation">
+      <div class="pull-right">
+        <a class="login btn btn-default" href="{% url 'auth_login' %}">Login</a>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-6">
-        <h1 class="title"><span class="midd">midd</span><span class="courses">courses</span></h1>
+        <h1 class="title"><span class="midd">midd</span
+          ><span class="courses">courses</span></h1>
         <h2 class="subtitle">Choose your courses. Better.</h2>
       </div>
       <div class="col-md-6">
@@ -30,7 +36,8 @@
           {% if messages %}
             {% for message in messages %}
               <div class="alert alert-info alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <button type="button" class="close" data-dismiss="alert"
+                  aria-hidden="true">&times;</button>
                 {{ message }}
               </div>
             {% endfor %}
@@ -41,47 +48,53 @@
 
         <div class="hidden-xs hidden-sm">
           {% if messages %}
-          <div class="row">
-            <div class="col-md-8 col-md-offset-4">
-            {% for message in messages %}
-              <div class="alert alert-info alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {{ message }}
+            <div class="row">
+              <div class="col-md-8 col-md-offset-4">
+              {% for message in messages %}
+                <div class="alert alert-info alert-dismissable">
+                  <button type="button" class="close" data-dismiss="alert"
+                    aria-hidden="true">&times;</button>
+                  {{ message }}
+                </div>
+              {% endfor %}
               </div>
-            {% endfor %}
             </div>
-          </div>
           {% endif %}
         </div>
       </div>
     </div>
   </div>
-{% endblock %}
-{% block content %}
-<div class="row features">
-  <div class="col-md-6 feature">
-    <span class="glyphicon glyphicon-pencil"></span>
-    <p class="feature-heading">Review your courses</p>
-    <p class="feature-subheading">Review all of your courses with one beautiful form.  We made the process short and painless.</p>
-  </div>
-  <div class="col-md-6 feature">
-    <span class="glyphicon glyphicon-thumbs-up"></span>
-    <p class="feature-heading">Vote on comments</p>
-    <p class="feature-subheading">Vote on comments to help the most valuable ones rise to the top.</p>
-  </div>
-</div>
-<div class="row features">
-  <div class="col-md-6 feature">
-    <span class="glyphicon glyphicon-book"></span>
-    <p class="feature-heading">Courses</p>
-    <p class="feature-subheading">We have the most comprehensive and up to date course review catalog with over 400 courses in 60 departments.</p>
-  </div>
-  <div class="col-md-6 feature">
-    <span class="glyphicon glyphicon-user"></span>
-    <p class="feature-heading">Professors</p>
-    <p class="feature-subheading">Go beyond courses to look at reviews for individual professors and any combination of the two.</p>
-  </div>
-</div>
+  <div class="container">
+    <div class="row features">
+      <div class="col-md-6 feature">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <p class="feature-heading">Review your courses</p>
+        <p class="feature-subheading">Review all of your courses with one
+          beautiful form.  We made the process short and painless.</p>
+      </div>
+      <div class="col-md-6 feature">
+        <span class="glyphicon glyphicon-thumbs-up"></span>
+        <p class="feature-heading">Vote on comments</p>
+        <p class="feature-subheading">Vote on comments to help the most
+          valuable ones rise to the top.</p>
+      </div>
+    </div>
+    <div class="row features">
+      <div class="col-md-6 feature">
+        <span class="glyphicon glyphicon-book"></span>
+        <p class="feature-heading">Courses</p>
+        <p class="feature-subheading">We have the most comprehensive and up to
+          date course review catalog with over 400 courses in 60 departments.</p>
+      </div>
+      <div class="col-md-6 feature">
+        <span class="glyphicon glyphicon-user"></span>
+        <p class="feature-heading">Professors</p>
+        <p class="feature-subheading">Go beyond courses to look at reviews for
+          individual professors and any combination of the two.</p>
+      </div>
+    </div>
 
-<img src="{% static 'static_pages/img/splash_logo.png' %}" style="display:none">
+    <img src="{% static 'static_pages/img/splash_logo.png' %}"
+      style="display:none">
+  </div>
 {% endblock %}
