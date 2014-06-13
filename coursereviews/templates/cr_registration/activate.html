@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Activation Failed{% endblock %}
 {% block content %}
-{% include 'partials/logo.html' %}
 <h4>Your account activation has failed</h4>
 <p>The link you used, <a href="{% url 'registration_activate' activation_key %}">{% url 'registration_activate' activation_key %}</a>, is invalid.
 {% endblock %}
