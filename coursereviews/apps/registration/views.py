@@ -4,6 +4,7 @@ from users.models import UserProfile
 from reviews.models import Professor
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
+from django.contrib.auth.decorators import login_required
 from registration import signals
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
@@ -33,7 +34,7 @@ def register(request, template_name='static_pages/splash.html'):
             new_user = RegistrationProfile.objects.create_inactive_user(username, email, password, site)
             signals.user_registered.send(sender=RegistrationProfile,
                                          user=new_user,
-                                         request=request)            
+                                         request=request)
             profile = UserProfile.objects.get(user=new_user)
             profile.save()
 
@@ -58,7 +59,7 @@ def register(request, template_name='static_pages/splash.html'):
             else:
                 return redirect('index')
     else:
-        form = RegistrationForm()   
+        form = RegistrationForm()
     return TemplateResponse(request, template_name, {'form': form})
 
 
@@ -80,3 +81,8 @@ def professor_register(request, template_name='cr_registration/professor_registr
     else:
         form = RegistrationForm()
     return TemplateResponse(request, template_name, {'form': form})
+
+@login_required
+def password_change_done(request):
+    messages.add_message(request, messages.INFO, "Password successfully changed!")
+    return redirect('index')

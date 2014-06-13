@@ -3,7 +3,10 @@ from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 from registration.forms import AuthenticationForm
 from static_pages.views import splash
-from registration.views import activate, register, professor_register
+from registration.views import (activate,
+                                register,
+                                professor_register,
+                                password_change_done)
 
 urlpatterns = patterns('',
     # Activation keys get matched by \w+ instead of the more specific
@@ -13,7 +16,7 @@ urlpatterns = patterns('',
 
     # this is how we interface with the django authentication
     url(r'^login/$', auth_views.login,
-        {'template_name': 'cr_registration/login.html', 
+        {'template_name': 'cr_registration/login.html',
         'authentication_form': AuthenticationForm },
         name='auth_login'),
     url(r'^logout/$',
@@ -22,15 +25,15 @@ urlpatterns = patterns('',
         name='auth_logout'),
     url(r'^password/change/$',
         auth_views.password_change,
-        {'template_name': 'cr_registration/password_change_form.html'},
+        {'template_name': 'cr_registration/password_change_form.html',
+         'post_change_redirect': '/password/change/done'},
         name='auth_password_change'),
     url(r'^password/change/done/$',
-        auth_views.password_change_done,
-        {'template_name': 'cr_registration/password_change_done.html'},
-        name='auth_password_change_done'),
+        password_change_done,
+        name='password_change_done'),
     url(r'^password/reset/$',
         auth_views.password_reset,
-        {'template_name': 'cr_registration/password_reset_form.html', 
+        {'template_name': 'cr_registration/password_reset_form.html',
         'email_template_name': 'cr_registration/password_reset_email.txt',
         'subject_template_name': 'cr_registration/password_reset_subject.txt'},
         name='auth_password_reset'),
