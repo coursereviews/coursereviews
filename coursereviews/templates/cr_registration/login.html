@@ -1,57 +1,59 @@
 {% extends 'users/base.html' %}
 
+{% block pagetitle %}MiddCourses - Login{% endblock %}
 {% block content %}
 {% if messages %}
-<div class="row">
-  <div class="col-sm-6">
-    {% for message in messages %}
-    <div class="alert alert-info alert-dismissable">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      {{ message }}
+  <div class="row">
+    <div class="col-sm-6">
+      {% for message in messages %}
+      <div class="alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert"
+          aria-hidden="true">&times;</button>
+        {{ message }}
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
-</div>
 {% endif %}
-<form class="form-horizontal fixed-width-form" action="{% url 'auth_login' %}" method="POST">
+<form role="form" class="small-form col-sm-4 col-sm-offset-4"
+  action="{% url 'auth_login' %}" method="POST">
   {% csrf_token %}
   <div class="form-group">
-    <div class="col-sm-3 col-sm-offset-2">
-      <h4>Login</h4>
-    </div>
+    <h3>Login</h3>
   </div>
   {% if form.non_field_errors %}
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-4">
+    <div class="form-group">
       <div class="alert alert-danger">
         {% for error in form.non_field_errors %}
           <span>{{error}}</span>
         {% endfor %}
       </div>
     </div>
-  </div>
   {% endif %}
   <div class="form-group {% if form.email.errors %}has-error{% endif %}">
-    <label for="id_email" class="col-sm-2 control-label">Email</label>
-    <div class="col-sm-4">
-      <input type="text" name="email" class="form-control" id="id_email" value="{% if form.email.value %}{{form.email.value}}{% endif %}">
+    <label for="id_email">Email</label>
+    <input type="text" name="email" class="form-control" id="id_email"
+      value="{% if form.email.value %}{{form.email.value}}{% endif %}">
+    <div class="help-block">
+      {% for error in form.email.errors %}
+        {{ error }}
+      {% endfor %}
     </div>
-    <div class="help-block">{% for error in form.email.errors %}{{ error }}&nbsp;{% endfor %}</div>
   </div>
   <div class="form-group {% if form.password.errors %}has-error{% endif %}">
-    <label for="id_password" class="col-sm-2 control-label">Password</label>
-    <div class="col-sm-4">
-      <input type="password" name="password" class="form-control" id="id_password" value="">
+    <label for="id_password">Password</label>
+    <input type="password" name="password" class="form-control" id="id_password">
+    <div class="help-block">
+      {% for error in form.password.errors %}
+        {{ error }}
+      {% endfor %}
     </div>
-    <div class="help-block">{% for error in form.password.errors %}{{ error }}&nbsp;{% endfor %}</div>
   </div>
   <div class="form-group">
-    <div class="col-sm-3 col-sm-offset-2">
-      <input class="btn btn-primary" type="submit" value="Login">
-      <br/><br/>
-      <a href="{% url 'auth_password_reset' %}">Forgot your password?</a><br/>
-      <a href="{% url 'registration_register' %}">Create an account</a>
-    </div>
+    <input class="btn btn-primary" type="submit" value="Login">
+    <br/><br/>
+    <a href="{% url 'auth_password_reset' %}">Forgot your password?</a><br/>
+    <a href="{% url 'registration_register' %}">Create an account</a>
   </div>
   <input type="hidden" name="next" value="{{ next }}" />
 </form>
