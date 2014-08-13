@@ -62,31 +62,7 @@
           {% if has_comments %}
           {% for review in reviews %}
             {% if review.comment %}
-            <div class="comment" data-comment-id="{{ review.id }}">
-            <table>
-            <tbody>
-              <tr>
-                {% if not request.user.get_profile.professor_assoc %}
-                <td class="comment-voting" data-comment-id="{{ review.id }}">
-                  <span class="glyphicon glyphicon-arrow-up upvote{% if request.user in review.up_votes.all %} upvote-highlight{% endif %}"></span>
-                  <span class="glyphicon glyphicon-arrow-down downvote{% if request.user in review.down_votes.all %} downvote-highlight{% endif %}"></span>
-                </td>
-                {% endif %}
-                <td class="comment-body">
-                  {{ review.comment }}
-                  {% if type == 'prof' %}
-                  <i class="comment-context">Course: <a href="{{ review.prof_course.course.get_absolute_url }}">{{ review.prof_course.course.code }}</a>
-                  {% elif type == 'course' %}
-                  <i class="comment-context">Professor: <a href="{{ review.prof_course.prof.get_absolute_url }}">{{ review.prof_course.prof }}</a></i>
-                  {% endif %}
-                </td>
-                {% if not request.user.get_profile.professor_assoc != None %}
-                <td class="comment-flagging"><span class="glyphicon glyphicon-flag flag" data-comment-id="{{ review.id }}"></span></td>
-                {% endif %}
-              </tr>
-            </tbody>
-            </table>
-            </div>
+            {% include 'reviews/comment_partial.html' %}
             {% endif %}
           {% endfor %}
           {% else %}
