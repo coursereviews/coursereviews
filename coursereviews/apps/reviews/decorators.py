@@ -2,10 +2,13 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.contrib import messages
 
+from cr_admin.models import AdminQuota
+
 def quota_required(view_func):
     def _wrapped_view_func(request, *args, **kwargs):
         profile = request.user.get_profile()
-        if not profile.professor_assoc and profile.quota > 0:
+        quota = AdminQuota.objects.get(id=1).new_quota
+        if not profile.professor_assoc and profile.semester_reviews > quota:
             messages.add_message(request, messages.INFO, "You have to write some reviews before you can see that.")
             return redirect('index')
         else:

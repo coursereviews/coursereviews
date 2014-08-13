@@ -3,6 +3,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
+from django.db.models import F
 
 from reviews.models import (Review,
                             Professor,
@@ -65,8 +66,8 @@ def course_detail(request, course_slug):
 
         has_comments = any([review.comment for review in reviews])
 
-        return TemplateResponse(request, 'reviews/review_detail.html', 
-                                { 'course': course, 
+        return TemplateResponse(request, 'reviews/review_detail.html',
+                                { 'course': course,
                                   'prof_courses': prof_courses,
                                   'reviews': reviews,
                                   'flag_form': flag_form,
@@ -99,8 +100,8 @@ def prof_detail(request, prof_slug):
 
         has_comments = any([review.comment for review in reviews])
 
-        return TemplateResponse(request, 'reviews/review_detail.html', 
-                                { 'prof': professor, 
+        return TemplateResponse(request, 'reviews/review_detail.html',
+                                { 'prof': professor,
                                   'prof_courses': prof_courses,
                                   'reviews': reviews,
                                   'flag_form': flag_form,
@@ -113,8 +114,8 @@ def prof_detail(request, prof_slug):
 @login_required
 @quota_required
 def prof_course_detail(request, course_slug, prof_slug):
-    prof_course = get_object_or_404(ProfCourse.objects.select_related(), 
-                                    course__slug__exact=course_slug, 
+    prof_course = get_object_or_404(ProfCourse.objects.select_related(),
+                                    course__slug__exact=course_slug,
                                     prof__slug__exact=prof_slug)
 
     user_professor = request.user.get_profile().professor_assoc
@@ -150,9 +151,9 @@ def create(request):
         if form.is_valid():
             form.save()
             profile = request.user.get_profile()
-            if profile.quota > 0:
-                profile.quota -= 1
-                profile.save()
+            profile.update(semester_reviews=F('semester_reviews') + 1,
+                           total_reviews=F('total_reviews') + 1)
+            profile.save()
 
             return redirect('prof_course_detail', course_slug=review.prof_course.course.slug, prof_slug=review.prof_course.prof.slug)
         else:
@@ -213,7 +214,7 @@ def search(request):
     # Perform a search using Haystack
     course_results = SearchQuerySet().models(Course).filter(content=Clean(query))
     professor_results = SearchQuerySet().models(Professor).filter(content=Clean(query))
-    
+
     results_count = len(course_results) + len(professor_results)
 
     ctx_dict = {'count': results_count,

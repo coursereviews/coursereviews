@@ -28,4 +28,3 @@
   pk: 1 # DO NOT REMOVE
   fields:
     user: ['ejknox']
-    quota: 0
