@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from reviews.models import Professor
+from cr_admin.models import AdminQuota
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
@@ -23,6 +24,12 @@ class UserProfile(models.Model):
         if self.name:
             return self.name
         return self.user.username
+
+    def reviews_to_fulfill_quota(self):
+        quota = AdminQuota.objects.get(id=1).new_quota
+        if self.semester_reviews - quota > 0:
+            return self.semester_reviews - quota
+        return 0
 
     def __unicode__(self):
         return self.user.username
