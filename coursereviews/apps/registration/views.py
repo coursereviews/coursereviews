@@ -42,7 +42,6 @@ def register(request, template_name='static_pages/splash.html'):
             try:
                 professor = Professor.objects.get(email=email)
                 profile.professor_assoc = professor
-                profile.quota = 0
                 profile.save()
             except Professor.DoesNotExist:
                 # Not a professor in our db, but user came from
