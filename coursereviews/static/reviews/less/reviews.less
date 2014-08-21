@@ -85,7 +85,7 @@ form.edit-review {
       line-height: 34px;
     }
   }
-    
+
   .error {
     h4, h5 { color: @error-color !important; }
     .btn-group {
@@ -205,9 +205,11 @@ h2.review-title {
 
 .comments {
   .comment {
-    padding-bottom: 10px;
+    margin: 10px 0;
     .comment-voting,
     .comment-flagging {
+      width: 5%;
+      padding: 0 5px;
       vertical-align: top;
       color: #b4b4b4;
       text-align: center;
@@ -215,7 +217,6 @@ h2.review-title {
     }
     .comment-voting {
       font-size: 20px;
-      width: 40px;
       .upvote { margin-left: -2px; }
       .downvote  { margin-right: -1px; }
       .upvote-highlight { color: #47a447; }
@@ -223,22 +224,20 @@ h2.review-title {
       span {
         font-weight: 900;
       }
+      span:hover:not(.upvote-highlight):not(.downvote-highlight) {
+        color: darken(#b4b4b4, 10%);
+      }
     }
     .comment-flagging {
+      font-size: 16px;
       span:hover { color: darken(#b4b4b4, 10%); }
     }
     .comment-body {
+      width: 90%;
       vertical-align: top;
     }
     &:not(:last-child) {
       border-bottom: 1px solid #999;
-    }
-    &:last-child {
-      padding-top: 10px;
-    }
-    .comment-context {
-      color: #999;
-      a { color: #888; }
     }
   }
 }
