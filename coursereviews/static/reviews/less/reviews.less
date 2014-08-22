@@ -271,3 +271,38 @@ svg {
     }
   }
 }
+
+svg#hours {
+  rect { fill: #3276b1; }
+  .axis {
+    path, line {
+      fill: none;
+      stroke: #333;
+      shape-rendering: crispEdges;
+    }
+  }
+  .y.axis {
+    line { stroke: #b4b4b4; }
+    path { stroke: none; }
+  }
+  .x.axis {
+    path { stroke: none; }
+  }
+  .gridlines {
+    line {
+      stroke: #b4b4b4;
+      shape-rendering: crispEdges;
+    }
+  }
+  .avg {
+    path {
+      stroke: black;
+      shape-rendering: crispEdges;
+    }
+    text {
+      font-size: 12px;
+      fill: #333;
+    }
+  }
+
+}
