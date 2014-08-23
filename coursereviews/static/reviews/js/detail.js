@@ -55,7 +55,7 @@ $(function() {
       });
 
   function hoursChart(hoursStats) {
-    var margin = {top: 30, right: 10, bottom: 35, left: 30};
+    var margin = {top: 30, right: 10, bottom: 35, left: 35};
     var height = 300 - margin.top - margin.bottom;
     var width = $statsContainer.width() - 30;
 
@@ -93,19 +93,23 @@ $(function() {
       .append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    var xAxisEl = chart.append('g')
+    chart.append('g')
         .attr('class', 'x axis')
         .attr('transform', 'translate(0,' + height + ')')
-        .call(xAxis);
-
-    xAxisEl.append('text')
+        .call(xAxis)
+      .append('text')
         .attr('dx', -5)
         .attr('dy', 30)
         .text('hours per week');
 
     chart.append('g')
         .attr('class', 'y axis')
-        .call(yAxis);
+        .call(yAxis)
+      .append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('dy', -20)
+        .attr('dx', -30)
+        .text('votes');
 
     chart.append('g')
         .attr('class', 'y gridlines')
@@ -118,7 +122,7 @@ $(function() {
         .attr('class', 'bar')
         .attr('x', function (d) { return (x(d.key) - width / data.length / 2) + 1; })
         .attr('y', function (d) { return y(d.value)})
-        .attr('width', (width / data.length) - 1)
+        .attr('width', (width / data.length) - 2)
         .attr('height', function (d) { return height - y(d.value)});
 
     var avgHours = d3.sum(d3.entries(hoursStats), function(d) {
