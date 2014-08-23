@@ -116,9 +116,9 @@ $(function() {
         .data(data)
       .enter().append('rect')
         .attr('class', 'bar')
-        .attr('x', function (d) { return Math.floor((x(d.key) - width / data.length / 2)) + 1; })
+        .attr('x', function (d) { return (x(d.key) - width / data.length / 2) + 1; })
         .attr('y', function (d) { return y(d.value)})
-        .attr('width', Math.round((width / data.length)) - 2)
+        .attr('width', (width / data.length) - 1)
         .attr('height', function (d) { return height - y(d.value)});
 
     var avgHours = d3.sum(d3.entries(hoursStats), function(d) {
