@@ -55,7 +55,7 @@ $(function() {
       });
 
   function hoursChart(hoursStats) {
-    var margin = {top: 30, right: 10, bottom: 35, left: 35};
+    var margin = {top: 30, right: 10, bottom: 35, left: 40};
     var height = 300 - margin.top - margin.bottom;
     var width = $statsContainer.width() - 30;
 
@@ -107,7 +107,7 @@ $(function() {
         .call(yAxis)
       .append('text')
         .attr('transform', 'rotate(-90)')
-        .attr('dy', -20)
+        .attr('dy', -25)
         .attr('dx', -30)
         .text('votes');
 
