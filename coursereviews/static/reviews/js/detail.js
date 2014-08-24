@@ -55,9 +55,9 @@ $(function() {
       });
 
   function hoursChart(hoursStats) {
-    var margin = {top: 30, right: 10, bottom: 35, left: 40};
+    var margin = {top: 30, right: 10, bottom: 35, left: 42};
     var height = 300 - margin.top - margin.bottom;
-    var width = $statsContainer.width() - 30;
+    var width = $statsContainer.width() - 40;
 
     var data = d3.entries(d3.range(13)).map(function (h) {
       if (hoursStats.hasOwnProperty(h.key))
@@ -107,7 +107,7 @@ $(function() {
         .call(yAxis)
       .append('text')
         .attr('transform', 'rotate(-90)')
-        .attr('dy', -25)
+        .attr('dy', -26)
         .attr('dx', -30)
         .text('votes');
 
@@ -209,7 +209,7 @@ $(function() {
           .attr('transform', 'translate(0,' + height + ')')
           .call(xAxis)
         .append('text')
-          .attr('transform', 'translate(8,18)')
+          .attr('dy', 30)
           .text('votes');
     });
   }
