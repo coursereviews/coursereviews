@@ -116,6 +116,14 @@ $(function() {
         .call(yAxis.tickFormat('').tickSize(-width, 0, 0))
         .style('stoke', 'grey');
 
+    var tooltip = d3.select('body').append('div')
+        .attr('id', 'tooltip')
+        .style('position', 'absolute')
+        .style('display', 'none')
+        .style('background-color', '#333')
+        .style('opacity', '.9')
+        .style('border-radius', '3px');
+
     chart.selectAll('rect')
         .data(data)
       .enter().append('rect')
@@ -123,7 +131,18 @@ $(function() {
         .attr('x', function (d) { return (x(d.key) - width / data.length / 2) + 1; })
         .attr('y', function (d) { return y(d.value)})
         .attr('width', (width / data.length) - 2)
-        .attr('height', function (d) { return height - y(d.value)});
+        .attr('height', function (d) { return height - y(d.value)})
+        .on('mouseover', function (d) {
+          tooltip
+              .style('display', null)
+              .style('left', x(d.key) + chart.scrollLeft + 'px')
+              .style('top', y(d.value) + chart.scrollTop + 'px')
+              .text(d.value);
+        })
+        .on('mouseout', function (d) {
+          tooltip
+              .style('display', 'none');
+        })
 
     var avgHours = d3.sum(d3.entries(hoursStats), function(d) {
       return +d.key * d.value;
@@ -198,11 +217,22 @@ $(function() {
           .attr('height', barHeight - 1);
 
       bar.append('text')
-          .attr('x', function(d) { return x(d.value) - 10 })
           .attr('y', barHeight / 2 - 1)
           .attr('dy', '.35em')
-          .attr('text-anchor', 'end')
-          .text(function(d) { return '' + d.key });
+          .text(function(d) { return '' + d.key })
+          .datum(function (d) {
+            if (this.getBBox().width < (this.previousSibling.getBBox().width - 20))
+              d.textFits = true;
+            else d.textFits = false;
+            return d;
+          })
+          .attr('text-anchor', function (d) {
+            return d.textFits ? 'end' : 'beginning';
+          })
+          .attr('x', function (d) {
+            return d.textFits ? x(d.value) - 10 : x(d.value) + 10;
+          })
+          .style('fill', function (d) { return d.textFits ? '#fff' : '#000'; });
 
       chart.append('g')
           .attr('class', 'x axis')
