@@ -209,6 +209,7 @@ $(function() {
       var bar = chart.selectAll('g')
           .data(data)
         .enter().append('g')
+          .sort(function (a, b) { return d3.descending(a.value, b.value); })
           .attr('class', 'bar')
           .attr('transform', function(d, i) { return 'translate(0,' + i * barHeight + ')'; });
 
