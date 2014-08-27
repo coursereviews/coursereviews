@@ -151,8 +151,8 @@ def create(request):
         if form.is_valid():
             form.save()
             profile = request.user.get_profile()
-            profile.update(semester_reviews=F('semester_reviews') + 1,
-                           total_reviews=F('total_reviews') + 1)
+            profile.semester_reviews = F('semester_reviews') + 1
+            profile.total_reviews = F('total_reviews') + 1
             profile.save()
 
             return redirect('prof_course_detail', course_slug=review.prof_course.course.slug, prof_slug=review.prof_course.prof.slug)
