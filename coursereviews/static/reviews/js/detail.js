@@ -148,6 +148,8 @@ $(function() {
       return +d.key * d.value;
     }) / d3.sum(d3.entries(hoursStats), function (d) { return d.value});
 
+    var avgTextFits = true;
+
     var avg = chart.append('g')
         .datum(d3.round(avgHours, 1))
         .attr('class', 'avg')
@@ -160,9 +162,20 @@ $(function() {
         .attr('d', 'M0,-10L0,' + height);
     avg
       .append('text')
-        .attr('dx', 3)
         .attr('dy', -5)
-        .text(function (d) { return 'Average: ' + d + ' hours'; });
+        .text(function (d) { return 'Average: ' + d + ' hours'; })
+        .datum(function (d) {
+          avgTextFits = this.getBBox().width < (width - x(d) - 3);
+          return d;
+        })
+        .attr('dx', function () {
+          if (avgTextFits) return 3;
+          return -3;
+        })
+        .style('text-anchor', function () {
+          if (avgTextFits) return 'beginning';
+          return 'end';
+        });
   }
 
   function makeCharts(stats) {
