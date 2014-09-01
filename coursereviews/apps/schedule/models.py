@@ -7,6 +7,8 @@ class CourseOffering(models.Model):
     prof_course = models.ForeignKey(ProfCourse, related_name='course_offerings')
     term = models.ForeignKey(Term, related_name='course_offerings')
 
+    cross_listing = models.ForeignKey('self')
+
     # Discussion, Lecture, Lab, etc.
     course_type = models.CharField(max_length=20)
 
