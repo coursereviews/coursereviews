@@ -163,7 +163,7 @@ THIRD_PARTY_APPS = (
     # pagination template tags
     'pagination',
 
-    # static file management 
+    # static file management
     'pipeline',
 
     # rest support
@@ -176,6 +176,7 @@ THIRD_PARTY_APPS = (
 
 LOCAL_APPS = (
     'reviews',
+    'schedule',
     'registration',
     'static_pages',
     'users',
