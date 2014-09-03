@@ -66,8 +66,6 @@ MIDDLEWARE_CLASSES += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
-DEBUG_TOOLBAR_CONFIG = { 'INTERCEPT_REDIRECTS': False }
-
 # STATICFILES_STORAGE = 'coursereviews.settings.storage.S3PipelineStorage'
 
 # See: http://docs.celeryproject.org/en/latest/configuration.html#broker-transport
