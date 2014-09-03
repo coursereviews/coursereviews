@@ -1,7 +1,26 @@
 from django.db import models
 from multiselectfield import MultiSelectField
 from reviews.models import ProfCourse
-from reviews.models import Term
+
+class Term(models.Model):
+    code = models.IntegerField()
+
+    @property
+    def year(self):
+        return str(code / 100)
+
+    @property
+    def semester(self):
+        semester_code = self.code % 100
+        if semester_code == 10:
+            return 'Winter'
+        elif semester_code == 20:
+            return 'Spring'
+        elif semester_code == 90:
+            return 'Fall'
+
+    def __unicode__(self):
+        return self.semester + ' ' + self.year
 
 class CourseOffering(models.Model):
     prof_course = models.ForeignKey(ProfCourse, related_name='course_offerings')

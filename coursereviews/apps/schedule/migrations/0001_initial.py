@@ -8,11 +8,18 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'Term'
+        db.create_table(u'schedule_term', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('code', self.gf('django.db.models.fields.IntegerField')()),
+        ))
+        db.send_create_signal(u'schedule', ['Term'])
+
         # Adding model 'CourseOffering'
         db.create_table(u'schedule_courseoffering', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('prof_course', self.gf('django.db.models.fields.related.ForeignKey')(related_name='course_offerings', to=orm['reviews.ProfCourse'])),
-            ('term', self.gf('django.db.models.fields.related.ForeignKey')(related_name='course_offerings', to=orm['reviews.Term'])),
+            ('term', self.gf('django.db.models.fields.related.ForeignKey')(related_name='course_offerings', to=orm['schedule.Term'])),
             ('cross_listing', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['schedule.CourseOffering'])),
             ('course_type', self.gf('django.db.models.fields.CharField')(max_length=20)),
             ('distribution_requirements', self.gf('multiselectfield.db.fields.MultiSelectField')(max_length=47)),
@@ -38,6 +45,9 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
+        # Deleting model 'Term'
+        db.delete_table(u'schedule_term')
+
         # Deleting model 'CourseOffering'
         db.delete_table(u'schedule_courseoffering')
 
@@ -54,7 +64,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'lookup': ('django.db.models.fields.CharField', [], {'max_length': '276'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'blank': 'True'}),
-            'terms': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'course_terms'", 'symmetrical': 'False', 'to': u"orm['reviews.Term']"}),
+            'terms': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'course_terms'", 'symmetrical': 'False', 'to': u"orm['schedule.Term']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         u'reviews.department': {
@@ -79,12 +89,6 @@ class Migration(SchemaMigration):
             'lookup': ('django.db.models.fields.CharField', [], {'max_length': '201'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'blank': 'True'})
         },
-        u'reviews.term': {
-            'Meta': {'object_name': 'Term'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'semester': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
-            'year': ('django.db.models.fields.IntegerField', [], {'max_length': '4'})
-        },
         u'schedule.courseoffering': {
             'Meta': {'object_name': 'CourseOffering'},
             'catalog_link': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
@@ -98,7 +102,7 @@ class Migration(SchemaMigration):
             'prof_course': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'course_offerings'", 'to': u"orm['reviews.ProfCourse']"}),
             'seats_capacity': ('django.db.models.fields.IntegerField', [], {}),
             'seats_remaining': ('django.db.models.fields.IntegerField', [], {}),
-            'term': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'course_offerings'", 'to': u"orm['reviews.Term']"})
+            'term': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'course_offerings'", 'to': u"orm['schedule.Term']"})
         },
         u'schedule.courseofferingtime': {
             'Meta': {'object_name': 'CourseOfferingTime'},
@@ -108,6 +112,11 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'location': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'start_time': ('django.db.models.fields.TimeField', [], {})
+        },
+        u'schedule.term': {
+            'Meta': {'object_name': 'Term'},
+            'code': ('django.db.models.fields.IntegerField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         }
     }
 

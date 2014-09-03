@@ -32,15 +32,6 @@ class Department(models.Model):
     def __unicode__(self):
         return self.name
 
-class Term(models.Model):
-    SEMESTER_CHOICES = (('F', 'Fall'), ('W', 'Winter'), ('S', 'Spring'))
-
-    semester = models.CharField(max_length=1, choices=SEMESTER_CHOICES)
-    year = models.IntegerField(max_length=4)
-
-    def __unicode__(self):
-        return self.get_semester_display + ' ' + self.year
-
 class Professor(models.Model):
     objects = GenericManager(field_name='last')
     first = models.CharField(max_length=100, blank=True, null=True)
@@ -72,7 +63,7 @@ class Course(models.Model):
     dept = models.ForeignKey(Department, related_name='courses')
     slug = models.SlugField(blank=True)
     lookup = models.CharField(max_length=276)
-    terms = models.ManyToManyField(Term, related_name='course_terms')
+    terms = models.ManyToManyField('schedule.Term', related_name='course_terms')
 
     def natural_key(self):
         return self.code

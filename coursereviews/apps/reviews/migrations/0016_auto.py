@@ -8,28 +8,17 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Term'
-        db.create_table(u'reviews_term', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('semester', self.gf('django.db.models.fields.CharField')(max_length=1)),
-            ('year', self.gf('django.db.models.fields.IntegerField')(max_length=4)),
-        ))
-        db.send_create_signal(u'reviews', ['Term'])
-
         # Adding M2M table for field terms on 'Course'
         m2m_table_name = db.shorten_name(u'reviews_course_terms')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('course', models.ForeignKey(orm[u'reviews.course'], null=False)),
-            ('term', models.ForeignKey(orm[u'reviews.term'], null=False))
+            ('term', models.ForeignKey(orm[u'schedule.term'], null=False))
         ))
         db.create_unique(m2m_table_name, ['course_id', 'term_id'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Term'
-        db.delete_table(u'reviews_term')
-
         # Removing M2M table for field terms on 'Course'
         db.delete_table(db.shorten_name(u'reviews_course_terms'))
 
@@ -79,7 +68,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'lookup': ('django.db.models.fields.CharField', [], {'max_length': '276'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'blank': 'True'}),
-            'terms': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'course_terms'", 'symmetrical': 'False', 'to': u"orm['reviews.Term']"}),
+            'terms': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'course_terms'", 'symmetrical': 'False', 'to': u"orm['schedule.Term']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         u'reviews.department': {
@@ -130,11 +119,10 @@ class Migration(SchemaMigration):
             'why_flag': ('django.db.models.fields.CharField', [], {'max_length': '1', 'null': 'True', 'blank': 'True'}),
             'why_take': ('multiselectfield.db.fields.MultiSelectField', [], {'max_length': '9'})
         },
-        u'reviews.term': {
+        u'schedule.term': {
             'Meta': {'object_name': 'Term'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'semester': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
-            'year': ('django.db.models.fields.IntegerField', [], {'max_length': '4'})
+            'code': ('django.db.models.fields.IntegerField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         }
     }
 
