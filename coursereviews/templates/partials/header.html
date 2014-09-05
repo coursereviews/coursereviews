@@ -9,6 +9,7 @@
     {% if request.user.is_authenticated %}
       <div class="pull-right">
         <a class="btn btn-primary" href="{% url 'new_review' %}">Write a review</a>
+        <a class="logout btn btn-default" href="{% url 'profile' %}">Edit your reviews</a>
         <a class="logout btn btn-default" href="{% url 'auth_logout' %}">
           <span class="glyphicon glyphicon-off"></span>
         </a>

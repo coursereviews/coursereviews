@@ -165,7 +165,7 @@ def edit(request, review_id):
     review = get_object_or_404(Review.objects.select_related(), id=review_id)
 
     # Cannot view an individual review of another user
-    if request.user != review.user:
+    if request.user != review.user or not review.editable:
         raise Http404
 
     # Show the edit page
@@ -222,3 +222,13 @@ def search(request):
                 'professors': professor_results,
                 'query': query}
     return TemplateResponse(request, 'reviews/search_results.html', ctx_dict)
+
+
+@require_GET
+def profile(request):
+    review_qs = request.user.reviews.all()
+    review_qs = review_qs.prefetch_related('prof_course__course', 'prof_course__prof')
+    return TemplateResponse(request, 'reviews/profile.html', {
+        'reviews': review_qs
+    })
+

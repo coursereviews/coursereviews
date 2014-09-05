@@ -6,6 +6,7 @@ from django.template.defaultfilters import slugify
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from multiselectfield import MultiSelectField
+from datetime import date, timedelta
 
 # Used for both ListingCategory and ListingType and Buyer
 class GenericManager(models.Manager):
@@ -40,6 +41,10 @@ class Professor(models.Model):
     email = models.EmailField(blank=True, null=True)
     slug = models.SlugField(blank=True)
     lookup = models.CharField(max_length=201)
+
+    @property
+    def name(self):
+        return "{} {}".format(self.first, self.last)
 
     def natural_key(self):
         return self.last
@@ -241,3 +246,7 @@ class Review(models.Model):
         msg = EmailMultiAlternatives(subject, message_text, settings.DEFAULT_FROM_EMAIL, [self.user.email])
         msg.attach_alternative(message_html, "text/html")
         msg.send()
+
+    @property
+    def editable(self):
+        return date.today() <= self.date + timedelta(days=2)

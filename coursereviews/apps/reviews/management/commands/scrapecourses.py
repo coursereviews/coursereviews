@@ -205,7 +205,7 @@ page and getting the value of the url parameter 'p_term'."""
         # This should be the first and only argument to scrapecourses
         url = 'https://ssb.middlebury.edu/PNTR/saturn_midd.course_catalog_utlq.catalog_page_by_dept?p_term='
 
-        courses_r = requests.get(url + self.term)
+        courses_r = requests.get(url + self.term, verify=False)
 
         if courses_r.status_code != 200:
             raise CommandError('Unable to retrieve initial course catalog. Status code: %s. URL attempted: %s' % (

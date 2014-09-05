@@ -29,7 +29,7 @@ DATABASES = {
         'NAME': normpath(join(DJANGO_ROOT, 'default.db')),
         'USER': '',
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': '',
+        # 'NAME': 'template1',
         'PASSWORD': '',
         'HOST': '',
         'PORT': '',
