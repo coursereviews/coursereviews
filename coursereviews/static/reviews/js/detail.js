@@ -35,11 +35,15 @@ $(function() {
         if (error) throw error;
 
         allStats = stats = JSON.parse(stats);
+        allStats.reviewCount = d3.sum(d3.entries(allStats.hours), function (d) {
+          return d.value;
+        });
         for (var key in stats) {
           if (key !== 'comments' &&
               key !== 'date' &&
               key !== 'prof_course_id' &&
-              key !== 'hours') {
+              key !== 'hours' &&
+              key !== 'reviewCount') {
             sortedStats.push({'key': key, 'stats': stats[key]});
           }
         }
@@ -215,9 +219,9 @@ $(function() {
         .append('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-      x.domain([0, d3.max(data, function(d) { return d.value })]);
+      x.domain([0, allStats.reviewCount]);
 
-      xAxis.ticks(d3.max(data, function(d) { return d.value}));
+      xAxis.ticks(allStats.reviewCount > 15 ? 10 : allStats.reviewCount);
 
       var bar = chart.selectAll('g')
           .data(data)
