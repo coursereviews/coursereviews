@@ -5,3 +5,16 @@
   border: 1px solid #ddd;
   border-radius: 5px;
 }
+
+.user-reviews {
+    @media all and (min-width: 699px) {
+  tr .show-on-hover{
+
+      opacity: 0;
+    transition: 200ms linear opacity;
+  }
+    }
+  tr:hover .show-on-hover {
+      opacity: 1;
+  }  
+}

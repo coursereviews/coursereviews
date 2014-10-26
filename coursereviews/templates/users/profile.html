@@ -1,0 +1,89 @@
+{% extends 'users/base.html' %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            {% if reviews %}
+                <h2>Courses you've reviewed</h2>               
+                <table class="table table-striped user-reviews">
+                    <thead>
+                        <tr>
+                            <th class="hidden-xs">Course Code</th>                        
+                            <th>Course Title</th>
+                            <th class="hidden-xs">Course Professor</th>
+                            <th>Review Date</th>
+                            <th></th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for review in reviews %}
+                            <tr>
+                                <td class="hidden-xs"><code>{{ review.prof_course.course.code }}</code></td>
+                                <td>{{ review.prof_course.course.title }}</td>
+                                <td class="hidden-xs">{{ review.prof_course.prof.name }}</td>
+                                <td>{{ review.date }}</td>
+                                <td>
+                                    {# {% if review.editable %} #}
+                                        <a href="{% url 'edit_review' review.id %}" class="show-on-hover btn btn-default btn-small">edit</a>
+                                    {# {% endif %} #}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% comment %}
+                <div class="user-reviews">
+                    <div class="row head hidden-xs">
+                        <strong>
+                            <div class="col-sm-2">Course Code</div>
+                            <div class="col-sm-3">Course Title</div>
+                            <div class="col-sm-3">Course Professor</div>
+                            <div class="col-sm-2">Review Date</div>
+                            <div class="col-sm-2"></div>
+                        </strong>
+                    </div>
+                    <div class="body">
+                        {% for review in reviews %}                    
+                            <div class="row review-row">
+                                    <div class="col-sm-2">
+                                        <span class="visible-xs-inline text-muted small mobile-label">Course Code</span>
+                                        <code>{{ review.prof_course.course.code }}</code></div>
+                                                                
+                                    <div class="col-sm-3">
+                                        <span class="visible-xs-inline text-muted small mobile-label">Course Title</span>
+                                        {{ review.prof_course.course.title }}
+                                    </div>
+        
+                                    <div class="col-sm-3">
+                                        <span class="visible-xs-inline text-muted small mobile-label">Course Professor</span>
+                                        {{ review.prof_course.prof.name }}
+                                    </div>
+                                
+                                    <div class="col-sm-2">
+                                        <span class="visible-xs-inline text-muted small mobile-label">Review Date</span>
+                                        {{ review.date }}
+                                    </div>
+                                    <div class="col-sm-2">
+                                        {# {% if review.editable %}                                     #}
+                                        {% if True %}
+                                            <div class="show-on-hover hidden-xs">
+                                                <a href="{% url 'edit_review' review.id %}" class="btn btn-default btn-small">edit</a>
+                                            </div>
+                                            <div class="visible-xs">
+                                                <a href="{% url 'edit_review' review.id %}" class="btn btn-default btn-small">edit</a>
+                                            </div>
+                                        {% endif %}   
+                                    </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endcomment %}
+            {% else %}
+                <h2>This is where you'll see courses you've reviewed</h2>            
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -14,8 +14,6 @@ urlpatterns = patterns('reviews.views',
     url(r'^course/(?P<course_slug>[-\w\d]+)/(?P<prof_slug>[-\w\d]+)$', 'prof_course_detail', name='prof_course_detail'),
 
     url(r'^search$', 'search', name="search"),
-
-    url(r'^profile$', 'profile', name="profile"),
 )
 
 urlpatterns += patterns('reviews.api',

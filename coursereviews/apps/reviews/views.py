@@ -223,12 +223,3 @@ def search(request):
                 'query': query}
     return TemplateResponse(request, 'reviews/search_results.html', ctx_dict)
 
-
-@require_GET
-def profile(request):
-    review_qs = request.user.reviews.all()
-    review_qs = review_qs.prefetch_related('prof_course__course', 'prof_course__prof')
-    return TemplateResponse(request, 'reviews/profile.html', {
-        'reviews': review_qs
-    })
-

@@ -31,3 +31,11 @@ def professor_registration_error(request):
     else:
         form = ProfRegErrorForm()
         return TemplateResponse(request, 'users/prof_reg_error.html', {'form': form})
+
+
+def profile(request):
+    review_qs = request.user.reviews.all()
+    review_qs = review_qs.prefetch_related('prof_course__course', 'prof_course__prof')
+    return TemplateResponse(request, 'users/profile.html', {
+        'reviews': review_qs
+    })
