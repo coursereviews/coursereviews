@@ -221,8 +221,6 @@ page and getting the value of the url parameter 'p_term'."""
             dept = link.string.encode('utf-8')
             self.stdout.write(bcolors.OKBLUE + '  Scraping courses from department ' + dept + bcolors.ENDC)
 
-            print department_base_url + link['href']
-
             course_dept_r = requests.get(department_base_url + link['href'], verify=False)
             course_dept_soup = BeautifulSoup(course_dept_r.text)
 
@@ -330,13 +328,13 @@ def get_course_description(crn_url):
     base_url = 'https://ssb.middlebury.edu'
 
     # Follow the first link to the listing page to get the catalog entry
-    listing_r = requests.get(base_url + '/PNTR/' + crn_url)
+    listing_r = requests.get(base_url + '/PNTR/' + crn_url, verify=False)
     listing_soup = BeautifulSoup(listing_r.text)
 
     # Follow the catalog link to the catalog entry
     try:
         catalog_url = listing_soup.find('a', text='View Catalog Entry')['href']
-        catalog_r = requests.get(base_url + catalog_url)
+        catalog_r = requests.get(base_url + catalog_url, verify=False)
         catalog_soup = BeautifulSoup(catalog_r.text)
 
         # Get the catalog entry
