@@ -27,8 +27,8 @@ class UserProfile(models.Model):
 
     def reviews_to_fulfill_quota(self):
         quota = AdminQuota.objects.get(id=1).new_quota
-        if self.semester_reviews - quota > 0:
-            return self.semester_reviews - quota
+        if quota - self.semester_reviews > 0:
+            return quota - self.semester_reviews
         return 0
 
     def __unicode__(self):

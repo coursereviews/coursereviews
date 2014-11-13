@@ -39,7 +39,8 @@ $(function() {
           if (key !== 'comments' &&
               key !== 'date' &&
               key !== 'prof_course_id' &&
-              key !== 'hours') {
+              key !== 'hours' &&
+              key !== 'count') {
             sortedStats.push({'key': key, 'stats': stats[key]});
           }
         }
@@ -215,9 +216,9 @@ $(function() {
         .append('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-      x.domain([0, d3.max(data, function(d) { return d.value })]);
+      x.domain([0, allStats.count]);
 
-      xAxis.ticks(d3.max(data, function(d) { return d.value}));
+      xAxis.ticks(allStats.count > 15 ? 10 : allStats.count);
 
       var bar = chart.selectAll('g')
           .data(data)

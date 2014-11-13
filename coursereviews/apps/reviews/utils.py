@@ -5,10 +5,11 @@ import datetime
 import json
 
 class Review_Aggregator:
-    """Aggregate all the reviews for a professor 
+    """Aggregate all the reviews for a professor
        or course and prepare for d3.js charts."""
     def __init__(self, reviews, attach_comment_slug=False):
         self.reviews = reviews
+        self.count = len(reviews)
 
         # If True, attach the slug of the course related to the comment
         self.attach_comment_slug = attach_comment_slug
@@ -29,6 +30,8 @@ class Review_Aggregator:
 
         if 'prof_course' in self.aggregate_values:
             self.aggregate_values.pop('prof_course', None)
+
+        self.aggregate_values['count'] = self.count
 
         if as_dict:
             return self.aggregate_values
@@ -108,7 +111,7 @@ class Review_Aggregator:
             self.aggregate_values[field][full_value_name] = 1
 
     def most_recent_date(self, date):
-        """Updates `aggregate_values` with the date 
+        """Updates `aggregate_values` with the date
            of the most recent review."""
 
         if 'date' not in self.aggregate_values:
