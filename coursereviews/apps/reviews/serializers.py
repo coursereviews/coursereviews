@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from reviews.models import Review
+from reviews.models import Review, Course, Textbook
 
 class CommentSerializer(serializers.ModelSerializer):
     vote_type = serializers.SerializerMethodField('user_vote_type')
@@ -25,3 +25,15 @@ class CommentSerializer(serializers.ModelSerializer):
             return 'down'
         else:
             return None
+
+
+class TextbookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Textbook
+
+
+class CourseSerializer(serializers.ModelSerializer):
+    textbooks = TextbookSerializer(many=True)
+    class Meta:
+        model = Course
+        fields = ('description', 'textbooks')

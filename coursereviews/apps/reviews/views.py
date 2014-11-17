@@ -137,7 +137,8 @@ def prof_course_detail(request, course_slug, prof_slug):
                                   'has_comments': has_comments,
                                   'type': 'prof_course'})
     else:
-        raise Http404
+        raise Http404  
+
 
 @login_required
 @no_professor_access

@@ -1,5 +1,7 @@
 from rest_framework import permissions, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
@@ -13,13 +15,33 @@ from reviews.models import (Review,
                             Professor,
                             Course,
                             ProfCourse)
-from reviews.serializers import CommentSerializer
+from reviews.serializers import CommentSerializer, CourseSerializer
 from reviews.utils import Review_Aggregator
 from reviews.decorators import no_professor_access
 from reviews.forms import FlagForm
 
 from operator import __or__
 import json
+
+
+class isProfTeachingCourse(permissions.BasePermission):
+    """
+    Permission to only allow professors who have taught 
+    a course to edit its description and textbook list.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        user_professor = request.user.get_profile().professor_assoc
+        return user_professor in [pc.prof for pc in obj.prof_courses.all()]
+
+
+class Course(RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticated, isProfTeachingCourse)
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    lookup_field = 'slug'
+    lookup_url_kwarg = 'course_slug'
+
 
 class Comment(APIView):
     """

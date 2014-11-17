@@ -25,11 +25,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # May want to switch to Postgres for analytics work after db dump from production
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': normpath(join(DJANGO_ROOT, 'default.db')),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'coursereviews',
         'USER': '',
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': '',
         'PASSWORD': '',
         'HOST': '',
         'PORT': '',

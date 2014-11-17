@@ -63,7 +63,7 @@ class Course(models.Model):
     dept = models.ForeignKey(Department, related_name='courses')
     slug = models.SlugField(blank=True)
     lookup = models.CharField(max_length=276)
-    terms = models.ManyToManyField('schedule.Term', related_name='course_terms')
+    # terms = models.ManyToManyField('schedule.Term', related_name='course_terms')
 
     def natural_key(self):
         return self.code
@@ -102,6 +102,15 @@ class ProfCourse(models.Model):
 
     def __unicode__(self):
         return self.course.__unicode__() + ' ' + self.prof.__unicode__()
+
+class Textbook(models.Model):
+    course = models.ForeignKey(Course, related_name="textbooks")
+    title = models.CharField(max_length=255)
+    # To avoid a needlessly complex author model structure,
+    # we'll separate author names by commas.
+    authors = models.CharField(max_length=255)
+    isbn = models.IntegerField(max_length=10)
+    required = models.BooleanField()
 
 class Review(models.Model):
 

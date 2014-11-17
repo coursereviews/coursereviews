@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+from south.utils import datetime_utils as datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
@@ -8,19 +8,21 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding M2M table for field terms on 'Course'
-        m2m_table_name = db.shorten_name(u'reviews_course_terms')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('course', models.ForeignKey(orm[u'reviews.course'], null=False)),
-            ('term', models.ForeignKey(orm[u'schedule.term'], null=False))
+        # Adding model 'Textbook'
+        db.create_table(u'reviews_textbook', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('course', self.gf('django.db.models.fields.related.ForeignKey')(related_name='textbooks', to=orm['reviews.Course'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('authors', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('isbn', self.gf('django.db.models.fields.IntegerField')(max_length=10)),
+            ('required', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
-        db.create_unique(m2m_table_name, ['course_id', 'term_id'])
+        db.send_create_signal(u'reviews', ['Textbook'])
 
 
     def backwards(self, orm):
-        # Removing M2M table for field terms on 'Course'
-        db.delete_table(db.shorten_name(u'reviews_course_terms'))
+        # Deleting model 'Textbook'
+        db.delete_table(u'reviews_textbook')
 
 
     models = {
@@ -42,7 +44,7 @@ class Migration(SchemaMigration):
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Group']"}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -50,7 +52,7 @@ class Migration(SchemaMigration):
             'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Permission']"}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
         u'contenttypes.contenttype': {
@@ -68,7 +70,6 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'lookup': ('django.db.models.fields.CharField', [], {'max_length': '276'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'blank': 'True'}),
-            'terms': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'course_terms'", 'symmetrical': 'False', 'to': u"orm['schedule.Term']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         u'reviews.department': {
@@ -119,10 +120,14 @@ class Migration(SchemaMigration):
             'why_flag': ('django.db.models.fields.CharField', [], {'max_length': '1', 'null': 'True', 'blank': 'True'}),
             'why_take': ('multiselectfield.db.fields.MultiSelectField', [], {'max_length': '9'})
         },
-        u'schedule.term': {
-            'Meta': {'object_name': 'Term'},
-            'code': ('django.db.models.fields.IntegerField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        u'reviews.textbook': {
+            'Meta': {'object_name': 'Textbook'},
+            'authors': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'course': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'textbooks'", 'to': u"orm['reviews.Course']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'isbn': ('django.db.models.fields.IntegerField', [], {'max_length': '10'}),
+            'required': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         }
     }
 

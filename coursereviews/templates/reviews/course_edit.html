@@ -1,0 +1,107 @@
+{% extends 'reviews/base.html' %}
+{% load compressed %}
+{% load static from staticfiles %}
+
+{% block js %}
+  <script src="{% static 'coursereviews/js/select2.min.js' %}"></script>
+  <script src="{% static 'reviews/js/d3.v3.min.js' %}"></script>
+  {% compressed_js 'review_detail' %}
+{% endblock %}
+
+{% block content %}
+  {% if type == 'course' %}
+  <h2 class="review-title">
+    {{ course.title }}&nbsp;
+    <small>{{course.code}}</small>
+  </h2>
+  <h4><a href="{{ course.dept.get_absolute_url }}">{{ course.dept }}</a></h4>
+  <p>{{ course.description }}</p>
+  <span class="h4">
+    See this course with
+    {% for prof_course in prof_courses %}
+    <a href="{{ prof_course.get_absolute_url }}">{{ prof_course.prof }}</a>{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  </span>
+
+  {% elif type == 'prof' %}
+  <h2 class="review-title">
+    {{ prof }}&nbsp;
+    {% if prof.email %}
+    <small><a href="mailto:{{ prof.email }}">{{ prof.email }}</a></small>
+    {% endif %}
+  </h2>
+  <h4><a href="{{ prof.dept.get_absolute_url }}">{{ prof.dept }}</a></h4>
+  {% if prof_courses %}
+  <span class="h4">
+    See {{ prof }}'s reviews for
+    {% for prof_course in prof_courses %}
+    <a href="{{ prof_course.get_absolute_url }}">{{ prof_course.course.title }}</a>{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  </span>
+  {% endif %}
+
+  {% else %}
+  <h2 class="review-title">
+    {{ prof_course.course.title }}&nbsp;
+    <small>
+      <a href="{{ prof_course.course.get_absolute_url }}">{{ prof_course.course.code }}</a>&nbsp;&mdash;
+      <a href="{{ prof_course.prof.get_absolute_url }}">{{ prof_course.prof }}</a>
+    </small>
+  </h2>
+  <h4><a href="{{ prof_course.course.dept.get_absolute_url }}">{{ prof_course.course.dept }}</a></h4>
+  <p>{{ prof_course.course.description }}</p>
+  {% endif %}
+
+  <div id="review-body">
+    {% if reviews %}
+    <div class="row">
+      <div class="col-md-6" id="stats-container"></div>
+      <div class="col-md-6">
+        <h4>Comments<small class="pull-right">sorted by most valuable</small></h4>
+        <div class="comments">
+          {% if has_comments %}
+          {% for review in reviews %}
+            {% if review.comment %}
+            {% include 'reviews/comment_partial.html' %}
+            {% endif %}
+          {% endfor %}
+          {% else %}
+          <p><b>There are no comments here! Maybe you want to <a href="{% url 'new_review' %}">write one</a>.</b></p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <p class="no-reviews"><b>There are no reviews here! Maybe you want to <a href="{% url 'new_review' %}">write one</a>.</b></p>
+    {% endif %}
+  </div>
+
+  {% if not request.user.get_profile.professor_assoc %}
+  <div class="modal" id="flagModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Are you sure you want to flag this comment?</h4>
+        </div>
+        <div class="modal-body">
+          <p><i><span id="modalCommentBody"></span></i></p>
+          <form id="flagForm">
+          {% for value, text in flag_form.why_flag.field.choices %}
+            <label>
+              <input type="radio" name="why_flag" value="{{ value }}"> {{ text }}
+            </label>
+          {% endfor %}
+          <div id="errors" class="alert alert-danger hide"></div>
+          </form>
+          <p>The comment and its associated review will not appear publically unless reinstated by the moderators. The original commenter will be notified, but you will remain anonymous.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" id="submitFlag" class="btn btn-danger">Flag this comment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}
