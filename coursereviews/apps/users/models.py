@@ -16,7 +16,7 @@ class UserProfile(models.Model):
     # the quota implementation
     semester_reviews = models.IntegerField(default=0)
     total_reviews = models.IntegerField(default=0)
-    professor_assoc = models.ForeignKey(Professor, related_name='user_profile', null=True)
+    professor_assoc = models.ForeignKey(Professor, related_name='user_profile', null=True, blank=True)
     middcourses_admin = models.BooleanField(default=False)
     middcourses_moderator = models.BooleanField(default=False)
 

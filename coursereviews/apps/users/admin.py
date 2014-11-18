@@ -13,6 +13,12 @@ class UserProfileInline(admin.StackedInline):
 # Define a new User admin
 class UserAdmin(UserAdmin):
     inlines = (UserProfileInline, )
+    list_display = ('username', 'email', 'date_joined', 'total_reviews')
+    ordering = ('-date_joined', )
+
+    def total_reviews(self, obj):
+        return obj.get_profile().total_reviews
+    total_reviews.short_description = 'Total reviews'
 
 # Re-register UserAdmin
 admin.site.unregister(User)
