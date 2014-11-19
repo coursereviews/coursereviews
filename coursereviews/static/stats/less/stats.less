@@ -1,0 +1,33 @@
+@import "../../coursereviews/less/base.less";
+
+h1, h2, h3 {
+  font-weight: 300;
+  text-align: center;
+}
+
+.timeseries-stat {
+  svg {
+    .axis path,
+    .axis line,
+    .gridlines path,
+    .gridlines line {
+      fill: none;
+      stroke: #777;
+      stroke-width: 1px;
+      shape-rendering: crispEdges;
+    }
+    .gridlines path,
+    .gridlines line {
+      stroke: #c5c5c5;
+    }
+    path {
+      fill: none;
+      stroke: #000;
+      stroke-width: 1.5px;
+    }
+    text {
+      font-size: 10px;
+      fill: #777;
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{% extends 'stats/base.html' %}
+
+{% block content %}
+
+<h1>30 days starting {{ start_date|date:"m/d/Y" }}</h1>
+
+<div id="reviews" class="row timeseries-stat">
+  <div class="sum col-sm-2">
+    <h2>{{ review_count }}</h2><h3 class="text-muted"> reviews</h3>
+  </div>
+  <div class="timeseries col-sm-10">
+    <svg data-timeseries="{{ review_stats }}"></svg>
+  </div>
+</div>
+
+<div id="users" class="row timeseries-stat">
+  <div class="sum col-sm-2">
+    <h2>{{ user_count }}</h2><h3 class="text-muted"> users</h3>
+  </div>
+  <div class="timeseries col-sm-10">
+    <svg data-timeseries="{{ user_stats }}"></svg>
+  </div>
+</div>
+
+<h1>Totals since {{ launch_date|date:"m/d/Y"}}</h1>
+
+<div class="row">
+  <div class="col-sm-3">
+    <h2>{{ total_reviews }}</h2><h3 class="text-muted">reviews</h3>
+  </div>
+  <div class="col-sm-3">
+    <h2>{{ total_users }}</h2><h3 class="text-muted">users</h3>
+  </div>
+  <div class="col-sm-3">
+    <h2>{{ total_courses }}</h2><h3 class="text-muted">courses</h3>
+  </div>
+  <div class="col-sm-3">
+    <h2>{{ total_professors }}</h2><h3 class="text-muted">professors</h3>
+  </div>
+</div>
+{% endblock %}

@@ -17,12 +17,13 @@ urlpatterns = patterns('',
     url(r'', include('reviews.urls')),
     url(r'', include('users.urls')),
     url(r'^admin/', include('cr_admin.urls')),
-    # url(r'^users/', include('users.urls')),    
+    url(r'^stats/', include('stats.urls')),
+    # url(r'^users/', include('users.urls')),
 
     url(r'^djadmin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^djadmin/', include(admin.site.urls)),
 
-    # api patterns      
+    # api patterns
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # urlpatterns += staticfiles_urlpatterns()
 
