@@ -10,8 +10,7 @@ function timeseriesChart() {
           .scale(yScale)
           .orient('left')
           .ticks(5)
-          .tickFormat("")
-          .tickSize(-width + margin.left + margin.right),
+          .tickFormat(""),
       line = d3.svg.line().x(X).y(Y);
 
   function chart(selection) {
@@ -30,6 +29,8 @@ function timeseriesChart() {
       yScale
           .domain([0, d3.max(data, function (d) { return d[1]; })])
           .range([height - margin.top - margin.bottom, 0]);
+
+      yGridLines.tickSize(-width + margin.left + margin.right)
 
       var svg = d3.select(this).select('svg').data([data])
           .attr('width', width)
