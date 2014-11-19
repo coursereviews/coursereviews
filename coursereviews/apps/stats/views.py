@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 import pandas as pd
 
 from reviews.models import Review, Course, Professor
-from stats.utils import unix_time_ms
 
 def stats(request):
     start_date = date.today() - timedelta(days=29)
