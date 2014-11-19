@@ -163,7 +163,7 @@ THIRD_PARTY_APPS = (
     # pagination template tags
     'pagination',
 
-    # static file management 
+    # static file management
     'pipeline',
 
     # rest support
@@ -180,6 +180,7 @@ LOCAL_APPS = (
     'static_pages',
     'users',
     'cr_admin',
+    'stats',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -295,6 +296,12 @@ PIPELINE_CSS = {
         ),
         'output_filename': 'css/cr_admin.css'
     },
+    'stats': {
+        'source_filenames': (
+            'stats/less/stats.less',
+        ),
+        'output_filename': 'css/stats.css'
+    }
 }
 
 PIPELINE_JS = {
@@ -329,6 +336,12 @@ PIPELINE_JS = {
             'cr_admin/js/cr_admin.js',
         ),
         'output_filename': 'js/cr_admin.js'
+    },
+    'stats': {
+        'source_filenames': (
+            'stats/js/stats.js',
+        ),
+        'output_filename': 'js/stats.js'
     },
 }
 
