@@ -1,5 +1,8 @@
-#from fabric_heroku_postgresql.core import *
-from fabric.api import local, env, require
+from datetime import date
+
+from fabric.api import local, env, require, warn_only
+from fabric.utils import puts
+from fabric.colors import blue
 
 def resetdb():
     local('rm -f coursereviews/default.db')
@@ -24,3 +27,17 @@ def deploy():
     local('heroku maintenance:off')
     local('heroku ps')
     local('heroku open')
+
+def capture_db():
+    # We follow the flow outlined here:
+    # https://devcenter.heroku.com/articles/heroku-postgres-import-export#export
+    db_name = 'middcourses-{:%Y-%m-%d}'.format(date.today())
+
+    # We do not want to abort on unreconized parameter "lock_timeout"
+    with warn_only():
+        local('heroku pgbackups:capture')
+        local('curl -o {0}.dump `heroku pgbackups:url`'.format(db_name))
+        local('createdb {0}'.format(db_name))
+        local('pg_restore --no-acl --no-owner -h localhost -U {0} -d {1} "{1}.dump"'.format(env.user, db_name))
+
+        puts(blue('PostgreSQL database {0} created'.format(db_name)))
