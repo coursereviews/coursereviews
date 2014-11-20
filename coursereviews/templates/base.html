@@ -23,7 +23,7 @@
       <meta property="og:site_name" content="MiddCourses">
       <meta property="og:title" content="{% if course %}{{ course }}{% elif professor %}{{ professor }}{% else %}MiddCourses{% endif %}">
       <meta property="og:url" content="{{ request.build_absolute_uri }}">
-      <meta property="og:image" content="http://{{ request.META.HTTP_HOST }}{% static 'static_pages/img/splash_logo.png' %}">
+      <meta property="og:image" content="{% static 'static_pages/img/splash_logo.png' %}">
     {% endblock %}
   </head>
   <body>
