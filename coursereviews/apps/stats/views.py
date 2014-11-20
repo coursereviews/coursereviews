@@ -1,4 +1,5 @@
 from datetime import date, datetime, timedelta
+import json
 
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
@@ -20,7 +21,9 @@ def stats(request):
             index=map(lambda r: r['date'], reviews.values('date'))) \
             .reindex(index=pd.date_range(start_date, periods=30), fill_value=0)
 
-    context['review_stats'] = [list(d) for d in zip(s_reviews.index.astype(int) // 10**6, s_reviews.tolist())]
+    context['review_stats'] = json.dumps(zip(
+        s_reviews.index.map(lambda t: t.strftime('%Y-%m-%d')),
+        s_reviews.tolist()))
     context['review_count'] = sum(s_reviews.tolist())
 
     users = User.objects.filter(date_joined__gte=start_date) \
@@ -33,7 +36,9 @@ def stats(request):
             index=map(lambda u: u['date'], users.values('date', 'count'))) \
             .reindex(index=pd.date_range(start_date, periods=30), fill_value=0)
 
-    context['user_stats'] = [list(d) for d in zip(s_users.index.astype(int) // 10**6, s_users.tolist())]
+    context['user_stats'] = json.dumps(zip(
+        s_users.index.map(lambda t: t.strftime('%Y-%m-%d')),
+        s_users.tolist()))
     context['user_count'] = sum(s_users.tolist())
 
     context['launch_date'] = Review.objects.get(id=1).date

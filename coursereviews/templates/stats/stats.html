@@ -8,17 +8,35 @@
   <meta property="og:image" content="{% static 'stats/img/statshot.png' %}">
 {% endblock %}
 
-
 {% block content %}
 
-<h1>30 days starting {{ start_date|date:"m/d/Y" }}</h1>
+<h1>Totals since {{ launch_date|date:"m/d/Y"}}</h1>
+
+<div class="row">
+  <div class="col-sm-3">
+    <h2>{{ total_reviews }}</h2><h3 class="text-muted">reviews</h3>
+  </div>
+  <div class="col-sm-3">
+    <h2>{{ total_users }}</h2><h3 class="text-muted">users</h3>
+  </div>
+  <div class="col-sm-3">
+    <h2>{{ total_courses }}</h2><h3 class="text-muted">courses</h3>
+  </div>
+  <div class="col-sm-3">
+    <h2>{{ total_professors }}</h2><h3 class="text-muted">professors</h3>
+  </div>
+</div>
+
+<hr>
+
+<h1>Last 30 days starting {{ start_date|date:"m/d/Y" }}</h1>
 
 <div id="reviews" class="row timeseries-stat">
   <div class="sum col-sm-2">
     <h2>{{ review_count }}</h2><h3 class="text-muted"> reviews</h3>
   </div>
   <div class="timeseries col-sm-10">
-    <svg data-timeseries="{{ review_stats }}"></svg>
+    <svg data-timeseries='{{ review_stats }}'></svg>
   </div>
 </div>
 
@@ -27,9 +45,11 @@
     <h2>{{ user_count }}</h2><h3 class="text-muted"> users</h3>
   </div>
   <div class="timeseries col-sm-10">
-    <svg data-timeseries="{{ user_stats }}"></svg>
+    <svg data-timeseries='{{ user_stats }}'></svg>
   </div>
 </div>
+
+<hr>
 
 <div class="row">
   <div class="col-sm-6">
@@ -53,23 +73,6 @@
         </tr>
       {% endfor %}
       </tbody></table>
-  </div>
-</div>
-
-<h1>Totals since {{ launch_date|date:"m/d/Y"}}</h1>
-
-<div class="row">
-  <div class="col-sm-3">
-    <h2>{{ total_reviews }}</h2><h3 class="text-muted">reviews</h3>
-  </div>
-  <div class="col-sm-3">
-    <h2>{{ total_users }}</h2><h3 class="text-muted">users</h3>
-  </div>
-  <div class="col-sm-3">
-    <h2>{{ total_courses }}</h2><h3 class="text-muted">courses</h3>
-  </div>
-  <div class="col-sm-3">
-    <h2>{{ total_professors }}</h2><h3 class="text-muted">professors</h3>
   </div>
 </div>
 

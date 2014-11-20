@@ -18,8 +18,10 @@ function timeseriesChart() {
 
       var data = JSON.parse(d3.select(this).select('svg').attr('data-timeseries'));
 
+      var parse = d3.time.format('%Y-%m-%d').parse;
+
       data = data.map(function (d) {
-        return [new Date(d[0]), d[1]];
+        return [parse(d[0]), d[1]];
       });
 
       xScale
