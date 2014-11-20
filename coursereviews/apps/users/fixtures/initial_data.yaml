@@ -11,20 +11,20 @@
     name: 'CourseRevie.ws Prod'
 
 # password is 'test'
-- model: auth.user
-  pk: 1
-  fields:
-    email: ejknox@middlebury.edu
-    first_name: 'Chuck'
-    is_active: true
-    is_staff: false
-    is_superuser: false
-    last_name: 'Norris'
-    password: pbkdf2_sha256$10000$7OzttrdLZ3TM$BRjWWSgMm8MTp+JgWfMpbQfZ99rXTVyIj+014hS+T8U=
-    user_permissions: []
-    username: ejknox
+# - model: auth.user
+#   pk: 1
+#   fields:
+#     email: ejknox@middlebury.edu
+#     first_name: 'Chuck'
+#     is_active: true
+#     is_staff: false
+#     is_superuser: false
+#     last_name: 'Norris'
+#     password: pbkdf2_sha256$10000$7OzttrdLZ3TM$BRjWWSgMm8MTp+JgWfMpbQfZ99rXTVyIj+014hS+T8U=
+#     user_permissions: []
+#     username: ejknox
 
-- model: users.UserProfile
-  pk: 1 # DO NOT REMOVE
-  fields:
-    user: ['ejknox']
+# - model: users.UserProfile
+#   pk: 1 # DO NOT REMOVE
+#   fields:
+#     user: ['ejknox']
