@@ -42,4 +42,12 @@ def stats(request):
     context['total_courses'] = Course.objects.all().count()
     context['total_professors'] = Professor.objects.all().count()
 
+    context['top_courses'] = Course.objects \
+        .annotate(reviews=Count('prof_courses__reviews')) \
+        .order_by('-reviews')[:10]
+
+    context['top_professors'] = Professor.objects \
+        .annotate(reviews=Count('prof_courses__reviews')) \
+        .order_by('-reviews')[:10]
+
     return TemplateResponse(request, 'stats/stats.html', context)

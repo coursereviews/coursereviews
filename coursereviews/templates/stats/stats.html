@@ -1,4 +1,5 @@
 {% extends 'stats/base.html' %}
+{% load static from staticfiles %}
 
 {% block content %}
 
@@ -22,6 +23,31 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col-sm-6">
+    <h1>Most reviewed courses</h1>
+      <table class="table"><tbody>
+      {% for course in top_courses %}
+        <tr>
+          <td><a href="{{ course.get_absolute_url }}">{{ course }}</a></td>
+          <td class="review-count">{{ course.reviews }} reviews</td>
+        </tr>
+      {% endfor %}
+      </tbody></table>
+  </div>
+  <div class="col-sm-6">
+    <h1>Most reviewed professors</h1>
+      <table class="table"><tbody>
+      {% for prof in top_professors %}
+        <tr>
+          <td><a href="{{ prof.get_absolute_url }}">{{ prof }}</a></td>
+          <td class="review-count">{{ prof.reviews }} reviews</td>
+        </tr>
+      {% endfor %}
+      </tbody></table>
+  </div>
+</div>
+
 <h1>Totals since {{ launch_date|date:"m/d/Y"}}</h1>
 
 <div class="row">
@@ -38,4 +64,6 @@
     <h2>{{ total_professors }}</h2><h3 class="text-muted">professors</h3>
   </div>
 </div>
+
+<img style="display:none;" src="{% static 'stats/img/statshot.png' %}">
 {% endblock %}
