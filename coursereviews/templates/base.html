@@ -18,6 +18,13 @@
     {# {% compressed_css 'local_bs' %} #}
     {% block css %}{% compressed_css 'base' %}{% endblock %}
     {# // <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.4.1/less.min.js"></script> #}
+
+    {% block fb_og %}
+      <meta property="og:site_name" content="MiddCourses">
+      <meta property="og:title" content="{% if course %}{{ course }}{% elif professor %}{{ professor }}{% else %}MiddCourses{% endif %}">
+      <meta property="og:url" content="{{ request.build_absolute_uri }}">
+      <meta property="og:image" content="http://{{ request.META.HTTP_HOST }}{% static 'static_pages/img/splash_logo.png' %}">
+    {% endblock %}
   </head>
   <body>
     {% block body %}
