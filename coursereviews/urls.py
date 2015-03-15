@@ -20,6 +20,9 @@ urlpatterns = patterns('',
     url(r'^stats/', include('stats.urls')),
     # url(r'^users/', include('users.urls')),
 
+    url(r'^google(?P<code>[0-9a-f]{16})\.html$',
+        'static_pages.views.google_verify'),
+
     url(r'^djadmin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^djadmin/', include(admin.site.urls)),
 
