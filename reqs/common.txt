@@ -16,7 +16,7 @@ django-storages
 
 django-pagination
 
-django-pipeline
+django-pipeline<1.4
 cssmin
 slimit
 
