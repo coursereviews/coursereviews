@@ -247,7 +247,7 @@ h2.review-title {
 }
 
 svg {
-  g.bar {
+  g {
     rect {
       fill: #3276b1;
       &:hover {
@@ -266,6 +266,16 @@ svg {
     path, line {
       fill: none;
       stroke: #333;
+      shape-rendering: crispEdges;
+    }
+  }
+  .y.axis {
+    line { stroke: #b4b4b4; }
+    path { stroke: none; }
+  }
+  .gridlines {
+    line {
+      stroke: #b4b4b4;
       shape-rendering: crispEdges;
     }
   }

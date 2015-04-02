@@ -179,6 +179,75 @@ $(function() {
         });
   }
 
+  function professorChart(d, data) {
+    var margin = {top: 10, right: 10, bottom: 40, left: 42};
+    var height = 300 - margin.top - margin.bottom;
+    var width = $statsContainer.width() - 40;
+
+    var x = d3.scale.ordinal()
+        .rangeRoundBands([0, width], .1);
+
+    var y = d3.scale.linear()
+        .range([height, 0]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient('bottom');
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient('left');
+
+    if (d.key === 'prof_lecturing') {
+      $statsContainer.append('<div><h4>Evaluate the professor in the following areas:</h4></div>');
+    }
+
+    $statsContainer.append('<div><h5>' + questionLookup.get(d.key) + '</h5>'
+                           + '<svg id="' + d.key + '"></svg></div>');
+
+    var chart = d3.select('#' + d.key)
+        .data(data)
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    x.domain(d3.range(1, 6));
+    y.domain([0, d3.max(data, function (d) { return d.value; })]);
+
+    chart.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(xAxis)
+      .append('text')
+        .attr('dx', -5)
+        .attr('dy', 30)
+        .text('rating (1 to 5)');
+
+    chart.append('g')
+        .attr('class', 'y axis')
+        .call(yAxis)
+      .append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('dy', -26)
+        .attr('dx', -30)
+        .text('votes');
+
+    chart.append('g')
+        .attr('class', 'y gridlines')
+        .call(yAxis.tickFormat('').tickSize(-width, 0, 0))
+        .style('stoke', 'grey');
+
+    chart.selectAll('rect')
+        .data(data)
+      .enter().append('rect')
+        .attr('class', 'bar')
+        .attr('x', function (d) { return x(d.key); })
+        .attr('width', x.rangeBand())
+        .attr('y', function (d) { return y(d.value); })
+        .attr('height', function (d) { return height - y(d.value); });
+  }
+
   function makeCharts(stats) {
     // Subtract 10 from width because of right border on body
     width = $statsContainer.width() - 10;
@@ -191,71 +260,67 @@ $(function() {
         data.push({'key': k, 'value': d.stats[k]});
       }
 
-      if (d.key === 'prof_lecturing') {
-        $statsContainer.append('<div><h4>Evaluate the professor in the following areas:</h4></div>');
-      }
-
       if (d.key === 'prof_lecturing' ||
           d.key === 'prof_leading' ||
           d.key === 'prof_help' ||
           d.key === 'prof_feedback') {
-        $statsContainer.append('<div><h5>' + questionLookup.get(d.key) + '</h5>'
-                             + '<svg id="' + d.key + '"></svg></div>');
+        professorChart(d, data);
+
       } else {
         $statsContainer.append('<div><h4>' + questionLookup.get(d.key) + '</h4>'
                              + '<svg id="' + d.key + '"></svg></div>');
+
+        var height = barHeight * data.length;
+
+        var chart = d3.select('#' + d.key)
+            .data(data)
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('class', 'middcourses-chart')
+          .append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+        x.domain([0, allStats.count]);
+
+        xAxis.ticks(allStats.count > 15 ? 10 : allStats.count);
+
+        var bar = chart.selectAll('g')
+            .data(data)
+          .enter().append('g')
+            .sort(function (a, b) { return d3.descending(a.value, b.value); })
+            .attr('class', 'bar')
+            .attr('transform', function(d, i) { return 'translate(0,' + i * barHeight + ')'; });
+
+        bar.append('rect')
+            .attr('width', function(d) { return x(d.value) })
+            .attr('height', barHeight - 1);
+
+        bar.append('text')
+            .attr('y', barHeight / 2 - 1)
+            .attr('dy', '.35em')
+            .text(function(d) { return '' + d.key })
+            .datum(function (d) {
+              if (this.getBBox().width < (this.previousSibling.getBBox().width - 20))
+                d.textFits = true;
+              else d.textFits = false;
+              return d;
+            })
+            .attr('text-anchor', function (d) {
+              return d.textFits ? 'end' : 'beginning';
+            })
+            .attr('x', function (d) {
+              return d.textFits ? x(d.value) - 10 : x(d.value) + 10;
+            })
+            .style('fill', function (d) { return d.textFits ? '#fff' : '#000'; });
+
+        chart.append('g')
+            .attr('class', 'x axis')
+            .attr('transform', 'translate(0,' + height + ')')
+            .call(xAxis)
+          .append('text')
+            .attr('dy', 30)
+            .text('votes');
       }
-
-      var height = barHeight * data.length;
-
-      var chart = d3.select('#' + d.key)
-          .data(data)
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom)
-          .attr('class', 'middcourses-chart')
-        .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-      x.domain([0, allStats.count]);
-
-      xAxis.ticks(allStats.count > 15 ? 10 : allStats.count);
-
-      var bar = chart.selectAll('g')
-          .data(data)
-        .enter().append('g')
-          .sort(function (a, b) { return d3.descending(a.value, b.value); })
-          .attr('class', 'bar')
-          .attr('transform', function(d, i) { return 'translate(0,' + i * barHeight + ')'; });
-
-      bar.append('rect')
-          .attr('width', function(d) { return x(d.value) })
-          .attr('height', barHeight - 1);
-
-      bar.append('text')
-          .attr('y', barHeight / 2 - 1)
-          .attr('dy', '.35em')
-          .text(function(d) { return '' + d.key })
-          .datum(function (d) {
-            if (this.getBBox().width < (this.previousSibling.getBBox().width - 20))
-              d.textFits = true;
-            else d.textFits = false;
-            return d;
-          })
-          .attr('text-anchor', function (d) {
-            return d.textFits ? 'end' : 'beginning';
-          })
-          .attr('x', function (d) {
-            return d.textFits ? x(d.value) - 10 : x(d.value) + 10;
-          })
-          .style('fill', function (d) { return d.textFits ? '#fff' : '#000'; });
-
-      chart.append('g')
-          .attr('class', 'x axis')
-          .attr('transform', 'translate(0,' + height + ')')
-          .call(xAxis)
-        .append('text')
-          .attr('dy', 30)
-          .text('votes');
     });
   }
 
