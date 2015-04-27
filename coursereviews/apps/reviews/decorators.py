@@ -8,7 +8,7 @@ def quota_required(view_func):
     def _wrapped_view_func(request, *args, **kwargs):
         profile = request.user.get_profile()
         quota = AdminQuota.objects.get(id=1).new_quota
-        if not profile.professor_assoc and profile.semester_reviews >= quota:
+        if profile.professor_assoc or profile.semester_reviews >= quota:
             return view_func(request, *args, **kwargs)
         else:
             messages.add_message(request, messages.INFO, "You have to write some reviews before you can see that.")
