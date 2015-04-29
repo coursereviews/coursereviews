@@ -82,7 +82,10 @@ $(function() {
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient('left')
-        .ticks(d3.max(data, function (d) { return d.value; }));
+        .ticks(function (d) {
+          var max = d3.max(data, function (d) { return d.value; });
+          return max <= 10 ? max : 10;
+        }());
 
     $statsContainer.append('<div><h4>' + questionLookup.get('hours') +
                            '</h4><svg id="hours"></svg></div>');
@@ -196,7 +199,11 @@ $(function() {
 
     var yAxis = d3.svg.axis()
         .scale(y)
-        .orient('left');
+        .orient('left')
+        .ticks(function (d) {
+          var max = d3.max(data, function (d) { return d.value; });
+          return max <= 10 ? max : 10;
+        }());
 
     if (d.key === 'prof_lecturing') {
       $statsContainer.append('<div><h4>Evaluate the professor in the following areas:</h4></div>');
