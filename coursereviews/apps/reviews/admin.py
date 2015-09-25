@@ -16,6 +16,15 @@ class CourseAdmin(admin.ModelAdmin):
 
 class DeptAdmin(admin.ModelAdmin):
     search_fields = ('name',)
+    list_display = ('name', 'associated_courses', 'associated_professors')
+
+    def associated_courses(self, obj):
+        return len(obj.courses.all())
+    associated_courses.short_description = '# of courses'
+
+    def associated_professors(self, obj):
+        return len(obj.professors.all())
+    associated_professors.short_description = '# of professors'
 
 admin.site.register(Professor, ProfAdmin)
 admin.site.register(Review, ReviewAdmin)
