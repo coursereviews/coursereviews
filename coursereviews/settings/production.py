@@ -5,7 +5,7 @@ from os import environ
 from memcacheify import memcacheify
 # from postgresify import postgresify
 # from S3 import CallingFormat
-# from boto.s3.connection import OrdinaryCallingFormat
+from boto.s3.connection import OrdinaryCallingFormat
 import dj_database_url
 from common import *
 
@@ -64,6 +64,9 @@ INSTALLED_APPS += (
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATICFILES_STORAGE = 'coursereviews.settings.storage.NonPackagingS3PipelineStorage'
+
+# http://stackoverflow.com/questions/27652318
+AWS_S3_CALLING_FORMAT = OrdinaryCallingFormat()
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
