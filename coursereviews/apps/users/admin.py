@@ -17,7 +17,7 @@ class UserAdmin(UserAdmin):
     ordering = ('-date_joined', )
 
     def total_reviews(self, obj):
-        return obj.get_profile().total_reviews
+        return obj.userprofile.total_reviews
     total_reviews.short_description = 'Total reviews'
 
 # Re-register UserAdmin

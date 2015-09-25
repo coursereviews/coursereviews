@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Hi, {{ request.user.get_profile.get_display_name }}!</h2>
+<h2>Hi, {{ request.user.userprofile.get_display_name }}!</h2>
 <h3><a href="{% url 'admin_index' %}">Admin</a></h3>
 
 <p><a href="{% url 'admin_quota' %}">Manage quotas and site access</a></p>

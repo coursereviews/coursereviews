@@ -70,7 +70,7 @@ def prof_detail_stats(request, prof_slug):
 
     prof_courses = professor.prof_courses.all().select_related()
 
-    user_professor = request.user.get_profile().professor_assoc
+    user_professor = request.user.userprofile.professor_assoc
     if user_professor == None or user_professor == professor:
 
         try:
@@ -107,11 +107,11 @@ def course_detail_stats(request, course_slug):
     prof_courses = course.prof_courses.all().select_related()
 
     # If this is a professor account
-    user_professor = request.user.get_profile().professor_assoc
+    user_professor = request.user.userprofile.professor_assoc
     if user_professor == None or user_professor in [pc.prof for pc in prof_courses]:
 
         # Gather all the reviews for a course
-        reviews = reduce(__or__, 
+        reviews = reduce(__or__,
                          map(lambda pc: pc.reviews \
                                           .all()   \
                                           .values('components',
@@ -137,12 +137,12 @@ def prof_course_detail_stats(request, course_slug, prof_slug):
     """
     try:
         prof_course = ProfCourse.objects.select_related() \
-                                .get(course__slug__exact=course_slug, 
+                                .get(course__slug__exact=course_slug,
                                      prof__slug__exact=prof_slug)
     except ProfCourse.DoesNotExist:
         return HttpResponse(status=404)
 
-    user_professor = request.user.get_profile().professor_assoc
+    user_professor = request.user.userprofile.professor_assoc
     if user_professor == None or user_professor == prof_course.prof:
 
         # Get all reviews for the prof_courses
@@ -181,7 +181,7 @@ def vote(request, review_id):
 
             if user in review.down_votes.all():
                 review.down_votes.remove(user)
-                
+
             serializer = CommentSerializer(review, context={'request': request})
             return Response(serializer.data)
         else:

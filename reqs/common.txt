@@ -1,4 +1,4 @@
-Django==1.5.11
+Django>=1.6,<1.7
 
 # django-celery
 

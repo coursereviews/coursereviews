@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  {% with quota=request.user.get_profile.reviews_to_fulfill_quota %}
+  {% with quota=request.user.userprofile.reviews_to_fulfill_quota %}
     {% if quota > 0 %}
       <h4>You have to write {{ quota }} more review{{ quota|pluralize }} this semester to see others.</h4>
       <p>By contributing, you help us always have up to date reviews for everyone.</p>

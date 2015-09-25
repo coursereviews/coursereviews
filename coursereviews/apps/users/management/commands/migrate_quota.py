@@ -9,7 +9,7 @@ class Command(NoArgsCommand):
         users = User.objects.all().select_related('review')
 
         for user in users:
-            profile = user.get_profile()
+            profile = user.userprofile
 
             profile.total_reviews = user.reviews.all().count()
             profile.save()

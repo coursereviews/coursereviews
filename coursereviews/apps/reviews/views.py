@@ -22,7 +22,7 @@ from operator import __or__, attrgetter
 import json
 
 def browse(request):
-    user_professor = request.user.get_profile().professor_assoc
+    user_professor = request.user.userprofile.professor_assoc
     if not user_professor:
         departments = Department.objects.all().order_by('name').select_related()
         profs_courses_by_dept = []
@@ -47,7 +47,7 @@ def course_detail(request, course_slug):
     course = get_object_or_404(Course, slug=course_slug)
 
     # Get professor association, None if student
-    user_professor = request.user.get_profile().professor_assoc
+    user_professor = request.user.userprofile.professor_assoc
 
     if user_professor:
         prof_courses = course.prof_courses.filter(prof=user_professor).select_related()
@@ -87,7 +87,7 @@ def prof_detail(request, prof_slug):
     prof_courses = professor.prof_courses.all().select_related()
 
     # If this is a professor account
-    user_professor = request.user.get_profile().professor_assoc
+    user_professor = request.user.userprofile.professor_assoc
     if user_professor == None or user_professor == professor:
 
         flag_form = FlagForm()
@@ -118,7 +118,7 @@ def prof_course_detail(request, course_slug, prof_slug):
                                     course__slug__exact=course_slug,
                                     prof__slug__exact=prof_slug)
 
-    user_professor = request.user.get_profile().professor_assoc
+    user_professor = request.user.userprofile.professor_assoc
     if user_professor == None or user_professor == prof_course.prof:
 
         flag_form = FlagForm()
@@ -150,7 +150,7 @@ def create(request):
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
             form.save()
-            profile = request.user.get_profile()
+            profile = request.user.userprofile
             profile.semester_reviews = F('semester_reviews') + 1
             profile.total_reviews = F('total_reviews') + 1
             profile.save()

@@ -10,7 +10,7 @@ import dj_database_url
 from common import *
 
 DATABASES['default'] = dj_database_url.config()
-DATABASES['default']['ENGINE'] = 'django_postgrespool'
+DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 
 DATABASE_POOL_ARGS = {
   'max_overflow': 10,

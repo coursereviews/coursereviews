@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 from registration.forms import AuthenticationForm
