@@ -151,9 +151,6 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    # Database migration helpers:
-    'south',
-
     # Asynchronous task queue:
     # 'djcelery',
 
@@ -392,3 +389,5 @@ HAYSTACK_CONNECTIONS = {
         'PATH': join(dirname(__file__), 'whoosh_index'),
     }
 }
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
