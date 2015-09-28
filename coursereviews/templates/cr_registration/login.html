@@ -16,7 +16,7 @@
   </div>
 {% endif %}
 <form role="form" class="small-form col-md-4 col-md-offset-4"
-  action="{% url 'auth_login' %}" method="POST">
+  action="{% url 'login' %}" method="POST">
   {% csrf_token %}
   <div class="form-group">
     <h3>Login</h3>
@@ -52,7 +52,7 @@
   <div class="form-group">
     <input class="btn btn-primary" type="submit" value="Login">
     <br/><br/>
-    <a href="{% url 'auth_password_reset' %}">Forgot your password?</a><br/>
+    <a href="{% url 'password_reset' %}">Forgot your password?</a><br/>
     <a href="{% url 'registration_register' %}">Create an account</a>
   </div>
   <input type="hidden" name="next" value="{{ next }}" />

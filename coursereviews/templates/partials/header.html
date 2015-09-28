@@ -9,13 +9,13 @@
     {% if request.user.is_authenticated %}
       <div class="pull-right">
         <a class="btn btn-primary" href="{% url 'new_review' %}">Write a review</a>
-        <a class="logout btn btn-default" href="{% url 'auth_logout' %}">
+        <a class="logout btn btn-default" href="{% url 'logout' %}">
           <span class="glyphicon glyphicon-off"></span>
         </a>
       </div>
     {% else %}
       <div class="pull-right">
-        <a class="login btn btn-default" href="{% url 'auth_login' %}">Login</a>
+        <a class="login btn btn-default" href="{% url 'login' %}">Login</a>
       </div>
     {% endif %}
   </div>

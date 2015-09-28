@@ -15,7 +15,7 @@ def activate(request, activation_key, template_name='registration/activate.html'
     if user:
         signals.user_activated.send(sender=RegistrationProfile, user=user, request=request)
         messages.add_message(request, messages.INFO, "Your account was successfully activated!")
-        return redirect('auth_login')
+        return redirect('login')
     else:
         return TemplateResponse(request, template_name, {'activation_key': activation_key})
 
