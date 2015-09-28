@@ -43,7 +43,7 @@ class Professor(models.Model):
 
     def natural_key(self):
         return self.last
-        
+
     def get_absolute_url(self):
         return reverse('prof_detail', kwargs={ 'prof_slug': self.slug })
 
@@ -69,7 +69,7 @@ class Course(models.Model):
 
     def get_absolute_url(self):
         return reverse('course_detail', kwargs={ 'course_slug': self.slug })
-        
+
     def __unicode__(self):
         return self.code + " - " + self.title
 
@@ -81,7 +81,7 @@ class Course(models.Model):
 class ProfCourseManager(models.Manager):
     def get_by_natural_key(self, prof, course):
         prof = Professor.objects.get_by_natural_key(prof)
-        course = Course.objects.get_by_natural_key(course)        
+        course = Course.objects.get_by_natural_key(course)
         return self.get(prof=prof, course=course)
 
 # a ProfCourse is specific to the professor teaching the course
@@ -161,7 +161,7 @@ class Review(models.Model):
     again = models.CharField(max_length=1, choices=YES_NO_CHOICES)
 
     ## How many hours per week did you spend preparing for this course?
-    hours = models.IntegerField(max_length=2)
+    hours = models.IntegerField()
 
     ## Would you take another course with this professor?
     another = models.CharField(max_length=1, choices=YES_NO_CHOICES)
@@ -230,7 +230,7 @@ class Review(models.Model):
                                    ctx_dict)
         # Email subject *must not* contain newlines
         subject = ''.join(subject.splitlines())
-        
+
         message_text = render_to_string('reviews/flagged_review_email.txt',
                                    ctx_dict)
 
