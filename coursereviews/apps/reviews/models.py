@@ -19,7 +19,12 @@ class GenericManager(models.Manager):
 
 class Department(models.Model):
     objects = GenericManager(field_name='name')
+
+    # The canonical name in the course catalog
     name = models.CharField(max_length=100)
+
+    # How the course name is displayed
+    display_name = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
     @property
@@ -30,7 +35,7 @@ class Department(models.Model):
         return reverse('index') + "#" + slugify(self.name)
 
     def __unicode__(self):
-        return self.name
+        return self.display_name or self.name
 
 class Professor(models.Model):
     objects = GenericManager(field_name='last')

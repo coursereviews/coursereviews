@@ -389,5 +389,3 @@ HAYSTACK_CONNECTIONS = {
         'PATH': join(dirname(__file__), 'whoosh_index'),
     }
 }
-
-TEST_RUNNER = 'django.test.runner.DiscoverRunner'
