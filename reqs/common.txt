@@ -3,7 +3,6 @@ Django>=1.8,<1.9
 # django-celery
 
 Fabric
-South
 
 PyYAML
 Whoosh
