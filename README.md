@@ -1,17 +1,13 @@
 # Course Reviews
 
-[![Build Status](https://travis-ci.org/coursereviews/coursereviews.png?branch=master)](https://travis-ci.org/coursereviews/coursereviews)
+Course Reviews is the student-run course reviews platform for Middlebury College.
 
-Course Reviews is an open source course reviews platform for Middlebury College.
+Course Reviews runs [http://www.middcourses.com](MiddCourses).
 
-[master branch](https://github.com/coursereviews/coursereviews/tree/master) gets deployed.
+Course Reviews is looking for future developers! Contact dsilver@middlebury.edu
+or [@DanaRSilver](https://twitter.com/danarsilver) if you're interested.
 
-[v2 branch](https://github.com/coursereviews/coursereviews/tree/v2) is the
-[v2](https://github.com/coursereviews/coursereviews/milestones/v2.0) development
-branch.
-
-Branch from master to fix bugs for the current site. Branch from v2 to work on
-features for version 2.
+[![Build Status](https://travis-ci.org/coursereviews/coursereviews.svg?branch=master)](https://travis-ci.org/coursereviews/coursereviews)
 
 ### Features
 
@@ -21,6 +17,10 @@ features for version 2.
  - Aggregate data by courses and professors
 
 ### Team
+
+ - [Dana Silver](https://github.com/danasilver)
+
+### Authors
 
  - [Dana Silver](https://github.com/danasilver)
  - [Teddy Knox](https://github.com/teddyknox)
