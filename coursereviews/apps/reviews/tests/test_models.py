@@ -1,6 +1,7 @@
 from django.test import TestCase
 from reviews.models import (Department,
-                            Professor)
+                            Professor,
+                            Course)
 
 class DepartmentTestCase(TestCase):
     def setUp(self):
@@ -74,3 +75,54 @@ class ProfessorTestCase(TestCase):
     def test_unicode(self):
         prof = Professor.objects.get(last='LastName')
         self.assertEqual(unicode(prof), 'FirstName LastName')
+
+class CourseTestCase(TestCase):
+    def setUp(self):
+        dept = Department.objects.create(name='Computer Science')
+        Course.objects.create(
+            code='CSCI0101',
+            title='Introduction to Computer Science',
+            description='CS Description',
+            dept=dept
+        )
+
+    def test_code(self):
+        course = Course.objects.get_by_natural_key('CSCI0101')
+        self.assertEqual(course.code, 'CSCI0101')
+
+    def test_title(self):
+        course = Course.objects.get_by_natural_key('CSCI0101')
+        self.assertEqual(course.title, 'Introduction to Computer Science')
+
+    def test_description(self):
+        course = Course.objects.get_by_natural_key('CSCI0101')
+        self.assertEqual(course.description, 'CS Description')
+
+    def test_department(self):
+        course = Course.objects.get_by_natural_key('CSCI0101')
+        dept = Department.objects.get(name='Computer Science')
+        self.assertEqual(course.dept, dept)
+        self.assertEqual(dept.courses.all()[0], course)
+
+    def test_slug(self):
+        course = Course.objects.get_by_natural_key('CSCI0101')
+        self.assertEqual(course.slug, 'csci0101')
+
+    def test_lookup(self):
+        course = Course.objects.get_by_natural_key('CSCI0101')
+        self.assertEqual(course.lookup, 'Introduction to Computer Science')
+
+    def test_natural_key(self):
+        course_by_natural_key = Course.objects.get_by_natural_key('CSCI0101')
+        course_by_code = Course.objects.get(code='CSCI0101')
+        self.assertEqual(course_by_natural_key, course_by_code)
+
+    def test_absolute_url(self):
+        course = Course.objects.get_by_natural_key('CSCI0101')
+        self.assertEqual(course.get_absolute_url(),
+            '/course/csci0101')
+
+    def test_unicode(self):
+        course = Course.objects.get_by_natural_key('CSCI0101')
+        self.assertEqual(unicode(course),
+            'CSCI0101 - Introduction to Computer Science')
