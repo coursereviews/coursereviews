@@ -1,0 +1,26 @@
+{% extends "reviews/base.html" %}
+{% load static from staticfiles %}
+
+{% block js %}
+<script src="{% static 'reviews/js/typeahead.min.js' %}"></script>
+<script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
+<script src="{% static 'reviews/js/search.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-6 col-md-6">
+    {% for message in messages %}
+      <div class="alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{ message }}
+      </div>
+    {% endfor %}
+    <form class="big-search" method="GET" action="/search">
+      <input id="search-bar" class="form-control input-lg" type="text" name="q" placeholder="Search for Professors or Courses">
+    </form>
+    <a class="btn btn-primary btn-new-review" href="{% url 'new_review' %}">Write a review</a>
+  </div>
+</div>
+
+{% endblock %}

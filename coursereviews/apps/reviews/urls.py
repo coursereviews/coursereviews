@@ -14,10 +14,13 @@ urlpatterns = patterns('reviews.views',
     url(r'^course/(?P<course_slug>[-\w\d]+)/(?P<prof_slug>[-\w\d]+)$', 'prof_course_detail', name='prof_course_detail'),
 
     url(r'^search$', 'search', name="search"),
+
+    url(r'^beta/catalog', 'catalog', name='catalog'),
 )
 
 urlpatterns += patterns('reviews.api',
     url(r'^api/(?P<pk>\d+)/comment$', api.Comment.as_view()),
+    url(r'^api/departments$', api.Departments.as_view()),
     url(r'^api/typeahead/courses$', 'typeahead_courses', name='typeahead_courses'),
     url(r'^api/typeahead/professors$', 'typeahead_professors', name='typeahead_professors'),
     url(r'^api/review/options$', 'new_review_course_options', name='new_review_course_options'),

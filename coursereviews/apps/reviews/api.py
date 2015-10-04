@@ -12,14 +12,23 @@ from django.db.models import F
 from reviews.models import (Review,
                             Professor,
                             Course,
-                            ProfCourse)
-from reviews.serializers import CommentSerializer
+                            ProfCourse,
+                            Department)
+from reviews.serializers import (CommentSerializer,
+                                 DepartmentSerializer)
 from reviews.utils import Review_Aggregator
 from reviews.decorators import no_professor_access
 from reviews.forms import FlagForm
 
 from operator import __or__
 import json
+
+class Departments(APIView):
+    def get(self, request, format=None):
+        departments = Department.objects.all()
+        serializer = DepartmentSerializer(departments, many=True)
+
+        return Response(serializer.data)
 
 class Comment(APIView):
     """

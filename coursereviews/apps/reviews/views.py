@@ -21,6 +21,21 @@ from rest_framework.response import Response
 from operator import __or__, attrgetter
 import json
 
+def catalog(request):
+    user_is_professor = request.user.userprofile.professor_assoc
+    if user_is_professor:
+        return Http404
+
+    context = {}
+
+    context.update(departments=Department.objects.values_list('name', flat=True))
+    context.update(quota=request.user.userprofile.reviews_to_fulfill_quota())
+
+    print context['departments']
+
+    return TemplateResponse(request, 'reviews/catalog.html', context)
+
+
 def browse(request):
     user_professor = request.user.userprofile.professor_assoc
     if not user_professor:
