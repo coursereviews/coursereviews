@@ -1,4 +1,3 @@
-from operator import __or__
 from rest_framework import serializers
 from reviews.models import (Review,
                             Department,
