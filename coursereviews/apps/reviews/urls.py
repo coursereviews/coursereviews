@@ -20,7 +20,19 @@ urlpatterns = patterns('reviews.views',
 
 urlpatterns += patterns('reviews.api',
     url(r'^api/(?P<pk>\d+)/comment$', api.Comment.as_view()),
-    url(r'^api/departments$', api.Departments.as_view()),
+
+    # GET all departments
+    url(r'^api/departments$',
+        api.Departments.as_view()),
+
+    # GET all courses for a department
+    url(r'^api/department/(?P<department>[&,\.\s\w]+)/courses$',
+        api.Courses.as_view()),
+
+    # GET all professors for a department
+    url(r'^api/department/(?P<department>[&,\.\s\w]+)/professors$',
+        api.Professors.as_view()),
+
     url(r'^api/typeahead/courses$', 'typeahead_courses', name='typeahead_courses'),
     url(r'^api/typeahead/professors$', 'typeahead_professors', name='typeahead_professors'),
     url(r'^api/review/options$', 'new_review_course_options', name='new_review_course_options'),

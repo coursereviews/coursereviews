@@ -8,6 +8,7 @@ from django.http import (Http404,
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
+from django.shortcuts import get_object_or_404
 
 from reviews.models import (Review,
                             Professor,
@@ -15,7 +16,10 @@ from reviews.models import (Review,
                             ProfCourse,
                             Department)
 from reviews.serializers import (CommentSerializer,
-                                 DepartmentSerializer)
+                                 DepartmentSerializer,
+                                 CourseSerializer,
+                                 ProfessorSerializer)
+
 from reviews.utils import Review_Aggregator
 from reviews.decorators import no_professor_access
 from reviews.forms import FlagForm
@@ -29,6 +33,35 @@ class Departments(APIView):
         serializer = DepartmentSerializer(departments, many=True)
 
         return Response(serializer.data)
+
+
+class Courses(APIView):
+    """
+    An API view to retrieve all the courses for a department.
+    """
+    def get(self, request, department, format=None):
+        queryset = Department.objects.all()
+        dept = get_object_or_404(queryset, name=department)
+
+        courses = Course.objects.filter(dept=dept)
+        serializer = CourseSerializer(courses, many=True)
+
+        return Response(serializer.data)
+
+
+class Professors(APIView):
+    """
+    An API view to retrieve all the professors for a department.
+    """
+    def get(self, request, department, format=None):
+        queryset = Department.objects.all()
+        dept = get_object_or_404(queryset, name=department)
+
+        professors = Professor.objects.filter(dept=dept)
+        serializer = ProfessorSerializer(professors, many=True)
+
+        return Response(serializer.data)
+
 
 class Comment(APIView):
     """
