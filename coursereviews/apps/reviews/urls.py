@@ -26,11 +26,11 @@ urlpatterns += patterns('reviews.api',
         api.Departments.as_view()),
 
     # GET all courses for a department
-    url(r'^api/department/(?P<department>[&,\.\s\w]+)/courses$',
+    url(r'^api/department/(?P<department>\d+)/courses$',
         api.Courses.as_view()),
 
     # GET all professors for a department
-    url(r'^api/department/(?P<department>[&,\.\s\w]+)/professors$',
+    url(r'^api/department/(?P<department>\d+)/professors$',
         api.Professors.as_view()),
 
     url(r'^api/typeahead/courses$', 'typeahead_courses', name='typeahead_courses'),

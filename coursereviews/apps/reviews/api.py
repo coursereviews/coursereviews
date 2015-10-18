@@ -41,7 +41,7 @@ class Courses(APIView):
     """
     def get(self, request, department, format=None):
         queryset = Department.objects.all()
-        dept = get_object_or_404(queryset, name=department)
+        dept = get_object_or_404(queryset, id=department)
 
         courses = Course.objects.filter(dept=dept)
         serializer = CourseSerializer(courses, many=True)
@@ -55,7 +55,7 @@ class Professors(APIView):
     """
     def get(self, request, department, format=None):
         queryset = Department.objects.all()
-        dept = get_object_or_404(queryset, name=department)
+        dept = get_object_or_404(queryset, id=department)
 
         professors = Professor.objects.filter(dept=dept)
         serializer = ProfessorSerializer(professors, many=True)
