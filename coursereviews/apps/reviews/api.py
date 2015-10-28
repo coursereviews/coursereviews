@@ -39,8 +39,13 @@ class Courses(APIView):
     """
     An API view to retrieve all the courses for a department.
     """
-    def get(self, request, department, format=None):
+    def get(self, request, format=None):
         queryset = Department.objects.all()
+
+        department = request.GET.get('department', None)
+        if not department:
+            raise Http404
+
         dept = get_object_or_404(queryset, id=department)
 
         courses = Course.objects.filter(dept=dept)
@@ -53,8 +58,13 @@ class Professors(APIView):
     """
     An API view to retrieve all the professors for a department.
     """
-    def get(self, request, department, format=None):
+    def get(self, request, format=None):
         queryset = Department.objects.all()
+
+        department = request.GET.get('department', None)
+        if not department:
+            raise Http404
+            
         dept = get_object_or_404(queryset, id=department)
 
         professors = Professor.objects.filter(dept=dept)

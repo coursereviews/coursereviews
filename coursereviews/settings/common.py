@@ -236,7 +236,7 @@ PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
 PIPELINE_CSSMIN_BINARY = 'cssmin'
 # PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.slimit.SlimItCompressor'
 PIPELINE_JS_COMPRESSOR = None
-PIPELINE_DISABLE_WRAPPER = True
+# PIPELINE_DISABLE_WRAPPER = True
 PIPELINE_COMPILERS = (
   'pipeline.compilers.less.LessCompiler',
 )
@@ -339,6 +339,23 @@ PIPELINE_JS = {
             'stats/js/stats.js',
         ),
         'output_filename': 'js/stats.js'
+    },
+    'catalog': {
+        'source_filenames': (
+            'vendor/js/underscore.js',
+            'vendor/js/backbone.js',
+            'reviews/js/routers/catalog-router.js',
+            'reviews/js/models/department.js',
+            'reviews/js/models/professor.js',
+            'reviews/js/models/course.js',
+            'reviews/js/collections/departments.js',
+            'reviews/js/collections/courses.js',
+            'reviews/js/collections/professors.js',
+            'reviews/js/views/catalog-view.js',
+            'reviews/js/views/catalog-item-view.js',
+            'reviews/js/catalog.js'
+        ),
+        'output_filename': 'js/catalog.js'
     },
 }
 
