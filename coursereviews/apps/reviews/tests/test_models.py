@@ -25,7 +25,7 @@ class DepartmentTestCase(TestCase):
 
     def test_absolute_url(self):
         film = Department.objects.get(name='Film & Media Culture')
-        self.assertEqual(film.get_absolute_url(), '/#film-media-culture')
+        self.assertEqual(film.get_absolute_url(), '/#departments/{0}/film-media-culture'.format(film.id))
 
 class ProfessorTestCase(TestCase):
     def setUp(self):
