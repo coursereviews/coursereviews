@@ -6,7 +6,7 @@ var middcourses = middcourses || {};
   middcourses.Department = Backbone.Model.extend({
     initialize: function () {
       this.set('type', 'department');
-      this.set('active', false);
+      this.set('active', +middcourses.department === this.get('id'));
     },
 
     displayName: function () {
@@ -16,7 +16,7 @@ var middcourses = middcourses || {};
     },
 
     url: function () {
-      return '#/departments/' + this.get('slug')
+      return this.get('url');
     }
   });
 

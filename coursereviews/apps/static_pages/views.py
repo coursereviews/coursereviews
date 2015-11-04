@@ -4,7 +4,7 @@ from django.views.decorators.cache import cache_page
 from django.template.response import TemplateResponse
 from django.http import HttpResponse
 from users.decorators import attach_client_ip
-from reviews.views import browse
+from reviews.views import browse, catalog
 import os
 
 @cache_control(must_revalidate=True, max_age=3600)
@@ -24,7 +24,7 @@ def http500(request):
 
 def index(request):
     if request.user.is_authenticated():
-        return browse(request)
+        return catalog(request)
     else:
         return splash(request)
 

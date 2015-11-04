@@ -32,7 +32,9 @@ class Department(models.Model):
         return slugify(self.name)
 
     def get_absolute_url(self):
-        return reverse('index') + "#" + slugify(self.name)
+        return "{0}#departments/{1}/{2}".format(reverse('index'),
+                                                self.id,
+                                                slugify(self.name))
 
     def __unicode__(self):
         return self.display_name or self.name

@@ -33,6 +33,7 @@ class DepartmentSerializer(serializers.ModelSerializer):
     has_professors = serializers.SerializerMethodField()
     has_courses = serializers.SerializerMethodField()
     reviews_count = serializers.SerializerMethodField()
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = Department
@@ -46,6 +47,9 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
     def get_reviews_count(self, obj):
         return Review.objects.filter(prof_course__course__dept=obj).count()
+
+    def get_url(self, obj):
+        return obj.get_absolute_url()
 
 class CourseSerializer(serializers.ModelSerializer):
     reviews_count = serializers.SerializerMethodField()

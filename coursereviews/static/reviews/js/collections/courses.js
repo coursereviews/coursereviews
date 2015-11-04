@@ -3,10 +3,14 @@ var middcourses = middcourses || {};
 (function () {
   'use strict';
 
-  middcourses.Courses = Backbone.Collection.extend({
+  var Courses = Backbone.Collection.extend({
     model: middcourses.Course,
 
-    url: '/api/courses'
+    url: function () {
+      return '/api/courses?' + $.param({department: middcourses.department});
+    }
 
   });
+
+  middcourses.courses = new Courses;
 })();

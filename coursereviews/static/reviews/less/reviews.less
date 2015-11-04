@@ -188,6 +188,28 @@ form.edit-review {
   margin: 20px 0;
 }
 
+// Catalog
+
+.departments,
+.courses-professors {
+  overflow: auto;
+  margin-bottom: 0;
+}
+
+.list-group-item.course,
+.list-group-item.professor {
+  background: inherit;
+  border: 1px solid transparent;
+
+  &:hover, &:active, &:focus {
+    background: inherit;
+    text-decoration: underline;
+    span {
+      background-color: #555;
+    }
+  }
+}
+
 ////////////////////////////////////
 // REVIEWS DETAIL                 //
 ////////////////////////////////////

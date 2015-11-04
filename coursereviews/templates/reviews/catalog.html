@@ -11,7 +11,7 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-sm-6 col-md-6">
+  <div class="col-sm-12 col-md-12">
     {% for message in messages %}
       <div class="alert alert-info alert-dismissable">
         <button type="button" class="close" data-dismiss="alert"
@@ -21,10 +21,10 @@
     {% endfor %}
     <form class="big-search" method="GET" action="/search">
       <input id="search-bar" class="form-control input-lg" type="text" name="q"
-        placeholder="Search for Professors or Courses">
+        placeholder="Search for professors or courses . . .">
     </form>
-    <a class="btn btn-primary btn-new-review"
-      href="{% url 'new_review' %}">Write a review</a>
+    <!-- <a class="btn btn-primary btn-new-review"
+      href="{% url 'new_review' %}">Write a review</a> -->
   </div>
 </div>
 
@@ -34,8 +34,7 @@
     </div>
   </div>
 
-  <div class="col-sm-8">
-    <h3>Courses</h3>
+  <div class="col-sm-8 courses-professors">
     <div class="row courses">
       <div class="col-sm-6">
         <div class="list-group courses-col-1"></div>
@@ -45,7 +44,6 @@
       </div>
     </div>
 
-    <h3>Professors</h3>
     <div class="row professors">
       <div class="col-sm-6">
         <div class="list-group professors-col-1"></div>

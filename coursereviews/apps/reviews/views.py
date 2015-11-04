@@ -21,6 +21,8 @@ from rest_framework.response import Response
 from operator import __or__, attrgetter
 import json
 
+@login_required
+@no_professor_access
 def catalog(request):
     user_is_professor = request.user.userprofile.professor_assoc
     if user_is_professor:
