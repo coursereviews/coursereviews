@@ -1,22 +1,47 @@
-$(document).ready(function () {
-  $("input#search-bar").typeahead([
-  {
-    name: 'professors',
-    prefetch: "/api/typeahead/professors",
-    header: "<h3 class='typeahead-suggestion-header'>Professors</h3>",
-    template: "<p>{{name}}</p>",
-    engine: Hogan
-  },
-  {
-    name: 'courses',
-    prefetch: "/api/typeahead/courses",
-    header: "<h3 class='typeahead-suggestion-header'>Courses</h3>",
-    template: "<p>{{name}}</p>",
-    engine: Hogan
+var professors = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.whitespace,
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  remote: {
+    url: '/api/search?type=professor&q=%QUERY',
+    wildcard: '%QUERY'
   }
-  ]).on("keydown", function(e) {
-    if (e.which == 13) {
-        $("form.big-search").submit();
+});
+
+var courses = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.whitespace,
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  remote: {
+    url: '/api/search?type=course&q=%QUERY',
+    wildcard: '%QUERY'
+  }
+});
+
+$(document).ready(function () {
+  $("input#search-bar").typeahead(null,
+    {
+      name: 'courses',
+      source: courses,
+      templates: {
+        header: "<h3 class='typeahead-suggestion-header'>Courses</h3>",
+        suggestion: _.template('<a href="<%- url %>"><p><%- code %>: <%- title %></span></p></a>'),
+      },
+      display: _.template('<%- code %>: <%- title %>'),
+      minLength: 3,
+      limit: 10
+    },
+    {
+      name: 'professors',
+      source: professors,
+      templates: {
+        header: "<h3 class='typeahead-suggestion-header'>Professors</h3>",
+        suggestion: _.template('<a href="<%- url %>"><p><%- name %></span></p></a>'),
+      },
+      display: _.template('<%- name %>'),
+      minLength: 3,
+      limit: 10
     }
+  )
+  .on('typeahead:select', function (event, obj) {
+    window.location = obj.url;
   });
 });

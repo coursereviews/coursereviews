@@ -33,6 +33,9 @@ urlpatterns += patterns('reviews.api',
     url(r'^api/professors$',
         api.Professors.as_view()),
 
+    url(r'^api/search$',
+        api.Search.as_view()),
+
     url(r'^api/typeahead/courses$', 'typeahead_courses', name='typeahead_courses'),
     url(r'^api/typeahead/professors$', 'typeahead_professors', name='typeahead_professors'),
     url(r'^api/review/options$', 'new_review_course_options', name='new_review_course_options'),

@@ -53,24 +53,32 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     reviews_count = serializers.SerializerMethodField()
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = Course
-        fields = ('code', 'dept', 'id', 'reviews_count', 'slug', 'title')
+        fields = ('code', 'dept', 'id', 'reviews_count', 'slug', 'title', 'url')
 
     def get_reviews_count(self, obj):
         return Review.objects.filter(prof_course__course__id=obj.id).count()
 
+    def get_url(self, obj):
+        return obj.get_absolute_url()
+
 class ProfessorSerializer(serializers.ModelSerializer):
     reviews_count = serializers.SerializerMethodField()
     name = serializers.SerializerMethodField()
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = Professor
-        fields = ('slug', 'id', 'name', 'reviews_count', 'dept')
+        fields = ('slug', 'id', 'name', 'reviews_count', 'dept', 'url')
 
     def get_name(self, obj):
         return unicode(obj)
 
     def get_reviews_count(self, obj):
         return Review.objects.filter(prof_course__prof__id=obj.id).count()
+
+    def get_url(self, obj):
+        return obj.get_absolute_url()

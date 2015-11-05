@@ -64,11 +64,35 @@ class Professors(APIView):
         department = request.GET.get('department', None)
         if not department:
             raise Http404
-            
+
         dept = get_object_or_404(queryset, id=department)
 
         professors = Professor.objects.filter(dept=dept)
         serializer = ProfessorSerializer(professors, many=True)
+
+        return Response(serializer.data)
+
+class Search(APIView):
+    """
+    An API view to retrieve professor and course search results.
+    """
+    def get(self, request, format=None):
+        q = request.GET.get('q', None)
+        model = request.GET.get('type', None)
+
+        if not q or not model:
+            raise Http404
+
+        if model == 'professor':
+            professors = Professor.objects.search(q)
+            serializer = ProfessorSerializer(professors, many=True)
+
+        elif model == 'course':
+            courses = Course.objects.search(q)
+            serializer = CourseSerializer(courses, many=True)
+
+        else:
+            raise Http404
 
         return Response(serializer.data)
 

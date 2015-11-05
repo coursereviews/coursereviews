@@ -62,7 +62,7 @@ form.edit-review {
     @media (max-width: 480px) {
       margin-left: 10px;
       width: 100%;
-        label {
+      label {
         width: percentage(1/5);
       }
     }
@@ -111,7 +111,7 @@ form.edit-review {
   .review-delete {
     color: #d2322d;
     &:hover {
-    color: #d2322d;
+      color: #d2322d;
     }
   }
 }
@@ -136,22 +136,70 @@ form.edit-review {
 ////////////////////////////////////
 // REVIEWS BROWSE                 //
 ////////////////////////////////////
+.tt-input,
+.tt-hint {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 18px;
+  line-height: 30px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  &:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-color: #428bca;
+  }
+}
+
+.tt-input {
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999;
+}
+
+.tt-menu {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 5px 20px;
+  font-size: 18px;
+  line-height: 24px;
+  color: rgb(85, 85, 85);
+  &:hover {
+    color: rgb(85, 85, 85);
+    text-decoration: none;
+  }
+  &.tt-cursor {
+    color: #fff;
+    background-color: #428bca;
+  }
+  p {
+    margin: 0;
+  }
+}
 
 .tt-dropdown-menu {
   width: 100%;
   div[class^='tt-dataset-'] {
-
     .tt-suggestions {
-
       .tt-suggestion {
         padding: 3px 20px;
         font-size: 18px;
         line-height: 24px;
       }
     }
-
   }
-
 }
 
 .typeahead-suggestion-header {
@@ -192,8 +240,10 @@ form.edit-review {
 
 .departments,
 .courses-professors {
-  overflow: auto;
-  margin-bottom: 0;
+  @media (min-width: 768px) {
+    overflow: auto;
+    margin-bottom: 0;
+  }
 }
 
 .list-group-item.course,
