@@ -236,14 +236,45 @@ form.edit-review {
   margin: 20px 0;
 }
 
+//
 // Catalog
+//
 
-.departments,
+// Responsive styles for mobile
+
+// Scroll in div on desktop
+.departments-list,
 .courses-professors {
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
     overflow: auto;
     margin-bottom: 0;
   }
+}
+
+// Allow full scrolling on mobile
+.departments, .courses-professors {
+  @media (max-width: 991px) {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+// Don't break between course/professor columns on mobile
+.list-group {
+  @media (max-width: 991px) {
+    margin-bottom: 0;
+  }
+}
+
+// Break after courses on mobile
+.courses {
+  @media (max-width: 991px) {
+    margin-bottom: 20px;
+  }
+}
+
+.departments-back-btn {
+  width: 100%;
 }
 
 .list-group-item.course,

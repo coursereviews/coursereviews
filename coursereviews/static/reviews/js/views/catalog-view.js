@@ -8,8 +8,14 @@ var middcourses = middcourses || {};
 
     itemTemplate: _.template($('#catalog-item-template').html()),
 
-    initialize: function () {
-      this.$departments = this.$('.departments');
+    events: {
+      'click .department': 'hideDepartments'
+    },
+
+    initialize: function (options) {
+      this.activePanel = options.activePanel || 'departments';
+
+      this.$departments = this.$('.departments-list');
       this.$coursesCol1 = this.$('.courses-col-1', this.$courses);
       this.$coursesCol2 = this.$('.courses-col-2', this.$courses);
       this.$professorsCol1 = this.$('.professors-col-1', this.$professors);
@@ -20,17 +26,45 @@ var middcourses = middcourses || {};
       this.listenTo(middcourses.professors, 'reset', this.addAllProfessors);
       $(window).on('resize', this.render);
 
+      // outside the scope of the view
+      $('.departments-back-btn').on('click', this.showDepartments)
+
       middcourses.departments.fetch({reset: true});
       this.render();
     },
 
     render: function () {
+      // mobile
+      if ($(window).width() < 992) {
+        this.$('.departments-list, .courses-professors').removeAttr('style');
+
+        // hide the inactive panel on resize
+
+        this.$('.departments').toggleClass('hidden', this.activePanel === 'courses-professors');
+        this.$('.courses-professors').toggleClass('hidden', this.activePanel === 'departments');
+
+        // outside the scope of the view
+        $('.departments-back').toggleClass('hidden', this.activePanel === 'departments');
+        return;
+      }
+
+      // desktop
+
+      // make sure both are in view
+      this.$('.departments, .courses-professors').removeClass('hidden');
+
+      // make sure departments back button is hidden
+      $('.departments-back').addClass('hidden');
+
       var windowHeight = $(window).height();
       var headerHeight = $('.container:first').height();
       var searchBarHeight = $('.row:first').height();
 
-      this.$('.departments, .courses-professors')
+      this.$('.departments-list, .courses-professors')
         .height(windowHeight - headerHeight - searchBarHeight - 10 /* border */);
+
+      // go back to departments on resize to mobile view
+      this.activePanel = 'departments';
     },
 
     addAllDepartments: function () {
@@ -71,6 +105,28 @@ var middcourses = middcourses || {};
           this.$professorsCol2.append(view.render().el);
         }
       }, this));
+    },
+
+    showDepartments: function () {
+      $('.departments').removeClass('hidden');
+      $('.courses-professors').addClass('hidden');
+      $('.departments-back').addClass('hidden');
+
+      this.activePanel = 'departments';
+    },
+
+    hideDepartments: function () {
+      // this is called whenever a department it clicked, so don't do anything
+      // if we're not in mobile
+      if ($(window).width() >= 992) {
+        return;
+      }
+
+      $('.departments').addClass('hidden');
+      $('.courses-professors').removeClass('hidden');
+      $('.departments-back').removeClass('hidden');
+
+      this.activePanel = 'courses-professors';
     }
   });
 })();
