@@ -18,6 +18,7 @@ django-pagination
 django-pipeline<1.4
 cssmin
 slimit
+ply==3.4
 
 djangorestframework
 markdown
