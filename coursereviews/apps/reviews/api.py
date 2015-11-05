@@ -28,6 +28,8 @@ from operator import __or__
 import json
 
 class Departments(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
     def get(self, request, format=None):
         departments = Department.objects.all()
         serializer = DepartmentSerializer(departments, many=True)
@@ -39,6 +41,9 @@ class Courses(APIView):
     """
     An API view to retrieve all the courses for a department.
     """
+
+    permission_classes = (permissions.IsAuthenticated,)
+
     def get(self, request, format=None):
         queryset = Department.objects.all()
 
@@ -58,6 +63,9 @@ class Professors(APIView):
     """
     An API view to retrieve all the professors for a department.
     """
+
+    permission_classes = (permissions.IsAuthenticated,)
+
     def get(self, request, format=None):
         queryset = Department.objects.all()
 
@@ -76,6 +84,9 @@ class Search(APIView):
     """
     An API view to retrieve professor and course search results.
     """
+
+    permission_classes = (permissions.IsAuthenticated,)
+
     def get(self, request, format=None):
         q = request.GET.get('q', None)
         model = request.GET.get('type', None)
@@ -101,6 +112,8 @@ class Comment(APIView):
     """
     Retrieve or update flag/vote data on a comment.
     """
+
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self, pk):
         try:

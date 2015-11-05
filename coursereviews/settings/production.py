@@ -83,3 +83,5 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SOUTH_DATABASE_ADAPTERS = {
     'default': 'south.db.postgresql_psycopg2'
 }
+
+REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = ('rest_framework.renderers.JSONRenderer',)
