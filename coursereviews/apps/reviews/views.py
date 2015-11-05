@@ -22,18 +22,17 @@ from operator import __or__, attrgetter
 import json
 
 @login_required
-@no_professor_access
 def catalog(request):
-    user_is_professor = request.user.userprofile.professor_assoc
-    if user_is_professor:
-        return Http404
+    user_professor = request.user.userprofile.professor_assoc
+    if user_professor:
+        courses = ProfCourse.objects.filter(prof=user_professor)
+        return TemplateResponse(request, 'reviews/prof_browse.html',
+            {'professor': user_professor, 'courses': courses})
 
     context = {}
 
     context.update(departments=Department.objects.values_list('name', flat=True))
     context.update(quota=request.user.userprofile.reviews_to_fulfill_quota())
-
-    print context['departments']
 
     return TemplateResponse(request, 'reviews/catalog.html', context)
 
