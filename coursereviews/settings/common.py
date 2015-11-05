@@ -236,8 +236,7 @@ WSGI_APPLICATION = 'wsgi.application'
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
 PIPELINE_CSSMIN_BINARY = 'cssmin'
-# PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.slimit.SlimItCompressor'
-PIPELINE_JS_COMPRESSOR = None
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.slimit.SlimItCompressor'
 # PIPELINE_DISABLE_WRAPPER = True
 PIPELINE_COMPILERS = (
   'pipeline.compilers.less.LessCompiler',
