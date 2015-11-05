@@ -31,7 +31,6 @@ def catalog(request):
 
     context = {}
 
-    context.update(departments=Department.objects.values_list('name', flat=True))
     context.update(quota=request.user.userprofile.reviews_to_fulfill_quota())
 
     return TemplateResponse(request, 'reviews/catalog.html', context)

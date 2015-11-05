@@ -9,6 +9,19 @@
 {% endblock %}
 
 {% block content %}
+{% if quota > 0 %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="alert alert-info alert-quota" role="alert">
+    <h4>You have to write {{ quota }} more review{{ quota|pluralize }}
+      semester before you can see others.</h4>
+    <p>By contributing, you help us always have up to date reviews for
+      everyone.</p>
+    </div>
+  </div>
+</div>
+{% endif %}
+
 <div class="row">
   <div class="col-sm-12 col-md-12">
     {% for message in messages %}
