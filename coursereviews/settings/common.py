@@ -167,7 +167,9 @@ THIRD_PARTY_APPS = (
     'rest_framework',
 
     # select multiple fields
-    'multiselectfield'
+    'multiselectfield',
+
+    'djorm_pgfulltext',
 
 )
 

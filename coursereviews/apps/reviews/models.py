@@ -6,8 +6,9 @@ from django.template.defaultfilters import slugify
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from multiselectfield import MultiSelectField
+from djorm_pgfulltext.models import SearchManager
+from djorm_pgfulltext.fields import VectorField
 
-# Used for both ListingCategory and ListingType and Buyer
 class GenericManager(models.Manager):
     def __init__(self, field_name='name'):
         self.field_name = field_name
@@ -39,14 +40,29 @@ class Department(models.Model):
     def __unicode__(self):
         return self.display_name or self.name
 
+
+class ProfessorManager(SearchManager):
+    def __init__(self, *args, **kwargs):
+        self.field_name = kwargs.pop('field_name', 'name')
+        return super(ProfessorManager, self).__init__(*args, **kwargs)
+
+    def get_by_natural_key(self, value):
+        return self.get(**{self.field_name: value})
+
 class Professor(models.Model):
-    objects = GenericManager(field_name='last')
     first = models.CharField(max_length=100, blank=True, null=True)
     last = models.CharField(max_length=100)
     dept = models.ForeignKey(Department, related_name='professors')
     email = models.EmailField(blank=True, null=True)
     slug = models.SlugField(blank=True)
     lookup = models.CharField(max_length=201)
+    search_index = VectorField()
+
+    objects = ProfessorManager(
+        field_name='last',
+        fields=('first', 'last', 'email'),
+        auto_update_search_field=True
+    )
 
     def natural_key(self):
         return self.last
@@ -62,14 +78,23 @@ class Professor(models.Model):
         self.lookup = self.__unicode__()
         super(Professor, self).save(*args, **kwargs)
 
+class CourseManager(ProfessorManager):
+    pass
+
 class Course(models.Model):
-    objects = GenericManager(field_name='code')
     code = models.CharField(max_length=20)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     dept = models.ForeignKey(Department, related_name='courses')
     slug = models.SlugField(blank=True)
     lookup = models.CharField(max_length=276)
+    search_index = VectorField()
+
+    objects = CourseManager(
+        field_name='code',
+        fields=('code', 'title', 'description'),
+        auto_update_search_field=True
+    )
 
     def natural_key(self):
         return self.code
