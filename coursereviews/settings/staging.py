@@ -1,9 +1,7 @@
 """Development settings and globals."""
 
-from os import environ
-
 from os.path import join, normpath
-from common import *
+from common import *  # noqa
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = False
@@ -66,3 +64,6 @@ BROKER_CONNECTION_MAX_RETRIES = 0
 
 # See: http://docs.celeryproject.org/en/latest/configuration.html#celery-result-backend
 CELERY_RESULT_BACKEND = 'amqp'
+
+from boto.s3.connection import OrdinaryCallingFormat
+AWS_S3_CALLING_FORMAT = OrdinaryCallingFormat()

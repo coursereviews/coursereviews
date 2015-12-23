@@ -1,6 +1,5 @@
 from django import forms
-from django.forms import ModelChoiceField
-from reviews.models import Review, ProfCourse
+from reviews.models import Review
 
 class ReviewForm(forms.ModelForm):
     class Meta:

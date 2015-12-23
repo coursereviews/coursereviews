@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.template.response import TemplateResponse
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
@@ -20,7 +19,8 @@ def index(request):
 @login_required
 @middcourses_admin_required
 def quota(request):
-    users_quota_count = UserProfile.objects.values('total_reviews').order_by().annotate(Count('total_reviews'))
+    users_quota_count = UserProfile.objects.values('total_reviews') \
+        .order_by().annotate(Count('total_reviews'))
 
     admin_quota = AdminQuota.objects.get(pk=1)
 

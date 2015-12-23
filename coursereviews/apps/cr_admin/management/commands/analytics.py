@@ -1,7 +1,6 @@
 from django.core.management.base import NoArgsCommand
 from django.db.models import Count
 from django.conf import settings
-from django.core.serializers import serialize
 from django.contrib.auth.models import User
 
 from reviews.models import Review
@@ -14,19 +13,18 @@ class Command(NoArgsCommand):
     help = "Collect and write out analytics."
 
     def handle_noargs(self, **options):
-        reviews = Review.objects.all()
         reviews_count = Review.objects.all().count()
 
         comments_count = Review.objects.exclude(comment='').count()
 
         comments_hours = map(lambda r: {'comment': r['comment'], 'hours': r['hours']},
-            Review.objects.exclude(comment='').values('comment', 'hours'))
+                             Review.objects.exclude(comment='').values('comment', 'hours'))
 
         comment_blobs = map(lambda r: {'blob': TextBlob(r['comment']), 'hours': r['hours']},
-            comments_hours)
+                            comments_hours)
 
         avg_comment_length = sum(map(lambda r: len(r['comment']),
-            comments_hours)) / float(comments_count)
+                                 comments_hours)) / float(comments_count)
 
         comment_sentiment_hours = map(lambda r: {'subjectivity': r['blob'].sentiment.subjectivity,
                                                  'polarity': r['blob'].sentiment.polarity,
@@ -45,7 +43,7 @@ class Command(NoArgsCommand):
             r['date'] = str(r['date'])
 
         users_by_day = User.objects.extra({'date': 'date(date_joined)'}) \
-            .values('date').annotate(count = Count('id'))
+            .values('date').annotate(count=Count('id'))
 
         for u in users_by_day:
             u['date'] = str(u['date'])

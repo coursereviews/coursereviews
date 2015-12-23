@@ -1,6 +1,5 @@
 """Settings and globals for both development and production."""
 
-from datetime import timedelta
 from sys import path
 from os.path import abspath, basename, dirname, join, normpath
 # from djcelery import setup_loader
@@ -190,8 +189,8 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'filters': {
-    'require_debug_false': {
-        '()': 'django.utils.log.RequireDebugFalse'
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
         }
     },
     'handlers': {
@@ -224,7 +223,7 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-       'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.AllowAny',
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
@@ -232,14 +231,14 @@ REST_FRAMEWORK = {
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = 'wsgi.application'
 
-############# PIPELINE CONFIG
+# PIPELINE CONFIG
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
 PIPELINE_CSSMIN_BINARY = 'cssmin'
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.slimit.SlimItCompressor'
 # PIPELINE_DISABLE_WRAPPER = True
 PIPELINE_COMPILERS = (
-  'pipeline.compilers.less.LessCompiler',
+    'pipeline.compilers.less.LessCompiler',
 )
 
 PIPELINE_CSS = {
@@ -303,7 +302,7 @@ PIPELINE_CSS = {
 }
 
 PIPELINE_JS = {
-    'local_libs_development' : {
+    'local_libs_development': {
         'source_filenames': (
             'coursereviews/js/jquery-1.9.0.js',
             'coursereviews/js/bootstrap/bootstrap.min.js',
@@ -311,7 +310,7 @@ PIPELINE_JS = {
         ),
         'output_filename': 'js/libs.js'
     },
-    'local_libs_production' : {
+    'local_libs_production': {
         'source_filenames': (
             'coursereviews/js/global.js',
         ),
@@ -323,7 +322,7 @@ PIPELINE_JS = {
         ),
         'output_filename': 'js/new_review.js'
     },
-    'review_detail' : {
+    'review_detail': {
         'source_filenames': (
             'reviews/js/detail.js',
         ),
@@ -360,7 +359,7 @@ PIPELINE_JS = {
     },
 }
 
-############# AWS CONFIG
+# AWS CONFIG
 S3_URL = environ.get('AWS_S3_URL', '')
 AWS_ACCESS_KEY_ID = environ.get('AWS_KEY', '')
 AWS_SECRET_ACCESS_KEY = environ.get('AWS_SECRET', '')
@@ -370,13 +369,13 @@ AWS_AUTO_CREATE_BUCKET = True
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_SECURE_URLS = False
 AWS_HEADERS = {
-        'Cache-Control': 'max-age=300, s-maxage=900, public, no-transform'
+    'Cache-Control': 'max-age=300, s-maxage=900, public, no-transform'
 }
 # backend storages.backends.s3boto.S3BotoStorage
 # STATIC_URL = S3_URL + 'assets/'
 
 
-############# CELERY CONFIG
+# CELERY CONFIG
 # See: http://celery.readthedocs.org/en/latest/configuration.html#celery-task-result-expires
 # CELERY_TASK_RESULT_EXPIRES = timedelta(minutes=30)
 
@@ -385,16 +384,16 @@ AWS_HEADERS = {
 
 # CELERY_IMPORTS = ('registration.tasks')
 
-############# USER ACCOUNTS CONFIG
+# USER ACCOUNTS CONFIG
 AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
 DEFAULT_FROM_EMAIL = 'MiddCourses <notifications@middcourses.com>'
 
-LOGIN_URL = '/login/' # references users/urls.py name
+LOGIN_URL = '/login/'  # references users/urls.py name
 
-LOGOUT_URL = '/logout/' #references users/urls.py name
+LOGOUT_URL = '/logout/'  # references users/urls.py name
 
 LOGIN_REDIRECT_URL = '/'
 

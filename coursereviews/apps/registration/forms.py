@@ -1,20 +1,13 @@
 """
 Forms and validation code for user registration.
-
 """
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
-try:
-    from django.contrib.auth import get_user_model
-except ImportError: # django < 1.5
-    from django.contrib.auth.models import User
-else:
-    User = get_user_model()
 from django import forms
-
 from django.contrib.auth import authenticate
 from django.utils.translation import ugettext_lazy as _
-from django.utils.text import capfirst
 
 # I put this on all required fields, because it's easier to pick up
 # on them with CSS or JavaScript if they have a class of "required"
@@ -22,19 +15,18 @@ from django.utils.text import capfirst
 # lands in trunk, this will no longer be necessary.
 attrs_dict = {'class': 'required'}
 
-
 class RegistrationForm(forms.Form):
     """
     Form for registering a new user account.
-    
+
     Validates that the requested username is not already in use, and
     requires the password to be entered twice to catch typos.
-    
+
     Subclasses should feel free to add any additional validation they
     need, but should avoid defining a ``save()`` method -- the actual
     saving of collected user data is delegated to the active
     registration backend.
-    
+
     """
     email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict,
                                                                maxlength=75)),
@@ -43,12 +35,12 @@ class RegistrationForm(forms.Form):
                                 label=_("Password"))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
                                 label=_("Password (again)"))
-    
+
     def clean_username(self):
         """
         Validate that the username is alphanumeric and is not already
         in use.
-        
+
         """
         existing = User.objects.filter(username__iexact=self.cleaned_data['username'])
         if existing.exists():
@@ -75,7 +67,7 @@ class RegistrationForm(forms.Form):
         match. Note that an error here will end up in
         ``non_field_errors()`` because it doesn't apply to a single
         field.
-        
+
         """
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
@@ -106,7 +98,6 @@ class AuthenticationForm(forms.Form):
         super(AuthenticationForm, self).__init__(*args, **kwargs)
 
         # Set the label for the "email" field.
-        UserModel = get_user_model()
         if self.fields['email'].label is None:
             self.fields['email'].label = "Email"
 
@@ -122,7 +113,7 @@ class AuthenticationForm(forms.Form):
                 raise forms.ValidationError(
                     self.error_messages['invalid_login'],
                     code='invalid_login',
-                    params={'email': 'Email' },
+                    params={'email': 'Email'},
                 )
             else:
                 self.confirm_login_allowed(self.user_cache)

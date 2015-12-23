@@ -1,10 +1,7 @@
 from datetime import datetime
-import os
 
-from fabric.api import local, env, require
-from fabric.context_managers import shell_env
+from fabric.api import local, env
 from fabric.contrib.console import confirm
-from fabric.operations import prompt
 from fabric.utils import puts, indent
 from fabric.colors import blue, green
 
@@ -23,7 +20,7 @@ def deploy():
     # require('HEROKU_APP')
 
     local('heroku maintenance:on')
-    local('DJANGO_SETTINGS_MODULE=coursereviews.settings.staging python manage.py collectstatic --noinput')
+    local('DJANGO_SETTINGS_MODULE=coursereviews.settings.staging python manage.py collectstatic --noinput')  # noqa
     local('git push heroku HEAD:master')
     local('heroku run python manage.py syncdb --noinput')
     local('heroku run python manage.py migrate')
@@ -72,7 +69,7 @@ def capture_db():
 
     puts(blue('Restoring the database to PostgreSQL.'))
     local('createdb {0}'.format(db_name))
-    local('pg_restore --no-acl --no-owner -h localhost -U {0} -d {1} "{1}.dump"'.format(env.user, db_name))
+    local('pg_restore --no-acl --no-owner -h localhost -U {0} -d {1} "{1}.dump"'.format(env.user, db_name))  # noqa
 
     puts(green('PostgreSQL database {0} created.'.format(db_name)))
 

@@ -1,5 +1,9 @@
 from django.contrib import admin
-from reviews.models import *
+from reviews.models import (Professor,
+                            Review,
+                            Course,
+                            ProfCourse,
+                            Department)
 
 class ProfCourseAdmin(admin.ModelAdmin):
     search_fields = ('course__code', 'prof__first', 'prof__last')

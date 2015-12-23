@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from django.db.models import F
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -16,7 +15,8 @@ class UserProfile(models.Model):
     # the quota implementation
     semester_reviews = models.IntegerField(default=0)
     total_reviews = models.IntegerField(default=0)
-    professor_assoc = models.ForeignKey(Professor, related_name='user_profile', null=True, blank=True)
+    professor_assoc = models.ForeignKey(Professor, related_name='user_profile',
+                                        null=True, blank=True)
     middcourses_admin = models.BooleanField(default=False)
     middcourses_moderator = models.BooleanField(default=False)
 

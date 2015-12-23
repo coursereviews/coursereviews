@@ -1,7 +1,6 @@
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 import json
 
-from django.http import HttpResponse
 from django.template.response import TemplateResponse
 from django.db.models import Count
 from django.contrib.auth.models import User
@@ -17,9 +16,10 @@ def stats(request):
 
     context = {'start_date': start_date}
 
-    s_reviews = pd.Series(map(lambda r: r['count'], reviews.values('count')),
-            index=map(lambda r: r['date'], reviews.values('date'))) \
-            .reindex(index=pd.date_range(start_date, periods=30), fill_value=0)
+    s_reviews = pd.Series(
+        map(lambda r: r['count'], reviews.values('count')),
+        index=map(lambda r: r['date'], reviews.values('date'))) \
+        .reindex(index=pd.date_range(start_date, periods=30), fill_value=0)
 
     context['review_stats'] = json.dumps(zip(
         s_reviews.index.map(lambda t: t.strftime('%Y-%m-%d')),
@@ -27,14 +27,15 @@ def stats(request):
     context['review_count'] = sum(s_reviews.tolist())
 
     users = User.objects.filter(date_joined__gte=start_date) \
-            .extra({'date': 'date(date_joined)'}) \
-            .values('date').annotate(count=Count('id'))
+        .extra({'date': 'date(date_joined)'}) \
+        .values('date').annotate(count=Count('id'))
 
     sorted(users, key=lambda u: u['date'])
 
-    s_users = pd.Series(map(lambda u: u['count'], users.values('date','count')),
-            index=map(lambda u: u['date'], users.values('date', 'count'))) \
-            .reindex(index=pd.date_range(start_date, periods=30), fill_value=0)
+    s_users = pd.Series(
+        map(lambda u: u['count'], users.values('date', 'count')),
+        index=map(lambda u: u['date'], users.values('date', 'count'))) \
+        .reindex(index=pd.date_range(start_date, periods=30), fill_value=0)
 
     context['user_stats'] = json.dumps(zip(
         s_users.index.map(lambda t: t.strftime('%Y-%m-%d')),

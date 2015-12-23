@@ -31,7 +31,10 @@ def register(request, template_name='static_pages/splash.html'):
                 site = Site.objects.get_current()
             else:
                 site = RequestSite(request)
-            new_user = RegistrationProfile.objects.create_inactive_user(username, email, password, site)
+            new_user = RegistrationProfile.objects.create_inactive_user(username,
+                                                                        email,
+                                                                        password,
+                                                                        site)
             signals.user_registered.send(sender=RegistrationProfile,
                                          user=new_user,
                                          request=request)
@@ -51,7 +54,8 @@ def register(request, template_name='static_pages/splash.html'):
                     return redirect('prof_reg_error')
                 # else drop down to normal registration
 
-            messages.add_message(request, messages.INFO, "Thanks for signing up! Check your email for an activation link.")
+            messages.add_message(request, messages.INFO,
+                                 "Thanks for signing up! Check your email for an activation link.")
             success_url = request.GET.get('next')
             if success_url:
                 return redirect(success_url)
@@ -69,8 +73,9 @@ def professor_register(request, template_name='cr_registration/professor_registr
         form = RegistrationForm(data=request.POST)
         if form.is_valid():
             try:
-                professor = Professor.objects.get(email=form.cleaned_data['email'])
-                return register(request, template_name='cr_registration/professor_registration_form.html')
+                # professor = Professor.objects.get(email=form.cleaned_data['email'])
+                return register(request,
+                                template_name='cr_registration/professor_registration_form.html')
             except Professor.DoesNotExist:
                 return redirect('prof_reg_error')
 

@@ -25,7 +25,8 @@ class DepartmentTestCase(TestCase):
 
     def test_absolute_url(self):
         film = Department.objects.get(name='Film & Media Culture')
-        self.assertEqual(film.get_absolute_url(), '/#departments/{0}/film-media-culture'.format(film.id))
+        self.assertEqual(film.get_absolute_url(),
+                         '/#departments/{0}/film-media-culture'.format(film.id))
 
 class ProfessorTestCase(TestCase):
     def setUp(self):
@@ -120,9 +121,9 @@ class CourseTestCase(TestCase):
     def test_absolute_url(self):
         course = Course.objects.get_by_natural_key('CSCI0101')
         self.assertEqual(course.get_absolute_url(),
-            '/course/csci0101')
+                         '/course/csci0101')
 
     def test_unicode(self):
         course = Course.objects.get_by_natural_key('CSCI0101')
         self.assertEqual(unicode(course),
-            'CSCI0101 - Introduction to Computer Science')
+                         'CSCI0101 - Introduction to Computer Science')

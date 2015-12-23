@@ -1,11 +1,7 @@
-import sys
 import requests
 from bs4 import BeautifulSoup
-
-from django.core.management.base import BaseCommand, CommandError
-
-from reviews.models import (Professor,
-                            Department)
+from django.core.management.base import BaseCommand
+from reviews.models import Professor
 
 class bcolors:
     HEADER = '\033[95m'

@@ -1,9 +1,6 @@
 """Development settings and globals."""
 
-from os import environ
-
-from os.path import join, normpath
-from common import *
+from common import *  # noqa
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = True
@@ -15,21 +12,18 @@ TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = DEBUG
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Console email backend
 # See: https://docs.djangoproject.com/en/dev/topics/email/#console-backend
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-# May want to switch to Postgres for analytics work after db dump from production
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': normpath(join(DJANGO_ROOT, 'default.db')),
         'USER': '',
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': '',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'middcourses',
         'PASSWORD': '',
         'HOST': '',
         'PORT': '',
@@ -66,7 +60,7 @@ MIDDLEWARE_CLASSES += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
-DEBUG_TOOLBAR_CONFIG = { }
+DEBUG_TOOLBAR_CONFIG = {}
 
 # STATICFILES_STORAGE = 'coursereviews.settings.storage.S3PipelineStorage'
 

@@ -1,6 +1,7 @@
-from django.conf.urls import patterns, url, include
-from registration.views import register
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('users.views',
-    url(r'^register/professor/error$', 'professor_registration_error', name='prof_reg_error'),
+    url(r'^register/professor/error$',  # noqa
+        'professor_registration_error',
+        name='prof_reg_error'),
 )

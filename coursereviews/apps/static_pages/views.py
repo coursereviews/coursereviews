@@ -1,10 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.decorators.cache import cache_control
 from django.views.decorators.cache import cache_page
 from django.template.response import TemplateResponse
 from django.http import HttpResponse
-from users.decorators import attach_client_ip
-from reviews.views import browse, catalog
+from reviews.views import catalog
 import os
 
 @cache_control(must_revalidate=True, max_age=3600)
@@ -49,7 +48,7 @@ def google_verify(request, code):
     if code == google_verification_code:
         print google_verification_code
         return TemplateResponse(request,
-            'static_pages/google_verify.html',
-            {'google_verification_code': google_verification_code})
+                                'static_pages/google_verify.html',
+                                {'google_verification_code': google_verification_code})
     else:
         return HttpResponse(404)

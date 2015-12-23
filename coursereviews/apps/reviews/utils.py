@@ -91,7 +91,7 @@ class Review_Aggregator:
     def single_choice_aggregator(self, review, field):
         """Aggregates the select single choice fields from each review."""
 
-        again_choices = another_choices = dict(Review.YES_NO_CHOICES)
+        again_choices = dict(Review.YES_NO_CHOICES)
         grasp_choices = dict(Review.DESERVING_CHOICES)
 
         if field not in self.aggregate_values:
@@ -129,11 +129,14 @@ class Review_Aggregator:
                 self.aggregate_values['comments'] = []
 
             if self.attach_comment_slug:
-                prof_course = ProfCourse.objects.select_related('course').get(id=review['prof_course'])
+                prof_course = ProfCourse.objects.select_related('course') \
+                    .get(id=review['prof_course'])
                 course_code = prof_course.course.code
                 course_url = prof_course.course.get_absolute_url()
 
-                self.aggregate_values['comments'].append({'comment': review[field], 'course_code': course_code, 'course_url': course_url})
+                self.aggregate_values['comments'].append({'comment': review[field],
+                                                          'course_code': course_code,
+                                                          'course_url': course_url})
 
             else:
                 self.aggregate_values['comments'].append(review[field])

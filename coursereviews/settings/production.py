@@ -7,15 +7,15 @@ from memcacheify import memcacheify
 # from S3 import CallingFormat
 from boto.s3.connection import OrdinaryCallingFormat
 import dj_database_url
-from common import *
+from common import *  # noqa
 
 DATABASES['default'] = dj_database_url.config()
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 
 DATABASE_POOL_ARGS = {
-  'max_overflow': 10,
-  'pool_size': 10,
-  'recycle': 300
+    'max_overflow': 10,
+    'pool_size': 10,
+    'recycle': 300
 }
 
 DEBUG = False
@@ -70,10 +70,9 @@ AWS_S3_CALLING_FORMAT = OrdinaryCallingFormat()
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
-  '.herokuapp.com',
-  'courserevie.ws',
-  'middcourses.com',
-  'www.middcourses.com'
+    '.herokuapp.com',
+    'middcourses.com',
+    'www.middcourses.com'
 ]
 
 DOMAIN_NAME = "middcourses.com"

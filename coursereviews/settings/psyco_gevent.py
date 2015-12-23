@@ -7,7 +7,6 @@ from psycopg2 import extensions
 
 from gevent.hub import getcurrent, get_hub
 from gevent.core import read_event, write_event, EV_TIMEOUT
-from gevent.hub import sleep as gevent_sleep
 
 def make_psycopg_green():
     if not hasattr(extensions, 'set_wait_callback'):

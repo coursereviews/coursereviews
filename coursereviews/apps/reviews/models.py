@@ -15,7 +15,7 @@ class GenericManager(models.Manager):
         return super(GenericManager, self).__init__()
 
     def get_by_natural_key(self, name):
-        kwargs = { self.field_name: name }
+        kwargs = {self.field_name: name}
         return self.get(**kwargs)
 
 class Department(models.Model):
@@ -68,7 +68,7 @@ class Professor(models.Model):
         return self.last
 
     def get_absolute_url(self):
-        return reverse('prof_detail', kwargs={ 'prof_slug': self.slug })
+        return reverse('prof_detail', kwargs={'prof_slug': self.slug})
 
     def __unicode__(self):
         return self.first + ' ' + self.last
@@ -100,7 +100,7 @@ class Course(models.Model):
         return self.code
 
     def get_absolute_url(self):
-        return reverse('course_detail', kwargs={ 'course_slug': self.slug })
+        return reverse('course_detail', kwargs={'course_slug': self.slug})
 
     def __unicode__(self):
         return self.code + " - " + self.title
@@ -129,7 +129,10 @@ class ProfCourse(models.Model):
         return (self.course.natural_key(), self.prof.natural_key())
 
     def get_absolute_url(self):
-        return reverse('prof_course_detail', kwargs={ 'course_slug': self.course.slug, 'prof_slug': self.prof.slug })
+        return reverse('prof_course_detail', kwargs={
+            'course_slug': self.course.slug,
+            'prof_slug': self.prof.slug
+        })
 
     def __unicode__(self):
         return self.course.__unicode__() + ' ' + self.prof.__unicode__()
@@ -158,13 +161,13 @@ class Review(models.Model):
     up_votes = models.ManyToManyField(User, related_name='reviews_up_votes')
     down_votes = models.ManyToManyField(User, related_name='reviews_down_votes')
 
-    ## Reusable yes/no choices
+    # Reusable yes/no choices
     YES = 'Y'
     NO = 'N'
     YES_NO_CHOICES = ((YES, 'Yes'), (NO, 'No'))
 
-    ## What were the primary components of this course?
-    ## Select all that apply
+    # What were the primary components of this course?
+    # Select all that apply
     LECTURE = 'A'
     DISCUSSION = 'B'
     PAPER = 'C'
@@ -177,45 +180,45 @@ class Review(models.Model):
     TEST_MID = 'J'
     PROB_SET = 'K'
     COMPONENTS_CHOICES = ((LECTURE, 'Lectures'),
-                        (DISCUSSION, 'Discussions'),
-                        (PAPER, 'Papers'),
-                        (READING, 'Readings'),
-                        (LAB_FIELD, 'Lab/Field work'),
-                        (PROB_SET, 'Problem sets'),
-                        (PRESENTATION, 'Presentations'),
-                        (GROUP, 'Group work'),
-                        (SCREENING, 'Screenings'),
-                        (FINAL, 'Final'),
-                        (TEST_MID, 'Tests/Midterms'))
+                          (DISCUSSION, 'Discussions'),
+                          (PAPER, 'Papers'),
+                          (READING, 'Readings'),
+                          (LAB_FIELD, 'Lab/Field work'),
+                          (PROB_SET, 'Problem sets'),
+                          (PRESENTATION, 'Presentations'),
+                          (GROUP, 'Group work'),
+                          (SCREENING, 'Screenings'),
+                          (FINAL, 'Final'),
+                          (TEST_MID, 'Tests/Midterms'))
     components = MultiSelectField(choices=COMPONENTS_CHOICES)
 
-    ## Would you take this course again?
+    # Would you take this course again?
     again = models.CharField(max_length=1, choices=YES_NO_CHOICES)
 
-    ## How many hours per week did you spend preparing for this course?
+    # How many hours per week did you spend preparing for this course?
     hours = models.IntegerField()
 
-    ## Would you take another course with this professor?
+    # Would you take another course with this professor?
     another = models.CharField(max_length=1, choices=YES_NO_CHOICES)
 
-    ## How was your grade in relation to your grasp of the material?
+    # How was your grade in relation to your grasp of the material?
     LOWER = 'L'
     HIGHER = 'H'
     ACCURATE = 'A'
     DESERVING_CHOICES = ((LOWER, 'Lower'), (ACCURATE, 'Accurate'), (HIGHER, 'Higher'))
     grasp = models.CharField(max_length=1, choices=DESERVING_CHOICES)
 
-    ## Evaluate the professor in the following areas?
-    ## Each field is 1 to 5
-    ## This seems stupid, but it gets around type coersion issues in the template
+    # Evaluate the professor in the following areas?
+    # Each field is 1 to 5
+    # This seems stupid, but it gets around type coersion issues in the template
     PROF_EVAL_CHOICES = (('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'))
     prof_lecturing = models.CharField(max_length=1, choices=PROF_EVAL_CHOICES)
     prof_leading = models.CharField(max_length=1, choices=PROF_EVAL_CHOICES)
     prof_help = models.CharField(max_length=1, choices=PROF_EVAL_CHOICES)
     prof_feedback = models.CharField(max_length=1, choices=PROF_EVAL_CHOICES)
 
-    ## Why was this course valuable?
-    ## Select all that apply
+    # Why was this course valuable?
+    # Select all that apply
     PROFESSOR = 'P'
     WORK = 'W'
     STUDENTS = 'S'
@@ -228,8 +231,8 @@ class Review(models.Model):
                         (NOT_VALUABLE, 'Not valuable'))
     value = MultiSelectField(choices=VALUABLE_CHOICES)
 
-    ## Why did you take this course?
-    ## Select all that apply
+    # Why did you take this course?
+    # Select all that apply
     MAJOR = 'A'
     MINOR = 'I'
     DIST = 'D'
@@ -242,7 +245,7 @@ class Review(models.Model):
                         (REC, 'Recommendation from a friend'))
     why_take = MultiSelectField(choices=WHY_TAKE_CHOICES)
 
-    ## Additional comments:
+    # Additional comments:
     comment = models.TextField(null=True, blank=True)
 
     @property
@@ -264,11 +267,12 @@ class Review(models.Model):
         subject = ''.join(subject.splitlines())
 
         message_text = render_to_string('reviews/flagged_review_email.txt',
-                                   ctx_dict)
+                                        ctx_dict)
 
         message_html = render_to_string('reviews/flagged_review_email.html',
-                                    ctx_dict)
+                                        ctx_dict)
 
-        msg = EmailMultiAlternatives(subject, message_text, settings.DEFAULT_FROM_EMAIL, [self.user.email])
+        msg = EmailMultiAlternatives(subject, message_text,
+                                     settings.DEFAULT_FROM_EMAIL, [self.user.email])
         msg.attach_alternative(message_html, "text/html")
         msg.send()

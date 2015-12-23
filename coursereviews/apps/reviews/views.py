@@ -1,6 +1,6 @@
 from django.template.response import TemplateResponse
 from django.shortcuts import redirect, get_object_or_404
-from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.http import require_GET
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 from django.db.models import F
@@ -12,14 +12,11 @@ from reviews.models import (Review,
                             Department)
 from reviews.forms import ReviewForm, FlagForm
 from reviews.decorators import quota_required, no_professor_access
-from reviews.serializers import CommentSerializer
 
 from haystack.query import SearchQuerySet
 from haystack.inputs import Clean
-from rest_framework.response import Response
 
 from operator import __or__, attrgetter
-import json
 
 @login_required
 def catalog(request):
@@ -27,7 +24,7 @@ def catalog(request):
     if user_professor:
         courses = ProfCourse.objects.filter(prof=user_professor)
         return TemplateResponse(request, 'reviews/prof_browse.html',
-            {'professor': user_professor, 'courses': courses})
+                                {'professor': user_professor, 'courses': courses})
 
     context = {}
 
@@ -49,12 +46,16 @@ def browse(request):
             # We can hide professor categories with no professors in the template
             # Those professors still teach courses, they just might be in different departments
             if dept_courses:
-                profs_courses_by_dept.append({ 'dept': dept, 'courses': dept_courses, 'profs': dept_profs })
+                profs_courses_by_dept.append({'dept': dept,
+                                              'courses': dept_courses,
+                                              'profs': dept_profs})
 
-        return TemplateResponse(request, 'reviews/student_browse.html', {  'profs_courses_by_dept': profs_courses_by_dept })
+        return TemplateResponse(request, 'reviews/student_browse.html',
+                                {'profs_courses_by_dept': profs_courses_by_dept})
     else:
         courses = ProfCourse.objects.filter(prof=user_professor)
-        return TemplateResponse(request, 'reviews/prof_browse.html', { 'professor': user_professor, 'courses': courses })
+        return TemplateResponse(request, 'reviews/prof_browse.html',
+                                {'professor': user_professor, 'courses': courses})
 
 @login_required
 @quota_required
@@ -71,23 +72,25 @@ def course_detail(request, course_slug):
         prof_courses = course.prof_courses.all().select_related()
 
     # If this is not a professor account
-    if user_professor == None or user_professor in [pc.prof for pc in prof_courses]:
+    if user_professor is None or user_professor in [pc.prof for pc in prof_courses]:
 
         flag_form = FlagForm()
 
         # Gather all the reviews for a course
-        reviews = sorted(reduce(__or__, map(lambda pc: pc.reviews.all().exclude(flagged=True), prof_courses)),
+        reviews = sorted(reduce(__or__,
+                                map(lambda pc: pc.reviews.all().exclude(flagged=True),
+                                    prof_courses)),
                          key=attrgetter('vote_difference'), reverse=True)
 
         has_comments = any([review.comment for review in reviews])
 
         return TemplateResponse(request, 'reviews/review_detail.html',
-                                { 'course': course,
-                                  'prof_courses': prof_courses,
-                                  'reviews': reviews,
-                                  'flag_form': flag_form,
-                                  'has_comments': has_comments,
-                                  'type': 'course' })
+                                {'course': course,
+                                 'prof_courses': prof_courses,
+                                 'reviews': reviews,
+                                 'flag_form': flag_form,
+                                 'has_comments': has_comments,
+                                 'type': 'course'})
 
     else:
         raise Http404
@@ -103,12 +106,14 @@ def prof_detail(request, prof_slug):
 
     # If this is a professor account
     user_professor = request.user.userprofile.professor_assoc
-    if user_professor == None or user_professor == professor:
+    if user_professor is None or user_professor == professor:
 
         flag_form = FlagForm()
 
         try:
-            reviews = sorted(reduce(__or__, map(lambda pc: pc.reviews.all().exclude(flagged=True), prof_courses)),
+            reviews = sorted(reduce(__or__,
+                                    map(lambda pc: pc.reviews.all().exclude(flagged=True),
+                                        prof_courses)),
                              key=attrgetter('vote_difference'), reverse=True)
         except TypeError:
             reviews = []
@@ -116,12 +121,12 @@ def prof_detail(request, prof_slug):
         has_comments = any([review.comment for review in reviews])
 
         return TemplateResponse(request, 'reviews/review_detail.html',
-                                { 'prof': professor,
-                                  'prof_courses': prof_courses,
-                                  'reviews': reviews,
-                                  'flag_form': flag_form,
-                                  'has_comments': has_comments,
-                                  'type': 'prof' })
+                                {'prof': professor,
+                                 'prof_courses': prof_courses,
+                                 'reviews': reviews,
+                                 'flag_form': flag_form,
+                                 'has_comments': has_comments,
+                                 'type': 'prof'})
     else:
         raise Http404
 
@@ -134,7 +139,7 @@ def prof_course_detail(request, course_slug, prof_slug):
                                     prof__slug__exact=prof_slug)
 
     user_professor = request.user.userprofile.professor_assoc
-    if user_professor == None or user_professor == prof_course.prof:
+    if user_professor is None or user_professor == prof_course.prof:
 
         flag_form = FlagForm()
 
@@ -146,11 +151,11 @@ def prof_course_detail(request, course_slug, prof_slug):
 
         return TemplateResponse(request,
                                 'reviews/review_detail.html',
-                                { 'prof_course': prof_course,
-                                  'reviews': reviews,
-                                  'flag_form': flag_form,
-                                  'has_comments': has_comments,
-                                  'type': 'prof_course'})
+                                {'prof_course': prof_course,
+                                 'reviews': reviews,
+                                 'flag_form': flag_form,
+                                 'has_comments': has_comments,
+                                 'type': 'prof_course'})
     else:
         raise Http404
 
@@ -170,7 +175,9 @@ def create(request):
             profile.total_reviews = F('total_reviews') + 1
             profile.save()
 
-            return redirect('prof_course_detail', course_slug=review.prof_course.course.slug, prof_slug=review.prof_course.prof.slug)
+            return redirect('prof_course_detail',
+                            course_slug=review.prof_course.course.slug,
+                            prof_slug=review.prof_course.prof.slug)
         else:
             return TemplateResponse(request, 'reviews/edit.html', {'form': form})
 

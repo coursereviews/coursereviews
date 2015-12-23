@@ -6,6 +6,7 @@ from reviews.models import (Review,
 
 class CommentSerializer(serializers.ModelSerializer):
     vote_type = serializers.SerializerMethodField('user_vote_type')
+
     class Meta:
         model = Review
         exclude = (
