@@ -5,11 +5,10 @@ from fabric.contrib.console import confirm
 from fabric.utils import puts, indent
 from fabric.colors import blue, green
 
-def resetdb():
-    local('rm -f coursereviews/default.db')
-    local('python manage.py syncdb --noinput --migrate')
-    local('python manage.py loaddata test_data.yaml')
-    # local('python manage.py rebuild_index --noinput')
+def reset_db():
+    local('psql -c "drop database if exists middcourses"')
+    local('psql -c "create database middcourses"')
+    local('python manage.py migrate')
 
 def deploy():
     """fab [environment] deploy"""
@@ -22,7 +21,6 @@ def deploy():
     local('heroku maintenance:on')
     local('DJANGO_SETTINGS_MODULE=coursereviews.settings.staging python manage.py collectstatic --noinput')  # noqa
     local('git push heroku HEAD:master')
-    local('heroku run python manage.py syncdb --noinput')
     local('heroku run python manage.py migrate')
     local('heroku run python manage.py collectstatic --noinput')
     local('heroku maintenance:off')
