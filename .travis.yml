@@ -7,4 +7,4 @@ install: "pip install -r requirements.txt"
 env:
   - DJANGO_SETTINGS_MODULE=coursereviews.settings.production
 
-script: "python manage.py test reviews"
+script: "python manage.py test reviews stats"
