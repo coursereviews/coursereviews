@@ -9,3 +9,7 @@ dj_database_url
 gevent
 newrelic
 psycopg2
+
+# Rollbar exception tracking
+# https://pypi.python.org/pypi/rollbar/0.11.0
+rollbar==0.11.0

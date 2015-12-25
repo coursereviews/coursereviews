@@ -84,3 +84,17 @@ SOUTH_DATABASE_ADAPTERS = {
 }
 
 REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = ('rest_framework.renderers.JSONRenderer',)
+
+# Rollbar
+MIDDLEWARE_CLASSES += (
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
+)
+
+ROLLBAR = {
+    'access_token': environ.get('ROLLBAR_ACCESS_TOKEN', ''),
+    'environment': 'production',
+    'branch': 'master',
+
+    # Heroku app root
+    'root': '/app',
+}
