@@ -11,19 +11,27 @@ def reset_db():
     local('python manage.py migrate')
 
 def deploy():
-    """fab [environment] deploy"""
+    """
+    Push to Heroku to deploy.
+    If migrations need to be run, put the app in maintenance mode
+    and run migrations.
 
-    # require('AWS_KEY')
-    # require('AWS_SECRET')
-    # require('AWS_STORAGE_BUCKET_NAME')
-    # require('HEROKU_APP')
+    Heroku automatically runs `django-admin collectstatic`.
+    https://devcenter.heroku.com/articles/django-assets
+    """
 
-    local('heroku maintenance:on')
-    local('DJANGO_SETTINGS_MODULE=coursereviews.settings.staging python manage.py collectstatic --noinput')  # noqa
+    puts(blue("Deploying to Heroku."))
     local('git push heroku HEAD:master')
-    local('heroku run python manage.py migrate')
-    local('heroku run python manage.py collectstatic --noinput')
-    local('heroku maintenance:off')
+
+    puts(blue('Checking for migrations.'))
+    migrations = local('heroku run python manage.py showmigrations --plan', capture=True)
+    if any(filter(lambda m: '[X]' not in m, migrations.split('\n'))):
+        local('heroku maintenance:on')
+        local('heroku run python manage.py migrate')
+        local('heroku maintenance:off')
+    else:
+        puts(blue('Nothing to migrate.'))
+
     local('heroku ps')
 
 def list_databases(middcourses_only='true'):
