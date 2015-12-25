@@ -4,4 +4,4 @@ DEBUG = False
 
 STATICFILES_STORAGE = 'pipeline.storage.NonPackagingPipelineStorage'
 
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+DATABASES['default']['ENGINE'] = 'django_postgrespool'
