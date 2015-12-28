@@ -40,3 +40,7 @@ git+git://github.com/coursereviews/djorm-ext-pgfulltext.git@0.9.4
 
 # Course Reviews Middlebury Catalog Module
 git+git://github.com/coursereviews/catalog.git
+
+# HTML Scraping
+cssselect==0.9.1
+lxml==3.4.4
