@@ -18,7 +18,8 @@ class PadcoursecodesTest(TestCase):
 
 
 class PadcoursecodesCommandTest(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         dept = Department.objects.create(
             name='American Studies'
         )
@@ -29,8 +30,12 @@ class PadcoursecodesCommandTest(TestCase):
             dept=dept
         )
 
+        super(PadcoursecodesCommandTest, cls).setUpClass()
+
     def test_command(self):
         call_command('padcoursecodes')
 
-        course = Course.objects.get(id=1)
-        self.assertEqual(course.code, 'AMST0101')
+        try:
+            Course.objects.get(code='AMST0101')
+        except Course.DoesNotExist:
+            self.fail('Code with code=\'AMST0101\' does not exist.')

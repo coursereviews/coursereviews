@@ -22,6 +22,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--term', help='Specify the term. Ex: 201590')
+        parser.add_argument('--silent', action='store_true', help='Silence all output.')
 
     @staticmethod
     def validate_term(term):
@@ -50,6 +51,11 @@ class Command(BaseCommand):
 
     @staticmethod
     def get_professor_by_id(id):
+        """Get details about a Middlebury faculty member using their webid.
+
+        Returns a dictionary of information about the professor if the request
+        is successful, else returns an empty dictionary.
+        """
         url = 'https://directory.middlebury.edu/GetRecord.aspx'
         res = requests.get(url, params={'webid': id})
 
@@ -68,6 +74,10 @@ class Command(BaseCommand):
 
     @staticmethod
     def course_is_skippable(course):
+        """Check multiple conditions and return True if the course should not
+        be added to MiddCourses.
+        """
+
         conditions = (
             lambda: re.search('please register via', course.title, re.IGNORECASE),
             lambda: re.search('please register for', course.title, re.IGNORECASE),
@@ -80,33 +90,53 @@ class Command(BaseCommand):
         professors = []
 
         for instructor in course.instructors:
+            # First try to get the Professor by midd_webid
             try:
                 professor = Professor.objects.get(midd_webid=instructor.id)
+                professors.append(professor)
+                continue
             except Professor.DoesNotExist:
-                professor_details = self.get_professor_by_id(instructor.id)
+                pass
 
-                if professor_details and 'E-mail' in professor_details:
-                    email = professor_details['E-mail']
-                else:
+            # Then try to get the Professor by email and add its midd_webid
+            professor_details = self.get_professor_by_id(instructor.id)
+            if professor_details and 'E-mail' in professor_details:
+                try:
+                    professor = Professor.objects.get(email=professor_details['E-mail'])
+                    professor.midd_webid = instructor.id
+                    professor.save()
+                    professors.append(professor)
+                    continue
+                except Professor.DoesNotExist:
+                    pass
+
+            # Unable to get a Professor by midd_webid or email.
+            # Have to create a new Professor.
+            if professor_details and 'E-mail' in professor_details:
+                email = professor_details['E-mail']
+            else:
+                if not self.silent:
                     print(colorize('Unable to get email for Professor {}.'
                                    .format(instructor.name), fg='yellow'))
-                    email = None
+                email = None
 
-                if professor_details and 'Department' in professor_details:
-                    department = professor_details['Department']
-                else:
-                    department = course.department.text
+            if professor_details and 'Department' in professor_details:
+                department = professor_details['Department']
+            else:
+                department = course.department.text
 
-                professor = Professor.objects.create(
-                    midd_webid=instructor.id,
-                    first=' '.join(instructor.name.split(' ')[:-1]),
-                    last=instructor.name.split(' ')[-1],
-                    email=email,
-                    dept=Department.objects.get_or_create(name=department)[0]
-                )
+            professor = Professor.objects.create(
+                midd_webid=instructor.id,
+                first=' '.join(instructor.name.split(' ')[:-1]),
+                last=instructor.name.split(' ')[-1],
+                email=email,
+                dept=Department.objects.get_or_create(name=department)[0]
+            )
 
-                self.professors_added += 1
-                print(colorize('Added Professor {}.'.format(instructor.name), fg='blue'))
+            self.professors_added += 1
+
+            if self.verbosity > 1:
+                print('Added Professor {}.'.format(instructor.name))
 
             professors.append(professor)
 
@@ -132,10 +162,15 @@ class Command(BaseCommand):
             )
 
             self.courses_added += 1
-            print(colorize('Added Course {}.'.format(code), fg='blue'))
+
+            if self.verbosity > 1:
+                print('Added Course {}.'.format(code))
         return course
 
     def handle(self, *arguments, **options):
+        self.verbosity = options['verbosity']
+        self.silent = options['silent']
+
         term = self.validate_term(options['term'])
         catalog = self.create_catalog(term.id)
 
@@ -154,11 +189,13 @@ class Command(BaseCommand):
 
                 if profcourse[1]:
                     self.prof_courses_added += 1
-                    print(colorize('Added ProfCourse ({} {}, {}).'
-                                   .format(professor.first, professor.last, course.code),
-                                   fg='blue'))
 
-        print(colorize('Finished scraping term {}.'.format(options['term']), fg='green'))
-        print(colorize('  Added {} Courses.'.format(self.courses_added), fg='blue'))
-        print(colorize('  Added {} Professors.'.format(self.professors_added), fg='blue'))
-        print(colorize('  Added {} ProfCourses'.format(self.prof_courses_added), fg='blue'))
+                    if self.verbosity > 1:
+                        print('Added ProfCourse ({} {}, {}).'
+                              .format(professor.first, professor.last, course.code))
+
+        if not self.silent:
+            print(colorize('Finished scraping term {}.'.format(options['term']), fg='green'))
+            print(colorize('  Added {} Courses.'.format(self.courses_added), fg='blue'))
+            print(colorize('  Added {} Professors.'.format(self.professors_added), fg='blue'))
+            print(colorize('  Added {} ProfCourses'.format(self.prof_courses_added), fg='blue'))
