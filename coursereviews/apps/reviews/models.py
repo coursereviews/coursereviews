@@ -50,6 +50,7 @@ class ProfessorManager(SearchManager):
         return self.get(**{self.field_name: value})
 
 class Professor(models.Model):
+    midd_webid = models.CharField(max_length=32, blank=True, null=True, unique=True)
     first = models.CharField(max_length=100, blank=True, null=True)
     last = models.CharField(max_length=100)
     dept = models.ForeignKey(Department, related_name='professors')

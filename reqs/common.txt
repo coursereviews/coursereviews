@@ -37,3 +37,10 @@ pandas==0.15.1
 # PostgreSQL full text search extension for Django ORM
 # Forked to fix Django 1.8 compatibility issues and psycopg2 related bug
 git+git://github.com/coursereviews/djorm-ext-pgfulltext.git@0.9.4
+
+# Course Reviews Middlebury Catalog Module
+git+git://github.com/coursereviews/catalog.git
+
+# HTML Scraping
+cssselect==0.9.1
+lxml==3.4.4
