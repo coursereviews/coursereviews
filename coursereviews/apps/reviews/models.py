@@ -72,11 +72,11 @@ class Professor(models.Model):
         return reverse('prof_detail', kwargs={'prof_slug': self.slug})
 
     def __unicode__(self):
-        return self.first + ' ' + self.last
+        return '{0} {1}'.format(self.first, self.last)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.first + '-' + self.last)
-        self.lookup = self.__unicode__()
+        self.slug = slugify('{0}-{1}'.format(self.first, self.last))
+        self.lookup = unicode(self)
         super(Professor, self).save(*args, **kwargs)
 
 class CourseManager(ProfessorManager):
@@ -104,7 +104,7 @@ class Course(models.Model):
         return reverse('course_detail', kwargs={'course_slug': self.slug})
 
     def __unicode__(self):
-        return self.code + " - " + self.title
+        return '{0} - {1}'.format(self.code, self.title)
 
     def save(self, *args, **kwargs):
         self.lookup = self.title
@@ -136,12 +136,12 @@ class ProfCourse(models.Model):
         })
 
     def __unicode__(self):
-        return self.course.__unicode__() + ' ' + self.prof.__unicode__()
+        return '{0} {1}'.format(unicode(self.course), unicode(self.prof))
 
 class Review(models.Model):
 
     def __unicode__(self):
-        return self.user.__unicode__() + ' ' + self.prof_course.__unicode__()
+        return '{0} {1}'.format(unicode(self.user), unicode(self.prof_course))
 
     class Meta:
         unique_together = (('prof_course', 'user'),)
@@ -260,8 +260,7 @@ class Review(models.Model):
         ctx_dict = {'name': self.user.username,
                     'course': self.prof_course.course.title,
                     'prof': self.prof_course.prof,
-                    'comment': self.comment
-                    }
+                    'comment': self.comment}
         subject = render_to_string('reviews/flagged_review_email_subject.txt',
                                    ctx_dict)
         # Email subject *must not* contain newlines
