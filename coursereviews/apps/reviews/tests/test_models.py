@@ -1,7 +1,8 @@
 from django.test import TestCase
 from reviews.models import (Department,
                             Professor,
-                            Course)
+                            Course,
+                            ProfCourse)
 
 class DepartmentTestCase(TestCase):
     def setUp(self):
@@ -127,3 +128,43 @@ class CourseTestCase(TestCase):
         course = Course.objects.get_by_natural_key('CSCI0101')
         self.assertEqual(unicode(course),
                          'CSCI0101 - Introduction to Computer Science')
+
+class ProfCourseTestCase(TestCase):
+    def setUp(self):
+        dept = Department.objects.create(name='Computer Science')
+        course = Course.objects.create(
+            code='CSCI0101',
+            title='Introduction to Computer Science',
+            description='CS Description',
+            dept=dept
+        )
+        prof = Professor.objects.create(
+            first='FirstName',
+            last='LastName',
+            dept=dept,
+            email='prof@middlebury.edu',
+        )
+        ProfCourse.objects.create(
+            prof=prof,
+            course=course
+        )
+
+    def test_references(self):
+        prof_course = ProfCourse.objects.all()[0]
+        self.assertEqual(prof_course.prof.email, 'prof@middlebury.edu')
+        self.assertEqual(prof_course.course.code, 'CSCI0101')
+
+    def test_absolute_url(self):
+        prof_course = ProfCourse.objects.all()[0]
+        self.assertEqual(prof_course.get_absolute_url(),
+                         '/course/csci0101/firstname-lastname')
+
+    def test_unicode(self):
+        prof_course = ProfCourse.objects.all()[0]
+        self.assertEqual(unicode(prof_course),
+                         'CSCI0101 - Introduction to Computer Science FirstName LastName')
+
+    def test_natural_key(self):
+        prof_course_by_natural_key = ProfCourse.objects.get_by_natural_key('LastName', 'CSCI0101')
+        prof_course = ProfCourse.objects.all()[0]
+        self.assertEqual(prof_course_by_natural_key, prof_course)
