@@ -75,7 +75,7 @@ class Professors(APIView):
 
         dept = get_object_or_404(queryset, id=department)
 
-        professors = Professor.objects.filter(dept=dept)
+        professors = Professor.objects.filter(prof_courses__course__dept=dept).distinct()
         serializer = ProfessorSerializer(professors, many=True)
 
         return Response(serializer.data)
