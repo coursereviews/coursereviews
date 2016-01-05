@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
-{% load compressed %}
+{% load pipeline %}
 
 {% block css %}
-  {% compressed_css 'splash' %}
+  {% stylesheet 'splash' %}
 {% endblock %}
 
 {% block body %}

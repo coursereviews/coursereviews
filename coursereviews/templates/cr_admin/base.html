@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% load compressed %}
+{% load pipeline %}
 
 {% block js %}
-{% compressed_js 'cr_admin' %}
+{% javascript 'cr_admin' %}
 {% endblock %}
 
 {% block css %}
-{% compressed_css 'cr_admin' %}
+{% stylesheet 'cr_admin' %}
 {% endblock %}
 
 {% block body %}

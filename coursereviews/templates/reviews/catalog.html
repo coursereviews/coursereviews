@@ -1,11 +1,11 @@
 {% extends "reviews/base.html" %}
 {% load static from staticfiles %}
-{% load compressed %}
+{% load pipeline %}
 
 {% block js %}
 <script src="{% static 'reviews/js/typeahead.min.js' %}"></script>
 <script src="{% static 'reviews/js/search.js' %}"></script>
-{% compressed_js 'catalog' %}
+{% javascript 'catalog' %}
 {% endblock %}
 
 {% block content %}

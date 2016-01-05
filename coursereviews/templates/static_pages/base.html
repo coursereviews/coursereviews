@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static from staticfiles %}
-{% load compressed %}
+{% load pipeline %}
 
 {% block js %}
   <script type="text/javascript"
@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block css %}
-  {% compressed_css 'static_pages' %}
+  {% stylesheet 'static_pages' %}
 {% endblock %}
 
 {% block body %}

@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% load static from staticfiles %}
-{% load compressed %}
+{% load pipeline %}
 
 {% block js %}
   <script src="{% static 'coursereviews/js/select2.min.js' %}"></script>
   <script src="{% static 'reviews/js/bootstrap-slider.js' %}"></script>
-  {% compressed_js 'new_review' %}
+  {% javascript 'new_review' %}
 {% endblock %}
 
 {% block css %}
-  {% compressed_css 'reviews' %}
+  {% stylesheet 'reviews' %}
 {% endblock %}
 
 {% block body %}

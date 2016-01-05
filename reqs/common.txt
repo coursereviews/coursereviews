@@ -15,7 +15,7 @@ django-storages
 
 django-pagination
 
-django-pipeline<1.4
+django-pipeline==1.6.4
 cssmin
 slimit
 ply==3.4

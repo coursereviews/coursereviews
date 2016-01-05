@@ -1,4 +1,4 @@
-{% load compressed %}
+{% load pipeline %}
 {% load static from staticfiles %}
 
 <!DOCTYPE html>
@@ -16,7 +16,7 @@
 
     {# development #}
     {# {% compressed_css 'local_bs' %} #}
-    {% block css %}{% compressed_css 'base' %}{% endblock %}
+    {% block css %}{% stylesheet 'base' %}{% endblock %}
     {# // <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.4.1/less.min.js"></script> #}
 
     {% block fb_og %}
@@ -40,7 +40,7 @@
     {# production #}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    {% compressed_js 'local_libs_production' %}
+    {% javascript 'local_libs_production' %}
 
     {# development #}
     {# {% compressed_js 'local_libs_development' %} #}

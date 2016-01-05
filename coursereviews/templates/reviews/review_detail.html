@@ -1,5 +1,5 @@
 {% extends 'reviews/base.html' %}
-{% load compressed %}
+{% load pipeline %}
 {% load static from staticfiles %}
 
 {% block pagetitle %}{% if type == 'course' %}{{ course }}{% else %}{{ prof }}{% endif %} - MiddCourses{% endblock %}
@@ -7,7 +7,7 @@
 {% block js %}
   <script src="{% static 'coursereviews/js/select2.min.js' %}"></script>
   <script src="{% static 'reviews/js/d3.v3.min.js' %}"></script>
-  {% compressed_js 'review_detail' %}
+  {% javascript 'review_detail' %}
 {% endblock %}
 
 {% block content %}
