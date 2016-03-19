@@ -11,8 +11,6 @@ def quota_required(view_func):
         if profile.professor_assoc or profile.semester_reviews >= quota:
             return view_func(request, *args, **kwargs)
         else:
-            messages.add_message(request, messages.INFO,
-                                 "You have to write some reviews before you can see that.")
             return redirect('index')
     return _wrapped_view_func
 
