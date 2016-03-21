@@ -1,6 +1,5 @@
 from django.shortcuts import redirect
 from django.http import HttpResponse
-from django.contrib import messages
 
 from cr_admin.models import AdminQuota
 
