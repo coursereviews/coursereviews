@@ -25,7 +25,7 @@ class ScrapecoursesTest(TestCase):
 
     def test_create_catalog(self):
         catalog = ScrapeCatalog.create_catalog('201590')
-        self.assertEqual(len(catalog.courses), 894)
+        self.assertEqual(len(catalog.courses), 895)
 
     def test_get_professor_by_id(self):
         test_id = '1324ccafb6640fbdabc0c1f337a537d1'
