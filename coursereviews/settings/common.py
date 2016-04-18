@@ -236,6 +236,7 @@ WSGI_APPLICATION = 'wsgi.application'
 
 # Static files
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+PIPELINE = PIPELINE
 
 # AWS CONFIG
 S3_URL = environ.get('AWS_S3_URL', '')
