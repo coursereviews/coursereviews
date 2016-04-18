@@ -6,7 +6,7 @@ from os.path import abspath, basename, dirname, join, normpath
 from os import environ
 import socket
 
-from pipeline import PIPELINE
+from .django_pipeline import PIPELINE
 
 # Absolute filesystem path to the Django project directory:
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
@@ -236,7 +236,6 @@ WSGI_APPLICATION = 'wsgi.application'
 
 # Static files
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-PIPELNE = PIPELINE
 
 # AWS CONFIG
 S3_URL = environ.get('AWS_S3_URL', '')
