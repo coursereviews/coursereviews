@@ -1,6 +1,10 @@
 """Development settings and globals."""
 
 from common import *  # noqa
+try:
+    from local import DATABASES as LOCAL_DATABASES
+except ImportError:
+    LOCAL_DATABASES = None
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = True
@@ -19,7 +23,7 @@ THUMBNAIL_DEBUG = DEBUG
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {
+DATABASES = LOCAL_DATABASES or {
     'default': {
         'USER': '',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
