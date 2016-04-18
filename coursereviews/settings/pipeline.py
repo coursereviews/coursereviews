@@ -1,3 +1,7 @@
+from os.path import join, abspath, pardir
+
+NODE_MODULES = abspath(join(__file__, pardir, pardir, pardir, 'node_modules'))
+
 PIPELINE = {
     'CSS_COMPRESSOR': 'pipeline.compressors.cssmin.CSSMinCompressor',
     'CSSMIN_BINARY': 'cssmin',
@@ -5,6 +9,7 @@ PIPELINE = {
     'COMPILERS': (
         'pipeline.compilers.less.LessCompiler',
     ),
+    'LESS_BINARY': join(NODE_MODULES, '.bin/lessc'),
     'STYLESHEETS': {
         'local_bs': {
             'source_filenames': (

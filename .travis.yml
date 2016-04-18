@@ -4,6 +4,7 @@ python:
 install:
 - pip install flake8
 - pip install -r requirements.txt
+- npm install
 env:
 - DJANGO_SETTINGS_MODULE=coursereviews.settings.testing
 script:
