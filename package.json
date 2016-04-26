@@ -16,7 +16,8 @@
     "url": "https://github.com/coursereviews/coursereviews/issues"
   },
   "homepage": "https://github.com/coursereviews/coursereviews#readme",
-  "devDependencies": {
+  "dependencies": {
     "less": "2.6.x"
-  }
+  },
+  "devDependencies": {}
 }

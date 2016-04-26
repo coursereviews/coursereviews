@@ -16,12 +16,17 @@ def deploy():
     If migrations need to be run, put the app in maintenance mode
     and run migrations.
 
-    Heroku automatically runs `django-admin collectstatic`.
-    https://devcenter.heroku.com/articles/django-assets
+    Running collectstatic during the build is disabled, since we need to use
+    different settings (staging with S3PipelineStorage) to deploy static files
+    to S3. We manually do this on a one-off dyno instead.
     """
 
     puts(blue("Deploying to Heroku."))
     local('git push heroku HEAD:master')
+
+    local('heroku run "npm install && \
+          DJANGO_SETTINGS_MODULE=coursereviews.settings.staging \
+          python manage.py collectstatic --noinput"')
 
     puts(blue('Checking for migrations.'))
     migrations = local('heroku run python manage.py showmigrations --plan', capture=True)
