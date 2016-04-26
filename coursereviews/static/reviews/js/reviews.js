@@ -15,7 +15,7 @@ $(document).ready(function () {
       containerCss: "height: 34px;"
     });
   });
-  
+
   $("select").select2({
     placeholder: "Select all that apply"
   });
@@ -38,5 +38,12 @@ $(document).ready(function () {
   $("input#id_hours").removeClass("hide");
 
   $("label.active input").attr('checked', 'checked');
+
+  // Disable form submission after the submit button is clicked.
+  // This prevents the button being clicked twice, where the second time
+  // will return an error, since the ProfCourse/User combination already exists.
+  $("form").submit(function() {
+    $(this).find("input[type=submit]").prop("disabled", true);
+  });
 
 });
