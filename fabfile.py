@@ -24,9 +24,10 @@ def deploy():
     puts(blue("Deploying to Heroku."))
     local('git push heroku HEAD:master')
 
-    local('heroku run "npm install && \
-          DJANGO_SETTINGS_MODULE=coursereviews.settings.staging \
-          python manage.py collectstatic --noinput"')
+    # Run collectstatic on Heroku with the staging environment
+    set_staging = 'DJANGO_SETTINGS_MODULE=coursereviews.settings.staging'
+    collectstatic_cmd = 'python manage.py collectstatic --noinput'
+    local('heroku run {0} {1}'.format(set_staging, collectstatic_cmd))
 
     puts(blue('Checking for migrations.'))
     migrations = local('heroku run python manage.py showmigrations --plan', capture=True)
