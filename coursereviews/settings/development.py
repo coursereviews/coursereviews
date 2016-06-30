@@ -52,7 +52,7 @@ CACHES = {
 CELERY_ALWAYS_EAGER = True
 
 # See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation
-INSTALLED_APPS += (
+INSTALLED_APPS += (  # noqa: F405
     'debug_toolbar',
 )
 
@@ -60,7 +60,7 @@ INSTALLED_APPS += (
 INTERNAL_IPS = ('127.0.0.1',)
 
 # See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation
-MIDDLEWARE_CLASSES += (
+MIDDLEWARE_CLASSES += (  # noqa: F405
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 

@@ -1,4 +1,4 @@
-from django.conf.urls import *  # noqa
+from django.conf.urls import patterns, url
 from django.contrib.auth import views as auth_views
 from registration.forms import AuthenticationForm
 from registration.views import (activate,

@@ -4,4 +4,4 @@ DEBUG = False
 
 STATICFILES_STORAGE = 'pipeline.storage.NonPackagingPipelineStorage'
 
-DATABASES['default']['ENGINE'] = 'django_postgrespool'
+DATABASES['default']['ENGINE'] = 'django_postgrespool'  # noqa: F405

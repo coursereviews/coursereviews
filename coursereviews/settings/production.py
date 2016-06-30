@@ -9,8 +9,8 @@ from boto.s3.connection import OrdinaryCallingFormat
 import dj_database_url
 from common import *  # noqa
 
-DATABASES['default'] = dj_database_url.config()
-DATABASES['default']['ENGINE'] = 'django_postgrespool'
+DATABASES['default'] = dj_database_url.config()  # noqa: F405
+DATABASES['default']['ENGINE'] = 'django_postgrespool'  # noqa: F405
 
 DATABASE_POOL_ARGS = {
     'max_overflow': 10,
@@ -58,7 +58,7 @@ CACHES = memcacheify()
 # CELERY_DISABLE_RATE_LIMITS = True
 
 # See: http://django-storages.readthedocs.org/en/latest/index.html
-INSTALLED_APPS += (
+INSTALLED_APPS += (  # noqa: F405
     'storages',
 )
 
@@ -83,10 +83,10 @@ SOUTH_DATABASE_ADAPTERS = {
     'default': 'south.db.postgresql_psycopg2'
 }
 
-REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = ('rest_framework.renderers.JSONRenderer',)
+REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = ('rest_framework.renderers.JSONRenderer',)  # noqa: F405
 
 # Rollbar
-MIDDLEWARE_CLASSES += (
+MIDDLEWARE_CLASSES += (  # noqa: F405
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 )
 

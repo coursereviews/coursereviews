@@ -2,6 +2,7 @@
 
 from os.path import join, normpath
 from boto.s3.connection import OrdinaryCallingFormat
+from common import DJANGO_ROOT
 from common import *  # noqa
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
