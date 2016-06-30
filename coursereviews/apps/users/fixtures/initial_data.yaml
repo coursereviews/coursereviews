@@ -1,14 +1,14 @@
 - model: sites.site
   pk: 1
   fields:
-    domain: 'localhost:8000'
-    name: 'CoureRevie.ws Dev'
+    domain: '127.0.0.1:8000'
+    name: 'Course Reviews Development'
 
 - model: sites.site
   pk: 2
   fields:
     domain: 'www.middcourses.com'
-    name: 'CourseRevie.ws Prod'
+    name: 'Course Reviews Production'
 
 # password is 'test'
 # - model: auth.user
