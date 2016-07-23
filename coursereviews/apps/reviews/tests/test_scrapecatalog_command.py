@@ -28,11 +28,11 @@ class ScrapecoursesTest(TestCase):
         self.assertEqual(len(catalog.courses), 895)
 
     def test_get_professor_by_id(self):
-        test_id = '1324ccafb6640fbdabc0c1f337a537d1'
+        test_id = '076325FE8E9D69193C080B0052AB9561'
         fields = ScrapeCatalog.get_professor_by_id(test_id)
 
-        self.assertEqual(fields['Department'], 'Chemistry and Biochemistry')
-        self.assertEqual(fields['E-mail'], 'kjewett@middlebury.edu')
+        self.assertEqual(fields['Department'], 'Political Science')
+        self.assertEqual(fields['E-mail'], 'dry@middlebury.edu')
 
     def test_get_professor_by_id_wrong_id(self):
         test_id = '1'
