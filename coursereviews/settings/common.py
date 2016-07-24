@@ -30,7 +30,6 @@ THUMBNAIL_DEBUG = DEBUG
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS = (
-    ('Teddy Knox', 'teddy@rocketlistings.com'),
     ('Dana Silver', 'dsilver1221@gmail.com'),
 )
 
