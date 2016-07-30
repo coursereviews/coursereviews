@@ -26,7 +26,7 @@ class UserProfile(models.Model):
         return self.user.username
 
     def reviews_to_fulfill_quota(self):
-        quota = AdminQuota.objects.get(id=1).new_quota
+        quota = AdminQuota.objects.quota().new_quota
         if quota - self.semester_reviews > 0:
             return quota - self.semester_reviews
         return 0

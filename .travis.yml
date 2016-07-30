@@ -9,7 +9,7 @@ env:
 - DJANGO_SETTINGS_MODULE=coursereviews.settings.testing
 script:
 - flake8
-- python manage.py test reviews stats
+- python manage.py test reviews stats cr_admin
 notifications:
   slack:
     secure: gFnhNce8TBJn7lP6pwMmo/qrPcnOjtX5GqVsNerfB5skHUmdoHA5MwBVU6LWkSXpO3FGJYYCrHSDR8XBnm+drKcnn7NyvewePWfhf04exrH/yG5kqIxvE1gbKpVvVSFoj/5Lo6mbcV/K24cHHRXWnKyC9ufHBrh5O/BkheSj7ss=
