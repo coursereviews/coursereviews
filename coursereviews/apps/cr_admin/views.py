@@ -22,7 +22,7 @@ def quota(request):
     users_quota_count = UserProfile.objects.values('total_reviews') \
         .order_by().annotate(Count('total_reviews'))
 
-    admin_quota = AdminQuota.objects.all().first()
+    admin_quota = AdminQuota.objects.quota()
 
     quota_form = QuotaForm()
 

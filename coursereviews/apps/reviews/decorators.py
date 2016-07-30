@@ -6,7 +6,7 @@ from cr_admin.models import AdminQuota
 def quota_required(view_func):
     def _wrapped_view_func(request, *args, **kwargs):
         profile = request.user.userprofile
-        quota = AdminQuota.objects.all().first().new_quota
+        quota = AdminQuota.objects.quota().new_quota
         if profile.professor_assoc or profile.semester_reviews >= quota:
             return view_func(request, *args, **kwargs)
         else:
