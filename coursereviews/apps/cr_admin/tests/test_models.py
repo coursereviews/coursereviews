@@ -3,6 +3,8 @@ from cr_admin.models import AdminQuota
 
 class AdminQuotaManagerTestCase(TestCase):
     def setUp(self):
+        # Create and delete an AdminQuota to make sure we use the first
+        # AdminQuota object even if its pk isn't 1.
         quota = AdminQuota.objects.create()
         quota.delete()
 
