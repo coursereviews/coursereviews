@@ -42,7 +42,8 @@ class Migration(migrations.Migration):
             name='ProfCourse',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('course', models.ForeignKey(related_name='prof_courses', to='reviews.Course')),
+                ('course', models.ForeignKey(related_name='prof_courses', 
+                    to='reviews.Course', on_delete=models.PROTECT)),
             ],
             options={
             },
@@ -57,7 +58,8 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=75, null=True, blank=True)),
                 ('slug', models.SlugField(blank=True)),
                 ('lookup', models.CharField(max_length=201)),
-                ('dept', models.ForeignKey(related_name='professors', to='reviews.Department')),
+                ('dept', models.ForeignKey(related_name='professors', 
+                    on_delete=models.PROTECT, to='reviews.Department')),
             ],
             options={
             },
@@ -84,11 +86,11 @@ class Migration(migrations.Migration):
                 ('why_take', multiselectfield.db.fields.MultiSelectField(max_length=9, choices=[(b'A', b'My major'), (b'I', b'My minor'), (b'D', b'Distribution requirement'), (b'T', b'To try something new'), (b'R', b'Recommendation from a friend')])),
                 ('comment', models.TextField(null=True, blank=True)),
                 ('down_votes', models.ManyToManyField(related_name='reviews_down_votes', to=settings.AUTH_USER_MODEL)),
-                ('flagged_by', models.ForeignKey(related_name='reviews_flag', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('flagged_mod', models.ForeignKey(related_name='reviews_mod_flag', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('prof_course', models.ForeignKey(related_name='reviews', to='reviews.ProfCourse')),
+                ('flagged_by', models.ForeignKey(related_name='reviews_flag', on_delete=models.PROTECT, blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('flagged_mod', models.ForeignKey(related_name='reviews_mod_flag', on_delete=models.PROTECT, blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('prof_course', models.ForeignKey(related_name='reviews', on_delete=models.PROTECT, to='reviews.ProfCourse')),
                 ('up_votes', models.ManyToManyField(related_name='reviews_up_votes', to=settings.AUTH_USER_MODEL)),
-                ('user', models.ForeignKey(related_name='reviews', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(related_name='reviews', on_delete=models.PROTECT, to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
@@ -101,7 +103,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profcourse',
             name='prof',
-            field=models.ForeignKey(related_name='prof_courses', to='reviews.Professor'),
+            field=models.ForeignKey(related_name='prof_courses', on_delete=models.PROTECT, to='reviews.Professor'),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -111,7 +113,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='course',
             name='dept',
-            field=models.ForeignKey(related_name='courses', to='reviews.Department'),
+            field=models.ForeignKey(related_name='courses', on_delete=models.PROTECT, to='reviews.Department'),
             preserve_default=True,
         ),
     ]

@@ -22,7 +22,7 @@ def http500(request, exception=None):
     return render(request, 'static_pages/500.html')
 
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return catalog(request)
     else:
         return splash(request)

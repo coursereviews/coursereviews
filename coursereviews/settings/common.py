@@ -106,13 +106,13 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
-                'django.core.context_processors.debug',
-                'django.core.context_processors.i18n',
-                'django.core.context_processors.media',
-                'django.core.context_processors.static',
-                'django.core.context_processors.tz',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                'django.core.context_processors.request',
+                'django.template.context_processors.request',
             ],
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
@@ -155,8 +155,6 @@ MIDDLEWARE = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 ## See: https://docs.djangoproject.com/en/dev/ref/settings/#middleware-classes
 #MIDDLEWARE_CLASSES = (
@@ -199,7 +197,7 @@ THIRD_PARTY_APPS = (
     'haystack',
 
     # pagination template tags
-    'pagination',
+    #'pagination',
 
     # static file management
     'pipeline',

@@ -18,7 +18,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('template_path', models.CharField(max_length=100, blank=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                    on_delete=models.PROTECT)),
             ],
             options={
             },
@@ -33,8 +34,11 @@ class Migration(migrations.Migration):
                 ('total_reviews', models.IntegerField(default=0)),
                 ('middcourses_admin', models.BooleanField(default=False)),
                 ('middcourses_moderator', models.BooleanField(default=False)),
-                ('professor_assoc', models.ForeignKey(related_name='user_profile', blank=True, to='reviews.Professor', null=True)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                ('professor_assoc', models.ForeignKey(
+                    related_name='user_profile', on_delete=models.PROTECT, 
+                    blank=True, to='reviews.Professor', null=True)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL,
+                    on_delete=models.PROTECT)),
             ],
             options={
             },
