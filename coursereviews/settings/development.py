@@ -1,6 +1,6 @@
 """Development settings and globals."""
 
-from common import *  # noqa
+from .common import *  # noqa
 try:
     from local import DATABASES as LOCAL_DATABASES
 except ImportError:
@@ -59,8 +59,9 @@ INSTALLED_APPS += (  # noqa: F405
 # See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation
 INTERNAL_IPS = ('127.0.0.1',)
 
+#Change: MIDDLEWARE_CLASSES -> MIDDLEWARE
 # See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation
-MIDDLEWARE_CLASSES += (  # noqa: F405
+MIDDLEWARE += (  # noqa: F405
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
@@ -91,3 +92,4 @@ DEBUG_TOOLBAR_CONFIG = {}
 
 # # See: http://docs.celeryproject.org/en/latest/configuration.html#celery-result-backend
 # CELERY_RESULT_BACKEND = 'amqp'
+

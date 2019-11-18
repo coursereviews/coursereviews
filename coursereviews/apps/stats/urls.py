@@ -1,5 +1,7 @@
-from django.conf.urls import patterns, url
+#from django.conf.urls import patterns, url
+from django.conf.urls import *
+from stats.views import stats
 
-urlpatterns = patterns('stats.views',
-    url(r'^$', 'stats', name='stats.stats'),  # noqa
-)
+urlpatterns = [
+    url(r'^$', stats, name='stats.stats'),  # noqa
+]

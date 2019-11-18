@@ -1,0 +1,53 @@
+Django
+
+# django-celery
+
+Fabric
+
+PyYAML
+Whoosh
+
+django-haystack
+django-mailgun
+
+boto
+django-storages
+
+django-pagination
+
+django-pipeline
+cssmin
+slimit
+ply
+
+djangorestframework
+markdown
+django-filter
+
+# Review form
+django-multiselectfield
+
+# Scraper
+BeautifulSoup4
+requests<2.8,>=2.7
+
+# Stats
+pandas
+
+# PostgreSQL full text search extension for Django ORM
+# Forked to fix Django 1.8 compatibility issues and psycopg2 related bug
+git+git://github.com/coursereviews/djorm-ext-pgfulltext.git@0.9.4
+
+# Course Reviews Middlebury Catalog Module
+git+git://github.com/coursereviews/catalog.git
+
+# HTML Scraping
+cssselect
+lxml
+
+
+django-debug-toolbar
+textblob
+flake8
+
+pylibmc

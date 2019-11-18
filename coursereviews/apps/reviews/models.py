@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
@@ -53,7 +53,7 @@ class Professor(models.Model):
     midd_webid = models.CharField(max_length=32, blank=True, null=True, unique=True)
     first = models.CharField(max_length=100, blank=True, null=True)
     last = models.CharField(max_length=100)
-    dept = models.ForeignKey(Department, related_name='professors')
+    dept = models.ForeignKey(Department, on_delete=models.PROTECT, related_name='professors')
     email = models.EmailField(blank=True, null=True)
     slug = models.SlugField(blank=True)
     lookup = models.CharField(max_length=201)
@@ -86,7 +86,7 @@ class Course(models.Model):
     code = models.CharField(max_length=20)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    dept = models.ForeignKey(Department, related_name='courses')
+    dept = models.ForeignKey(Department, on_delete=models.PROTECT, related_name='courses')
     slug = models.SlugField(blank=True)
     lookup = models.CharField(max_length=276)
     search_index = VectorField()
@@ -120,8 +120,8 @@ class ProfCourseManager(models.Manager):
 # a ProfCourse is specific to the professor teaching the course
 class ProfCourse(models.Model):
     objects = ProfCourseManager()
-    course = models.ForeignKey(Course, related_name='prof_courses')
-    prof = models.ForeignKey(Professor, related_name='prof_courses')
+    course = models.ForeignKey(Course, on_delete=models.PROTECT, related_name='prof_courses')
+    prof = models.ForeignKey(Professor, on_delete=models.PROTECT, related_name='prof_courses')
 
     class Meta:
         unique_together = (('course', 'prof'),)
@@ -146,16 +146,16 @@ class Review(models.Model):
     class Meta:
         unique_together = (('prof_course', 'user'),)
 
-    prof_course = models.ForeignKey(ProfCourse, related_name='reviews')
-    user = models.ForeignKey(User, related_name='reviews')
+    prof_course = models.ForeignKey(ProfCourse, on_delete=models.PROTECT, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='reviews')
     date = models.DateField(auto_now_add=True)
 
     FLAG_CHOICES = (('A', 'This comment contains hateful or obscene language.'),
                     ('B', "This comment is not about this page's course or professor."),
                     ('C', 'This comment is spam.'))
     flagged = models.BooleanField(default=False)
-    flagged_by = models.ForeignKey(User, related_name='reviews_flag', blank=True, null=True)
-    flagged_mod = models.ForeignKey(User, related_name='reviews_mod_flag', blank=True, null=True)
+    flagged_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='reviews_flag', blank=True, null=True)
+    flagged_mod = models.ForeignKey(User, on_delete=models.PROTECT, related_name='reviews_mod_flag', blank=True, null=True)
     flagged_count = models.IntegerField(default=0)
     why_flag = models.CharField(max_length=1, choices=FLAG_CHOICES, blank=True, null=True)
 

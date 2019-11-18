@@ -5,6 +5,7 @@ from os.path import abspath, basename, dirname, join, normpath
 # from djcelery import setup_loader
 from os import environ
 import socket
+import django
 
 from .django_pipeline import PIPELINE
 
@@ -95,31 +96,56 @@ FIXTURE_DIRS = (
     normpath(join(DJANGO_ROOT, 'fixtures')),
 )
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.core.context_processors.tz',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request',
-)
+# Changed Template code to new Django format
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            normpath(join(DJANGO_ROOT, 'templates')),
+        ],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.core.context_processors.debug',
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.media',
+                'django.core.context_processors.static',
+                'django.core.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.request',
+            ],
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ]
+        },
+    },
+]
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
+## See: https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
+#TEMPLATE_CONTEXT_PROCESSORS = (
+#    'django.contrib.auth.context_processors.auth',
+#    'django.core.context_processors.debug',
+#    'django.core.context_processors.i18n',
+#    'django.core.context_processors.media',
+#    'django.core.context_processors.static',
+#    'django.core.context_processors.tz',
+#    'django.contrib.messages.context_processors.messages',
+#    'django.core.context_processors.request',
+#)
+#
+## See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
+#TEMPLATE_LOADERS = (
+#    'django.template.loaders.filesystem.Loader',
+#    'django.template.loaders.app_directories.Loader',
+#)
+#
+## See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
+#TEMPLATE_DIRS = (
+#    normpath(join(DJANGO_ROOT, 'templates')),
+#)
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
-TEMPLATE_DIRS = (
-    normpath(join(DJANGO_ROOT, 'templates')),
-)
-
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#middleware-classes
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     # Use GZip compression to reduce bandwidth.
     'django.middleware.gzip.GZipMiddleware',
     'pipeline.middleware.MinifyHTMLMiddleware',
@@ -129,7 +155,21 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
+## See: https://docs.djangoproject.com/en/dev/ref/settings/#middleware-classes
+#MIDDLEWARE_CLASSES = (
+#    # Use GZip compression to reduce bandwidth.
+#    'django.middleware.gzip.GZipMiddleware',
+#    'pipeline.middleware.MinifyHTMLMiddleware',
+#    # Default Django middleware.
+#    'django.middleware.common.CommonMiddleware',
+#    'django.contrib.sessions.middleware.SessionMiddleware',
+#    'django.middleware.csrf.CsrfViewMiddleware',
+#    'django.contrib.auth.middleware.AuthenticationMiddleware',
+#    'django.contrib.messages.middleware.MessageMiddleware',
+#)
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
 ROOT_URLCONF = '%s.urls' % SITE_NAME
@@ -284,3 +324,4 @@ HAYSTACK_CONNECTIONS = {
         'PATH': join(dirname(__file__), 'whoosh_index'),
     }
 }
+

@@ -8,17 +8,17 @@ import os
 
 @cache_control(must_revalidate=True, max_age=3600)
 @cache_page(60 * 15)
-def http403(request):
+def http403(request, exception=None):
     return render(request, 'static_pages/403.html')
 
 @cache_control(must_revalidate=True, max_age=3600)
 @cache_page(60 * 15)
-def http404(request):
+def http404(request, exception=None):
     return render(request, 'static_pages/404.html')
 
 @cache_control(must_revalidate=True, max_age=3600)
 @cache_page(60 * 15)
-def http500(request):
+def http500(request, exception=None):
     return render(request, 'static_pages/500.html')
 
 def index(request):
@@ -46,7 +46,7 @@ def google_verify(request, code):
     google_verification_code = os.environ.get('GOOGLE_VERIFICATION_CODE')
 
     if code == google_verification_code:
-        print google_verification_code
+        print(google_verification_code)
         return TemplateResponse(request,
                                 'static_pages/google_verify.html',
                                 {'google_verification_code': google_verification_code})

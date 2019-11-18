@@ -2,7 +2,9 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from users.models import UserProfile
 from reviews.models import Professor
-from django.contrib.sites.models import RequestSite
+#from django.contrib.sites.models import RequestSite
+from django.contrib.sites.requests import RequestSite
+
 from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
 from registration import signals

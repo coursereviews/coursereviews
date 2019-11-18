@@ -8,15 +8,15 @@ from reviews.models import Professor
 from cr_admin.models import AdminQuota
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
     name = models.CharField(max_length=100, blank=True)
 
     # semester_reviews is reset each semester and is the basis for
     # the quota implementation
     semester_reviews = models.IntegerField(default=0)
     total_reviews = models.IntegerField(default=0)
-    professor_assoc = models.ForeignKey(Professor, related_name='user_profile',
-                                        null=True, blank=True)
+    professor_assoc = models.ForeignKey(Professor, on_delete=models.PROTECT, 
+            related_name='user_profile', null=True, blank=True)
     middcourses_admin = models.BooleanField(default=False)
     middcourses_moderator = models.BooleanField(default=False)
 
@@ -42,7 +42,7 @@ def create_profile(sender, instance, created, **kwargs):
 
 class FirstVisit(models.Model):
     template_path = models.CharField(max_length=100, blank=True)
-    user = models.ForeignKey('auth.User')
+    user = models.ForeignKey('auth.User', on_delete=models.PROTECT)
 
 class ViewCount(models.Model):
     url = models.URLField()
