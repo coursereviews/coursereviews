@@ -12,7 +12,7 @@ from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 from django.template.response import TemplateResponse
 
-def activate(request, activation_key, template_name='registration/activate.html'):
+def activate(request, activation_key, template_name='cr_registration/activate.html'):
     user = RegistrationProfile.objects.activate_user(activation_key)
     if user:
         signals.user_activated.send(sender=RegistrationProfile, user=user, request=request)

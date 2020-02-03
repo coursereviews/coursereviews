@@ -15,33 +15,45 @@ from registration.views import (activate,
 # that way it can return a sensible "invalid key" message instead of a
 # confusing 404.
 
+# TODO: Possibly remove duplicate parameter passing.
 urlpatterns = [
-    url(r'^login/$', LoginView.as_view(),  # noqa
+    url(r'^login/$', 
+        LoginView.as_view(template_name='cr_registration/login.html',
+            authentication_form=AuthenticationForm
+        ),  # noqa
         {'template_name': 'cr_registration/login.html',
         'authentication_form': AuthenticationForm},
-        name='login'),
+        name='login'
+    ),
 
     url(r'^logout/$',
         LogoutView.as_view(),
         {'next_page': '/'},
-        name='logout'),
+        name='logout'
+    ),
 
     url(r'^password/change/$',
-        PasswordChangeView.as_view(),
+        PasswordChangeView.as_view(template_name='cr_registration/password_change_form.html'),
         {'template_name': 'cr_registration/password_change_form.html',
          'post_change_redirect': '/password/change/done'},
-        name='password_change'),
+        name='password_change'
+    ),
 
     url(r'^password/change/done/$',
         password_change_done,
-        name='password_change_done'),
+        name='password_change_done'
+    ),
 
     url(r'^password/reset/$',
-        PasswordResetView.as_view(),
+         PasswordResetView.as_view(template_name='cr_registration/password_reset_form.html',
+            email_template_name='cr_registration/password_reset_email.txt',
+            subject_template_name='cr_registration/password_reset_subject.txt'
+        ),
         {'template_name': 'cr_registration/password_reset_form.html',
         'email_template_name': 'cr_registration/password_reset_email.txt',
         'subject_template_name': 'cr_registration/password_reset_subject.txt'},
-        name='password_reset'),
+        name='password_reset'
+    ),
 
     url(r'^password/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
         PasswordResetConfirmView,

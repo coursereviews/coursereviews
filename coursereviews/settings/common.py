@@ -103,6 +103,7 @@ TEMPLATES = [
         'DIRS': [
             normpath(join(DJANGO_ROOT, 'templates')),
         ],
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
